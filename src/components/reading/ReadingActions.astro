@@ -1,0 +1,49 @@
+---
+/** Client-side reading actions; saved bookmarks stay in the reader's browser. */
+import Icon from "@cloudflare/nimbus-docs/components/Icon.astro";
+import { withBase } from "@cloudflare/nimbus-docs/runtime";
+
+interface Props { title: string }
+const { title } = Astro.props;
+const pagePath = Astro.url.pathname;
+const listHref = withBase("/reading-list/", import.meta.env.BASE_URL);
+const issueTitle = encodeURIComponent("文档反馈：" + title);
+const issueBody = encodeURIComponent("## 页面\n" + Astro.url.href + "\n\n## 问题描述\n\n");
+const issueHref = `https://github.com/weepwood/nimbus-demo/issues/new?title=${issueTitle}&body=${issueBody}`;
+---
+<section
+  class="nd-reading-actions"
+  data-nd-reading-actions
+  data-page-path={pagePath}
+  data-page-title={title}
+  data-page-base={import.meta.env.BASE_URL}
+  data-pagefind-ignore
+  aria-label="文档阅读工具"
+>
+  <div class="nd-reading-actions-text">
+    <strong>这篇文档对你有用吗？</strong>
+    <p>收藏到本机阅读清单，或者在 GitHub 提交问题帮助改进文档。</p>
+  </div>
+  <div class="nd-reading-actions-buttons">
+    <button type="button" data-nd-bookmark aria-pressed="false" class="nd-read-action">
+      <Icon name="ph:bookmark-simple" class="size-4" />
+      <span data-nd-bookmark-label>收藏本页</span>
+    </button>
+    <button type="button" data-nd-share class="nd-read-action">
+      <Icon name="ph:link" class="size-4" />
+      复制链接
+    </button>
+    <a href={issueHref} target="_blank" rel="noopener noreferrer" class="nd-read-action">
+      <Icon name="ph:chat-circle-text" class="size-4" />
+      反馈问题
+    </a>
+  </div>
+  <div class="nd-reading-actions-footer">
+    <a href={listHref}>查看阅读清单 <Icon name="ph:arrow-right" class="size-3.5" /></a>
+    <span>收藏仅保存在当前浏览器</span>
+  </div>
+  <p data-nd-reading-status role="status" aria-live="polite" class="nd-reading-status"></p>
+</section>
+<script>
+  import "./reading-actions.client";
+</script>

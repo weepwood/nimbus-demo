@@ -16,7 +16,7 @@ function initPageActions(root: HTMLElement): () => void {
     if (state === "copied") {
       copyIcon.classList.add("hidden");
       checkIcon.classList.remove("hidden");
-      label.textContent = "Copied";
+      label.textContent = "已复制";
     } else {
       label.textContent = "Couldn't copy";
     }
@@ -24,7 +24,7 @@ function initPageActions(root: HTMLElement): () => void {
     resetTimer = window.setTimeout(() => {
       copyIcon.classList.remove("hidden");
       checkIcon.classList.add("hidden");
-      label.textContent = "Copy page";
+      label.textContent = "复制文档";
     }, 1500);
   }
 

@@ -1,0 +1,173 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Icon from "@cloudflare/nimbus-docs/components/Icon.astro";
+import { withBase } from "@cloudflare/nimbus-docs/runtime";
+
+const home = withBase("/", import.meta.env.BASE_URL);
+const docs = withBase("/quickstart/", import.meta.env.BASE_URL);
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout title="阅读清单" description="在当前浏览器收藏和管理你想反复查看的 Nimbus Studio 文档。">
+  <div class="min-h-screen flex flex-col">
+    <Header />
+    <main id="main-content" tabindex="-1" data-pagefind-body class="nd-library mx-auto w-full max-w-5xl flex-1 px-5 pb-20 pt-8 md:px-10" data-nd-bookmark-library data-page-base={base}>
+      <nav class="nd-library-breadcrumb" aria-label="当前位置">
+        <a href={home}>首页</a>
+        <Icon name="ph:caret-right" class="size-3" />
+        <span>阅读清单</span>
+      </nav>
+      <header class="nd-library-head">
+        <div class="nd-overline"><Icon name="ph:bookmark-simple" class="size-4" /> YOUR READING LIST</div>
+        <h1>收藏的文档<span class="nd-library-period">.</span></h1>
+        <p>保存值得反复查阅的页面。收藏数据仅保存在本浏览器的本地存储中，不需要账号，也不会上传服务器。</p>
+      </header>
+      <section class="nd-library-panel" aria-label="收藏列表">
+        <div class="nd-library-panel-top">
+          <div><strong>我的阅读清单</strong><span data-nd-bookmark-count>—</span></div>
+          <button type="button" data-nd-clear-all class="nd-library-clear" hidden>
+            <Icon name="ph:trash" class="size-4" /> 清空收藏
+          </button>
+        </div>
+        <div data-nd-library-empty class="nd-library-empty">
+          <div class="nd-library-empty-icon"><Icon name="ph:bookmarks" class="size-7" /></div>
+          <h2>还没有收藏的页面</h2>
+          <p>阅读文档时点击文章底部的“收藏本页”，即可在这里集中查看。</p>
+          <a href={docs} class="nd-library-get-started">开始阅读 <Icon name="ph:arrow-right" class="size-4" /></a>
+        </div>
+        <ul data-nd-bookmark-items class="nd-library-items" aria-label="收藏的文档" hidden></ul>
+      </section>
+      <div class="nd-library-note">
+        <Icon name="ph:info" class="size-5 shrink-0" />
+        <div><strong>隐私与数据</strong><p>删除浏览器站点数据、使用无痕模式或更换设备后，收藏可能不再保留。本项目暂未提供跨设备同步。</p></div>
+      </div>
+      <p class="nd-library-status" data-nd-library-status role="status" aria-live="polite"></p>
+    </main>
+  </div>
+</BaseLayout>
+<script>
+  import { mount } from "@cloudflare/nimbus-docs/client";
+  import { BOOKMARK_KEY, getBookmarks, putBookmarks } from "../lib/reading-list";
+
+  mount("[data-nd-bookmark-library]", root => {
+    const list = root.querySelector<HTMLUListElement>("[data-nd-bookmark-items]");
+    const empty = root.querySelector<HTMLElement>("[data-nd-library-empty]");
+    const count = root.querySelector<HTMLElement>("[data-nd-bookmark-count]");
+    const clear = root.querySelector<HTMLButtonElement>("[data-nd-clear-all]");
+    const status = root.querySelector<HTMLElement>("[data-nd-library-status]");
+    const base = (root as HTMLElement).dataset.pageBase || "/";
+    if (!list || !empty || !count || !clear || !status) return () => {};
+    const controller = new AbortController();
+
+    function render() {
+      const bookmarks = getBookmarks(base);
+      list!.replaceChildren();
+      count!.textContent = bookmarks.length + " 篇";
+      empty!.hidden = bookmarks.length > 0;
+      list!.hidden = bookmarks.length === 0;
+      clear!.hidden = bookmarks.length === 0;
+
+      for (const bookmark of bookmarks) {
+        const item = document.createElement("li");
+        item.className = "nd-library-item";
+        const icon = document.createElement("span");
+        icon.className = "nd-library-item-icon";
+        icon.textContent = "↗";
+        icon.setAttribute("aria-hidden", "true");
+        const main = document.createElement("div");
+        main.className = "nd-library-item-main";
+        const link = document.createElement("a");
+        link.href = bookmark.path;
+        link.textContent = bookmark.title;
+        link.className = "nd-library-item-title";
+        const meta = document.createElement("span");
+        meta.className = "nd-library-item-date";
+        const stamp = Date.parse(bookmark.savedAt);
+        meta.textContent = Number.isFinite(stamp)
+          ? "收藏于 " + new Intl.DateTimeFormat("zh-CN", { year: "numeric", month: "short", day: "numeric" }).format(stamp)
+          : "本地收藏";
+        main.append(link, meta);
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "nd-library-remove";
+        remove.dataset.removePath = bookmark.path;
+        remove.textContent = "移除";
+        remove.setAttribute("aria-label", "移除 " + bookmark.title);
+        item.append(icon, main, remove);
+        list!.append(item);
+      }
+    }
+
+    list.addEventListener("click", event => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const button = target.closest<HTMLButtonElement>("[data-remove-path]");
+      if (!button) return;
+      const path = button.dataset.removePath;
+      if (!path) return;
+      if (!putBookmarks(getBookmarks(base).filter(b => b.path !== path))) {
+        status!.textContent = "未能写入本地存储，请检查浏览器权限。";
+        return;
+      }
+      render();
+      status!.textContent = "已从阅读清单移除。";
+    }, { signal: controller.signal });
+
+    clear.addEventListener("click", () => {
+      if (!window.confirm("确定要清空当前浏览器保存的所有文档收藏吗？")) return;
+      if (!putBookmarks([])) {
+        status!.textContent = "浏览器拒绝保存修改。";
+        return;
+      }
+      render();
+      status!.textContent = "所有本地收藏已清空。";
+    }, { signal: controller.signal });
+
+    window.addEventListener("storage", e => {
+      if (e.key === BOOKMARK_KEY) render();
+    }, { signal: controller.signal });
+
+    render();
+    return () => controller.abort();
+  });
+</script>
+<style>
+  .nd-library-breadcrumb { display:flex; align-items:center; gap:.5rem; color:var(--nb-muted-foreground); font-size:.77rem; }
+  .nd-library-breadcrumb a { text-decoration:none; color:inherit; }
+  .nd-library-breadcrumb a:hover { color:var(--nb-foreground); }
+  .nd-library-head { padding:4.2rem 0 3rem; max-width:650px; }
+  .nd-library-head .nd-overline { gap:.5rem; }
+  .nd-library-head h1 { font-size:clamp(2.5rem,5vw,4rem); font-weight:710; letter-spacing:-.07em; line-height:1.14; margin:1.1rem 0; }
+  .nd-library-period { color:var(--nd-orange-strong); }
+  .nd-library-head p { font-size:.95rem; line-height:1.85; color:var(--nb-muted-foreground); }
+  .nd-library-panel { border:1px solid var(--nb-border); border-radius:12px; overflow:hidden; background:var(--nb-card); }
+  .nd-library-panel-top { display:flex; justify-content:space-between; align-items:center; gap:1rem; min-height:60px; padding:1rem 1.4rem; border-bottom:1px solid var(--nb-border); }
+  .nd-library-panel-top div { display:flex; align-items:center; gap:.8rem; }
+  .nd-library-panel-top strong { font-size:.87rem; font-weight:680; }
+  .nd-library-panel-top span { font-size:.72rem; color:var(--nb-muted-foreground); }
+  .nd-library-clear { display:inline-flex; align-items:center; gap:.4rem; font-size:.75rem; border:0; background:none; color:var(--nb-muted-foreground); cursor:pointer; padding:.4rem; }
+  .nd-library-clear:hover { color:var(--nb-foreground); }
+  .nd-library-empty { text-align:center; padding:4rem 1.5rem; }
+  .nd-library-empty-icon { display:grid; place-items:center; width:56px; height:56px; margin:0 auto 1.2rem; border-radius:14px; color:var(--nd-orange-strong); border:1px solid var(--nb-border); background:var(--nb-muted); }
+  .nd-library-empty h2 { font-size:1.18rem; font-weight:680; letter-spacing:-.025em; }
+  .nd-library-empty p { font-size:.82rem; margin:.65rem auto 1.5rem; color:var(--nb-muted-foreground); line-height:1.75; }
+  .nd-library-get-started { display:inline-flex; align-items:center; gap:.5rem; padding:.72rem .95rem; border-radius:7px; font-size:.8rem; font-weight:620; color:white; background:var(--nd-orange-strong); text-decoration:none; }
+  .nd-library-items { margin:0; padding:0; list-style:none; }
+  .nd-library-item { display:flex; align-items:center; gap:1rem; padding:1.15rem 1.4rem; border-bottom:1px solid var(--nb-border); }
+  .nd-library-item:last-child { border-bottom:0; }
+  .nd-library-item-icon { display:grid; place-items:center; height:36px; width:36px; border:1px solid var(--nb-border); background:var(--nb-muted); color:var(--nd-orange-strong); border-radius:8px; flex:none; }
+  .nd-library-item-main { display:flex; flex-direction:column; gap:.25rem; min-width:0; flex:1; }
+  .nd-library-item-title { color:var(--nb-foreground); text-decoration:none; font-size:.86rem; font-weight:670; overflow-wrap:anywhere; }
+  .nd-library-item-title:hover { color:var(--nd-orange-strong); }
+  .nd-library-item-date { color:var(--nb-muted-foreground); font-size:.7rem; }
+  .nd-library-remove { border:1px solid var(--nb-border); border-radius:6px; background:var(--nb-card); color:var(--nb-muted-foreground); padding:.45rem .65rem; cursor:pointer; font-size:.72rem; }
+  .nd-library-remove:hover { color:var(--nb-foreground); background:var(--nb-muted); }
+  .nd-library-note { display:flex; gap:.8rem; align-items:flex-start; padding:1.5rem 0; }
+  .nd-library-note svg { color:var(--nd-orange-strong); }
+  .nd-library-note strong { display:block; font-size:.78rem; font-weight:670; }
+  .nd-library-note p { margin-top:.35rem; color:var(--nb-muted-foreground); font-size:.75rem; line-height:1.8; }
+  .nd-library-status { color:var(--nb-muted-foreground); font-size:.75rem; }
+  [hidden] { display:none!important; }
+  @media (max-width:480px) { .nd-library-head { padding:2.8rem 0 2rem; }.nd-library-panel-top,.nd-library-item { padding:1rem; }.nd-library-item { gap:.65rem; } }
+  @media(prefers-reduced-motion: reduce) { .nd-library-get-started { transition:none; } }
+</style>
