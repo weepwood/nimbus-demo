@@ -40,7 +40,7 @@ jobs:
       - name: Verify generated site, routes and links
         run: pnpm run verify:site
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
