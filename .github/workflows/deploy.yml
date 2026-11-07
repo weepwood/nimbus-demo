@@ -28,8 +28,9 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '24'
+          cache: pnpm
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --frozen-lockfile
       - name: Check types
         run: pnpm run typecheck
       - name: Build site

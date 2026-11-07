@@ -14,13 +14,13 @@ sidebar:
     在仓库 Settings → Pages 中，把 Build and deployment 的 Source 设置为 GitHub Actions。
   </Step>
   <Step title="检查站点路径">
-    astro.config.ts 中配置了 site 为 https://weepwood.github.io，base 为 /nimbus-demo。
+    astro.config.ts 中配置了 `site` 为 `https://weepwood.github.io`，`base` 为 `/nimbus-demo`。
   </Step>
   <Step title="推送 main">
     部署工作流会自动安装依赖、执行构建并上传 dist 静态文件。
   </Step>
   <Step title="访问页面">
-    发布成功后打开 https://weepwood.github.io/nimbus-demo/。
+    发布成功后访问 [Nimbus Demo](https://weepwood.github.io/nimbus-demo/)。
   </Step>
 </Steps>
 
@@ -52,6 +52,6 @@ Astro 生成的静态目录是 dist。独立的 Check 工作流也会检查 Type
 
 ## 完善生产部署
 
-建议将安装生成的 pnpm-lock.yaml 提交到仓库，将 CI 改为 pnpm install --frozen-lockfile，并开启 Pages 的自定义域名与 HTTPS。
+本仓库已经提交 `pnpm-lock.yaml` 并在 CI 使用 `pnpm install --frozen-lockfile`。自定义域名部署时应配置 HTTPS 并同步更新 `site` 与 `base`。
 
 Nimbus 的服务端适配器不是本静态演示的必需项。需要动态渲染或远程 MCP 等能力时，再按 [官方部署文档](https://nimbus-docs.com/deploy/) 配置。

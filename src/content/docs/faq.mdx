@@ -9,7 +9,7 @@ sidebar:
 
 本项目的页面路径包含部署子目录 `/nimbus-demo/`。如果创建的是新的仓库，请修改 `astro.config.ts` 的 `base` 为实际仓库名，或在使用自定义域名时将其改为 `/`。
 
-站内自定义链接统一使用 `SiteLink` 组件，避免手动拼接部署前缀。
+Nimbus 会为 MDX 中的站内链接自动添加 Astro 的 `base`，不要在原始文档中手动写 `/nimbus-demo` 前缀。
 
 ## 为什么搜索没有结果？
 
@@ -24,17 +24,17 @@ pnpm preview
 
 ## 新建文档如何进入导航？
 
-在 `src/content/docs/` 下添加 `.mdx`，填入必需的 frontmatter，构建时 Nimbus 会自动生成侧边栏。示例见 <SiteLink href="/writing-pages/">文档写作</SiteLink>。
+在 `src/content/docs/` 下添加 `.mdx`，填入必需的 frontmatter，构建时 Nimbus 会自动生成侧边栏。示例见 [文档写作](/writing-pages/)。
 
 ## 如何在 MDX 中生成正确的站内链接？
 
-普通 Markdown 的根路径链接通常从域名根目录开始。如果项目部署在子目录下，应使用本项目内置的 `SiteLink`：
+在 Nimbus 的 MDX 文档中，只需编写逻辑上的站内路径。Nimbus 会在渲染时自动添加部署前缀：
 
 ~~~mdx
-<SiteLink href="/quickstart/">快速开始</SiteLink>
+[快速开始](/quickstart/)
 ~~~
 
-`SiteLink` 会根据 Astro 的 `BASE_URL` 生成正确路径。
+对于独立的 `.astro` 组件或页面，可以从 `@cloudflare/nimbus-docs/runtime` 导入 `withBase`，手动将逻辑路径转换为部署路径。不要为 MDX 链接再次调用 `withBase`。
 
 ## 如何修改品牌和页面外观？
 
@@ -47,7 +47,7 @@ pnpm preview
 
 ## 如何生成属于自己的站点配置？
 
-打开 <SiteLink href="/configurator/">项目配置生成器</SiteLink>，填写站点 URL、仓库地址、子路径、语言等信息，然后复制或下载生成的 `astro.config.ts`。
+打开 [项目配置生成器](/configurator/)，填写站点 URL、仓库地址、子路径、语言等信息，然后复制或下载生成的 `astro.config.ts`。
 
 ## 如何检查发布产物是否完整？
 
