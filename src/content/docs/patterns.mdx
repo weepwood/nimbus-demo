@@ -1,0 +1,102 @@
+---
+title: 文档模式与实际用例
+description: 由 Cloudflare 文档写作模式整理的可复制示例，展示 Nimbus 的内容组合能力。
+sidebar:
+  order: 8
+---
+
+文档网站的价值不在于组件数量，而在于读者能否快速找到答案。本页组合了 Nimbus 的 Tabs、Steps、Aside、Badge、Collapsible 与代码示例，构建可落地的文档结构。
+
+## 产品功能状态
+
+<Badge variant="success" text="Stable" /> <Badge variant="warning" text="Beta" /> <Badge variant="info" text="Preview" /> <Badge variant="danger" text="Deprecated" />
+
+这些标签可以用于 API 版本、功能可用性或升级提醒。不要只用颜色传达状态，始终提供文字。
+
+## 安装教程
+
+<Aside type="tip" title="最快的方式">
+  用户应在前几步就获得一个可运行的结果，然后再介绍优化项。
+</Aside>
+
+<Steps>
+  <Step title="安装脚手架">
+    ~~~bash
+    npx @cloudflare/create-nimbus-docs@latest my-docs --yes
+    ~~~
+  </Step>
+  <Step title="打开目录">
+    ~~~bash
+    cd my-docs
+    npm run dev
+    ~~~
+  </Step>
+  <Step title="修改内容">
+    在 src/content/docs/ 下创建新的 .mdx 文件，更新标题和正文。
+  </Step>
+  <Step title="生成静态站点">
+    ~~~bash
+    npm run build
+    ~~~
+  </Step>
+</Steps>
+
+## 平台差异
+
+页面主流程应该直接给出通用步骤，再用 Tabs 放置平台差异。标签的键值可以跨文档同步。
+
+<Tabs syncKey="deploy-target">
+  <TabItem label="GitHub Pages">
+    构建结果部署到项目路径下时，需要配置 Astro 的 `base`。
+
+    ~~~ts
+    export default defineConfig({
+      site: "https://username.github.io",
+      base: "/repository",
+    });
+    ~~~
+  </TabItem>
+  <TabItem label="Cloudflare">
+    静态站点可部署到 Cloudflare Pages 或静态资源托管服务。
+
+    ~~~bash
+    npm run build
+    ~~~
+  </TabItem>
+</Tabs>
+
+## 常见问题折叠区
+
+<Collapsible>
+  <CollapsibleTrigger class="rounded-md border border-border px-4 py-3 font-medium hover:bg-accent">搜索在开发模式下为什么不工作？</CollapsibleTrigger>
+  <CollapsibleContent><div class="rounded-b-md border border-t-0 border-border px-4 py-4 text-sm">Pagefind 的索引由生产构建生成。运行 npm run build 和 npm run preview 后，再验证搜索结果。</div></CollapsibleContent>
+</Collapsible>
+
+<Collapsible>
+  <CollapsibleTrigger class="rounded-md border border-border px-4 py-3 font-medium hover:bg-accent">如何让 AI 工具读取文档？</CollapsibleTrigger>
+  <CollapsibleContent><div class="rounded-b-md border border-t-0 border-border px-4 py-4 text-sm">Nimbus 会提供 llms.txt、llms-full.txt 及文档对应的 Markdown 路由，可从站点根路径找到相应资源。</div></CollapsibleContent>
+</Collapsible>
+
+## API 请求示例
+
+下面是本项目公开静态 JSON 端点的真实示例。可以在 <a href="/api-lab/">API 实验室</a> 中发起 GET 请求。
+
+~~~bash title="bash"
+curl https://weepwood.github.io/nimbus-demo/demo-api/status.json
+~~~
+
+~~~json title="response example"
+{
+  "ok": true,
+  "service": "nimbus-demo",
+  "mode": "static-fixture"
+}
+~~~
+
+<Aside type="note" title="示例服务说明">
+  该接口是构建时生成的演示数据，不是在线数据库、身份验证服务或真实 Cloudflare API。
+</Aside>
+
+## 对照官方实践
+
+Cloudflare 开发者文档的组件规范强调：把重点答案直接放在正文，Tabs 用于不同平台实现；折叠内容放补充信息，而不是隐藏关键步骤。详细请参考 [Cloudflare Style Guide](https://developers.cloudflare.com/style-guide/build-the-page/components/)。

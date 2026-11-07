@@ -1,52 +1,125 @@
 ---
-title: Nimbus Demo
-description: 使用 Astro、Nimbus 与 MDX 打造精致、快速、面向人和 AI 的文档体验。
+title: Nimbus Studio
+description: 基于 Cloudflare Nimbus 的现代开发者文档、组件与交互实验室。
 mode: custom
 sidebar:
   order: 0
 ---
 
-<div className="demo-home">
-  <section className="demo-hero">
-    <div className="demo-hero-copy">
-      <p className="demo-eyebrow"><span className="demo-status-dot"></span> CLOUDFLARE NIMBUS · FRAMEWORK SHOWCASE</p>
-      <h1 className="demo-hero-title">让知识拥有<br /><span>更好的呈现方式。</span></h1>
-      <p className="demo-hero-description">从一篇 MDX 开始，构建轻盈、清晰而且易于扩展的产品文档。这里是基于 Cloudflare Nimbus 官方 Starter 的真实、可修改的示例。</p>
-      <div className="demo-hero-actions">
-        <a className="demo-btn demo-btn-primary" href="/quickstart/">开始探索 <span aria-hidden="true">↗</span></a>
-        <a className="demo-btn demo-btn-secondary" href="/configurator/">在线生成配置 <span aria-hidden="true">↗</span></a>
+<div className="nd-landing">
+  <div className="nd-announcement">
+    <span className="nd-announcement-tag">NEW</span>
+    <span>从文档到完整体验：探索 Nimbus Studio 新的交互实验室</span>
+    <a href="/showcase/">查看更新 <Icon name="ph:arrow-up-right" /></a>
+  </div>
+
+  <section className="nd-hero">
+    <div className="nd-hero-copy">
+      <div className="nd-eyebrow"><span className="nd-live-dot"></span> NIMBUS / DOCUMENTATION PLATFORM</div>
+      <h1>为构建而生的文档。<br/><span>不止于阅读。</span></h1>
+      <p className="nd-hero-description">一个真正可运行的 Nimbus 项目：从 MDX 文档、组件系统，到交互式配置工具与 API 请求实验室。用更少的视觉噪声，呈现更清晰的产品体验。</p>
+      <div className="nd-hero-actions">
+        <a className="nd-button nd-button-primary" href="/quickstart/">开始使用 <Icon name="ph:arrow-up-right" /></a>
+        <a className="nd-button nd-button-outline" href="/showcase/">探索功能示例 <Icon name="ph:arrow-right" /></a>
       </div>
-      <div className="demo-hero-metadata"><span><span className="demo-check">✓</span> Astro 7</span><span><span className="demo-check">✓</span> Nimbus 0.19</span><span><span className="demo-check">✓</span> MDX Ready</span></div>
-    </div>
-    <div className="demo-window" aria-label="Nimbus configuration preview">
-      <div className="demo-window-toolbar"><div className="demo-window-lights"><i></i><i></i><i></i></div><span>astro.config.ts</span><span className="demo-window-language">TypeScript</span></div>
-      <div className="demo-window-body">
-        <div className="demo-code-line"><span className="demo-line-no">01</span><span><span className="demo-code-purple">import</span> nimbus <span className="demo-code-purple">from</span> <span className="demo-code-green">"@cloudflare/nimbus-docs"</span>;</span></div>
-        <div className="demo-code-line"><span className="demo-line-no">02</span><span></span></div>
-        <div className="demo-code-line"><span className="demo-line-no">03</span><span><span className="demo-code-purple">const</span> site = <span className="demo-code-blue">defineConfig</span>({ "{" }</span></div>
-        <div className="demo-code-line"><span className="demo-line-no">04</span><span>  <span className="demo-code-blue">title</span>: <span className="demo-code-green">"Nimbus Demo"</span>,</span></div>
-        <div className="demo-code-line"><span className="demo-line-no">05</span><span>  <span className="demo-code-blue">locale</span>: <span className="demo-code-green">"zh-CN"</span>,</span></div>
-        <div className="demo-code-line"><span className="demo-line-no">06</span><span>  <span className="demo-code-blue">search</span>: <span className="demo-code-purple">true</span>,</span></div>
-        <div className="demo-code-line"><span className="demo-line-no">07</span><span>{ "}" });</span></div>
+      <div className="nd-hero-proof">
+        <span><Icon name="ph:check-circle" /> 基于官方 Nimbus Starter</span>
+        <span><Icon name="ph:check-circle" /> 无需运行时服务器</span>
       </div>
-      <div className="demo-window-footer"><span><span className="demo-terminal-dot"></span> BUILT FOR DEVELOPERS</span><span>★ Open source</span></div>
+    </div>
+    <div className="nd-preview" aria-label="文档界面预览">
+      <div className="nd-preview-top">
+        <div className="nd-preview-brand"><span className="nd-mini-logo">N</span><strong>Nimbus Studio</strong><span> / Docs</span></div>
+        <div className="nd-preview-search"><Icon name="ph:magnifying-glass" /> Search <kbd>⌘ K</kbd></div>
+      </div>
+      <div className="nd-preview-body">
+        <div className="nd-preview-rail">
+          <div className="nd-preview-group">GET STARTED</div>
+          <div className="nd-preview-link active"><Icon name="ph:house" /> Overview</div>
+          <div className="nd-preview-link"><Icon name="ph:rocket-launch" /> Quickstart</div>
+          <div className="nd-preview-group second">BUILD</div>
+          <div className="nd-preview-link"><Icon name="ph:squares-four" /> Components</div>
+          <div className="nd-preview-link"><Icon name="ph:code" /> API reference</div>
+          <div className="nd-preview-link"><Icon name="ph:palette" /> Design tokens</div>
+        </div>
+        <div className="nd-preview-document">
+          <div className="nd-preview-breadcrumb">Docs <Icon name="ph:caret-right" /> Overview</div>
+          <div className="nd-preview-pill"><span></span> DOCUMENTATION</div>
+          <h2>Build something<br/>remarkable.</h2>
+          <p>Thoughtful documentation for humans and agents.</p>
+          <div className="nd-preview-example">
+            <div className="nd-preview-example-header"><span><Icon name="ph:terminal-window" /> Terminal</span><Icon name="ph:copy" /></div>
+            <div><span className="nd-code-prompt">$</span> npx @cloudflare/create-nimbus-docs</div>
+          </div>
+          <div className="nd-preview-notice"><Icon name="ph:lightning" /><span>From Markdown to a polished site, fast.</span></div>
+        </div>
+      </div>
+      <div className="nd-preview-bottom"><span><span className="nd-live-dot"></span> ALL SYSTEMS OPERATIONAL</span><span>ASTRO + NIMBUS</span></div>
     </div>
   </section>
 
-  <section className="demo-section" id="explore">
-    <div className="demo-section-heading"><div><p className="demo-section-kicker">EXPLORE THE FRAMEWORK</p><h2>从设计到交付，一站体验</h2></div><p>不仅是一套页面样式，而是一条可持续维护的文档工程链路。</p></div>
-    <div className="demo-feature-grid">
-      <a className="demo-feature" href="/components/"><span className="demo-feature-icon">◇</span><span className="demo-feature-title">组件展厅 <span>↗</span></span><span className="demo-feature-description">Tabs、Cards、Steps、Aside 等内置 MDX 组件，可交互、可修改。</span><span className="demo-feature-label">01 / COMPONENTS</span></a>
-      <a className="demo-feature" href="/theme/"><span className="demo-feature-icon">◈</span><span className="demo-feature-title">主题系统 <span>↗</span></span><span className="demo-feature-description">基于 OKLCH 和 CSS 设计令牌构建的明暗主题与布局系统。</span><span className="demo-feature-label">02 / DESIGN TOKENS</span></a>
-      <a className="demo-feature" href="/writing-pages/"><span className="demo-feature-icon">▤</span><span className="demo-feature-title">文档工作流 <span>↗</span></span><span className="demo-feature-description">MDX、Frontmatter、可复用片段与自动生成侧边栏。</span><span className="demo-feature-label">03 / AUTHORING</span></a>
-      <a className="demo-feature" href="/architecture/"><span className="demo-feature-icon">⌘</span><span className="demo-feature-title">工程架构 <span>↗</span></span><span className="demo-feature-description">内容集合、构建时校验、搜索索引和 AI 可读 Markdown 输出。</span><span className="demo-feature-label">04 / ARCHITECTURE</span></a>
+  <section className="nd-metrics" aria-label="项目特性">
+    <div><strong>01</strong><span>自有组件源码</span></div>
+    <div><strong>02</strong><span>静态搜索引擎</span></div>
+    <div><strong>03</strong><span>AI 可读内容</span></div>
+    <div><strong>04</strong><span>自动化发布</span></div>
+  </section>
+
+  <section className="nd-section nd-capabilities" id="capabilities">
+    <header className="nd-section-head">
+      <div><span className="nd-overline">BUILT FOR DEVELOPERS</span><h2>一套框架，完整的文档能力。</h2></div>
+      <p>遵循 Cloudflare 开发者文档的清晰信息层级，同时保留 Nimbus 开箱即用的交互与扩展能力。</p>
+    </header>
+    <div className="nd-capability-grid">
+      <a className="nd-capability" href="/components/"><span className="nd-capability-icon"><Icon name="ph:squares-four" /></span><h3>组件系统 <Icon name="ph:arrow-up-right" /></h3><p>Aside、Tabs、Steps、Card、Badge 与更多可复用的原生 Astro 组件。</p></a>
+      <a className="nd-capability" href="/writing-pages/"><span className="nd-capability-icon"><Icon name="ph:book-open-text" /></span><h3>MDX 文档 <Icon name="ph:arrow-up-right" /></h3><p>带类型校验的内容集合、代码高亮、导航与 Markdown 输出。</p></a>
+      <a className="nd-capability" href="/theme/"><span className="nd-capability-icon"><Icon name="ph:palette" /></span><h3>设计令牌 <Icon name="ph:arrow-up-right" /></h3><p>OKLCH 色彩、语义化变量、响应式布局以及深浅色主题。</p></a>
+      <a className="nd-capability" href="/search-guide/"><span className="nd-capability-icon"><Icon name="ph:magnifying-glass" /></span><h3>全文检索 <Icon name="ph:arrow-up-right" /></h3><p>Pagefind 静态索引，无需独立搜索服务器，支持键盘快捷键。</p></a>
+      <a className="nd-capability" href="/architecture/"><span className="nd-capability-icon"><Icon name="ph:robot" /></span><h3>Agent Ready <Icon name="ph:arrow-up-right" /></h3><p>提供 llms.txt 与页面 Markdown，方便内容被 AI 工具读取。</p></a>
+      <a className="nd-capability" href="/deploy/"><span className="nd-capability-icon"><Icon name="ph:cloud-arrow-up" /></span><h3>持续交付 <Icon name="ph:arrow-up-right" /></h3><p>类型检查、内容校验、构建产物测试与 GitHub Pages 自动发布。</p></a>
     </div>
   </section>
 
-  <section className="demo-callout">
-    <div><span className="demo-section-kicker">READY TO SHIP</span><h2>保持内容简单，让体验更进一步。</h2><p>无需自行组装每一个页面组件。基于 Nimbus 官方工程骨架，专注于内容和产品。</p></div>
-    <a className="demo-btn demo-btn-dark" href="/deploy/">了解如何部署 ↗</a>
+  <section className="nd-section nd-experiments">
+    <header className="nd-section-head">
+      <div><span className="nd-overline">INTERACTIVE SHOWCASE</span><h2>不只是看，也能亲手体验。</h2></div>
+      <a className="nd-section-link" href="/showcase/">查看全部示例 <Icon name="ph:arrow-right" /></a>
+    </header>
+    <div className="nd-demo-grid">
+      <a href="/playground/" className="nd-demo-card nd-demo-card-featured">
+        <div className="nd-demo-card-top"><span><Icon name="ph:sliders-horizontal" /> COMPONENT LAB</span><span className="nd-demo-status">INTERACTIVE</span></div>
+        <div className="nd-demo-art nd-demo-art-components"><div className="nd-demo-ui"><span className="nd-demo-ui-label">Appearance</span><div className="nd-demo-ui-row"><i></i><i></i><i></i><i></i></div><div className="nd-demo-ui-line"></div><div className="nd-demo-ui-buttons"><b>Primary action</b><b>Secondary</b></div></div></div>
+        <div className="nd-demo-card-content"><h3>交互组件实验室 <Icon name="ph:arrow-up-right" /></h3><p>调节主题、圆角和控件外观，实时预览并导出 CSS。</p></div>
+      </a>
+      <a href="/api-lab/" className="nd-demo-card">
+        <div className="nd-demo-card-top"><span><Icon name="ph:brackets-curly" /> API EXPLORER</span><span className="nd-demo-status">LIVE FETCH</span></div>
+        <div className="nd-demo-art nd-demo-art-api"><div className="nd-api-mock"><div><span>GET</span><em>/demo-api/users.json</em></div><pre>{'{
+  "success": true,
+  "data": [ ... ]
+}'}</pre></div></div>
+        <div className="nd-demo-card-content"><h3>API 请求实验室 <Icon name="ph:arrow-up-right" /></h3><p>发送真实的站内 JSON 请求，查看状态码、耗时及响应体。</p></div>
+      </a>
+      <a href="/configurator/" className="nd-demo-card">
+        <div className="nd-demo-card-top"><span><Icon name="ph:gear-six" /> PROJECT BUILDER</span><span className="nd-demo-status">UTILITY</span></div>
+        <div className="nd-demo-art nd-demo-art-config"><div className="nd-config-mock"><span>astro.config.ts</span><div><i>site:</i> "https://example.com"</div><div><i>base:</i> "/docs"</div><div><i>locale:</i> "zh-CN"</div></div></div>
+        <div className="nd-demo-card-content"><h3>Nimbus 配置生成器 <Icon name="ph:arrow-up-right" /></h3><p>配置项目参数，实时生成、复制或下载 Astro 配置文件。</p></div>
+      </a>
+    </div>
   </section>
 
-  <footer className="demo-home-footer"><span>© 2026 Nimbus Demo</span><span>Powered by <a href="https://github.com/cloudflare/nimbus" target="_blank" rel="noopener noreferrer">Cloudflare Nimbus</a> · <a href="https://github.com/weepwood/nimbus-demo" target="_blank" rel="noopener noreferrer">GitHub</a></span></footer>
+  <section className="nd-section nd-steps">
+    <header className="nd-section-head"><div><span className="nd-overline">GET STARTED</span><h2>从想法到上线，只需要三步。</h2></div></header>
+    <div className="nd-step-grid">
+      <div className="nd-step"><span>01 <Icon name="ph:arrow-right" /></span><h3>创建项目</h3><p>使用 Nimbus 官方脚手架获得完全可修改的站点源代码。</p><code>npx @cloudflare/create-nimbus-docs</code></div>
+      <div className="nd-step"><span>02 <Icon name="ph:arrow-right" /></span><h3>编写文档</h3><p>添加 MDX 页面，组合组件，定制你的主题与交互。</p><code>src/content/docs/</code></div>
+      <div className="nd-step"><span>03 <Icon name="ph:check-circle" /></span><h3>构建发布</h3><p>执行构建校验，提交代码后通过 GitHub Actions 自动发布。</p><code>pnpm run check</code></div>
+    </div>
+  </section>
+
+  <section className="nd-final-cta">
+    <div><span className="nd-overline">OPEN SOURCE / YOUR DOCS</span><h2>更好的文档，<br/>从这里开始。</h2><p>基于 Nimbus 构建，代码公开、组件可修改、无需锁定平台。</p></div>
+    <div className="nd-final-actions"><a href="/quickstart/" className="nd-button nd-button-white">阅读快速开始 <Icon name="ph:arrow-up-right" /></a><a href="https://github.com/weepwood/nimbus-demo" className="nd-plain-link">GitHub 源码 <Icon name="ph:arrow-up-right" /></a></div>
+  </section>
+
+  <footer className="nd-footer"><span>© 2026 Nimbus Studio</span><span>Built on <a href="https://github.com/cloudflare/nimbus">Cloudflare Nimbus</a> · An independent showcase</span></footer>
 </div>

@@ -25,39 +25,39 @@
 	color-scheme: light;
 
 	/* Surfaces (paired with foregrounds for contrast) */
-	--nb-background: oklch(0.99 0 0);
-	--nb-foreground: oklch(0.21 0 0);
+	--nb-background: #ffffff;
+	--nb-foreground: #202124;
 
 	--nb-card: oklch(1 0 0);
 	--nb-card-foreground: var(--nb-foreground);
 
-	--nb-muted: oklch(0.98 0 0);
+	--nb-muted: #f8f8f7;
 	/* 4.5:1 or better on every light surface, inline code included. */
-	--nb-muted-foreground: oklch(0.52 0 0);
+	--nb-muted-foreground: #676a70;
 
-	--nb-accent: oklch(0.967 0 0);
+	--nb-accent: #f5f4f1;
 	--nb-accent-foreground: var(--nb-foreground);
 
 	/* Primary action / brand */
-	--nb-primary: oklch(0.145 0 0);
-	--nb-primary-foreground: oklch(0.97 0 0);
-	--nb-primary-hover: oklch(0.371 0 0);
+	--nb-primary: #bd520c;
+	--nb-primary-foreground: #ffffff;
+	--nb-primary-hover: #9f4208;
 
 	/* Brand — Nimbus steel, the accent of the Chrome palette: a grey with a
 	   trace of blue, so it reads apart from the pure-neutral ink. Used only
 	   for wayfinding: where you are (current page, section, tab) and what you
 	   can act on (focus, link hover). */
-	--nb-brand: oklch(0.373 0.034 260.2);
+	--nb-brand: #bd520c;
 	/* The current page's fill: a light wash of the brand. */
 	--nb-brand-wash: color-mix(in oklch, var(--nb-brand) 7%, transparent);
 
 	/* Borders / focus */
-	--nb-border: oklch(0.935 0 0);
-	--nb-border-strong: oklch(0.87 0 0);
+	--nb-border: #e9e8e5;
+	--nb-border-strong: #d9d6d1;
 	--nb-selected: oklch(0.92 0 0);
 	/* Inline code's tint. */
 	--nb-code-tint: color-mix(in oklch, var(--nb-foreground) 4.5%, transparent);
-	--nb-ring: oklch(0.373 0.034 260.2 / 0.4);
+	--nb-ring: oklch(0.65 0.18 50 / 0.48);
 
 	/* Status colors — paired (saturated for text/border + muted for bg) */
 	--nb-info: oklch(0.424 0.199 265.638);
@@ -99,9 +99,9 @@
 	--nb-m-other-line: var(--nb-border);
  
  	/* Layout */
-	--nb-sidebar-width: 18.75rem;
-	--nb-toc-width: 18rem;
-	--nb-content-max: 43.5rem;
+	--nb-sidebar-width: 17.5rem;
+	--nb-toc-width: 16rem;
+	--nb-content-max: 48rem;
 	/* The sticky header's height: taller on phones when the section tabs take
 	   a row of their own (set below). Sticky bars and scroll margins read it. */
 	--nb-header-height: 3.5rem;
@@ -110,7 +110,7 @@
 
 	/* Typography — self-hosted via @fontsource-variable in BaseLayout.astro */
 	--nb-font-sans:
-		"Inter Variable", "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+		"Inter Variable", "Inter", "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", "Segoe UI",
 		sans-serif;
 	--nb-font-mono:
 		"JetBrains Mono Variable", "JetBrains Mono", ui-monospace, "Cascadia Code",
@@ -122,11 +122,11 @@
 	   larger glyph needs less stroke to carry the same visual weight. */
 	--nb-h1-size: 2.25rem;
 	--nb-h1-leading: 2.75rem;
-	--nb-h1-weight: 500;
+	--nb-h1-weight: 640;
 	--nb-h1-tracking: -0.025em;
 	--nb-h2-size: 1.5rem;
 	--nb-h2-leading: 2rem;
-	--nb-h2-weight: 550;
+	--nb-h2-weight: 620;
 	--nb-h2-tracking: -0.018em;
 	--nb-h3-size: 1.25rem;
 	--nb-h3-leading: 1.75rem;
@@ -137,7 +137,7 @@
 	/* Corners: surfaces (cards, callouts, code blocks, buttons, sidebar rows)
 	   share one radius; small marks inside them (inline code, badges in a
 	   title bar) use the smaller one. Change these two to re-round the site. */
-	--nb-radius: 0.5rem;
+	--nb-radius: 0.625rem;
 	--nb-radius-sm: 0.25rem;
 
 	/* Shadows */
@@ -157,30 +157,30 @@
 [data-mode="dark"] {
 	color-scheme: dark;
 
-	--nb-background: oklch(0.085 0 0);
-	--nb-foreground: oklch(0.97 0 0);
+	--nb-background: #141416;
+	--nb-foreground: #f5f5f4;
 
-	--nb-card: #0F0F0F;
+	--nb-card: #1b1b1d;
 	--nb-card-foreground: var(--nb-foreground);
 
-	--nb-muted: #060606;
-	--nb-muted-foreground: oklch(0.708 0 0);
+	--nb-muted: #202023;
+	--nb-muted-foreground: #acacb0;
 
-	--nb-accent: oklch(0.269 0 0);
+	--nb-accent: #28272a;
 	--nb-accent-foreground: var(--nb-foreground);
 
-	--nb-primary: oklch(0.9 0 0);
-	--nb-primary-foreground: oklch(0.085 0 0);
-	--nb-primary-hover: oklch(0.7 0 0);
+	--nb-primary: #ffad71;
+	--nb-primary-foreground: #271409;
+	--nb-primary-hover: #ffc599;
 
-	--nb-brand: oklch(0.837 0.018 261.3);
+	--nb-brand: #ffab70;
 	--nb-brand-wash: color-mix(in oklch, var(--nb-brand) 10%, transparent);
 
-	--nb-border: oklch(0.269 0 0);
-	--nb-border-strong: oklch(0.371 0 0);
+	--nb-border: #343437;
+	--nb-border-strong: #4a494c;
 	--nb-selected: oklch(0.371 0 0);
 	--nb-code-tint: color-mix(in oklch, var(--nb-foreground) 6%, transparent);
-	--nb-ring: oklch(0.837 0.018 261.3 / 0.45);
+	--nb-ring: oklch(0.75 0.15 55 / 0.5);
 
 	--nb-info: oklch(0.707 0.165 254.624);
 	--nb-info-foreground: oklch(0.707 0.165 254.624);

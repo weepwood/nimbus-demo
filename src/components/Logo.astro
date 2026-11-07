@@ -1,10 +1,9 @@
 ---
-/* The site's logo, inline so it takes the text colour in light and dark. The
-   drawing lives in logo.ts, which the social cards read too. */
-import { logo } from "./logo";
-
 interface Props { class?: string }
-// Callers give it a whole-pixel box and the drawing centres inside.
-const { class: cls = "h-5 w-8" } = Astro.props;
+const { class: cls = "h-8 w-8" } = Astro.props;
 ---
-<svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${logo.width} ${logo.height}`} class={cls} aria-hidden="true">{logo.paths.map((d) => <path d={d} fill="currentColor" />)}</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" class={cls} fill="none" role="img" aria-label="Nimbus Studio">
+  <rect x="0" y="0" width="40" height="40" rx="10" fill="#F48120"/>
+  <path d="M11.5 28V12.5L28.5 27.5V12" stroke="white" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="28.5" cy="11.7" r="2.3" fill="white"/>
+</svg>

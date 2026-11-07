@@ -1,0 +1,166 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Icon from "@cloudflare/nimbus-docs/components/Icon.astro";
+import { withBase } from "@cloudflare/nimbus-docs/runtime";
+const home = withBase("/", import.meta.env.BASE_URL);
+const showcase = withBase("/showcase/", import.meta.env.BASE_URL);
+---
+<BaseLayout title="UI 组件实验室" description="实际调整 Nimbus 风格的配色、圆角和密度，预览交互并导出 CSS。">
+  <div class="min-h-screen flex flex-col">
+    <Header />
+    <main id="main-content" tabindex="-1" data-pagefind-body class="lab-main">
+      <nav class="lab-breadcrumb" aria-label="位置">
+        <a href={home}>首页</a><Icon name="ph:caret-right"/><a href={showcase}>实验室</a><Icon name="ph:caret-right"/><span>UI Playground</span>
+      </nav>
+      <div class="lab-intro">
+        <div class="lab-kicker"><Icon name="ph:sliders-horizontal"/> COMPONENT LAB / 01</div>
+        <div class="lab-intro-head"><div><h1>组件实验室<span class="lab-accent">.</span></h1><p>在左侧调节设计参数，在右侧实时验证实际控件与样式输出。所有交互都在浏览器本地运行。</p></div><span class="lab-ready"><i></i> INTERACTIVE</span></div>
+      </div>
+
+      <div class="lab-layout" data-nd-playground>
+        <section class="lab-panel lab-control-panel" aria-label="控件参数">
+          <div class="lab-panel-head"><div><span class="lab-small-heading">01 / CONTROLS</span><h2>调整样式</h2></div><button data-reset class="lab-link-button" type="button"><Icon name="ph:arrow-counter-clockwise"/> 重置</button></div>
+          <fieldset class="lab-fieldset">
+            <legend>品牌强调色</legend>
+            <div class="lab-swatches" role="group" aria-label="选择配色">
+              <label><input type="radio" name="accent" value="orange" checked/><span class="lab-swatch lab-swatch-orange"></span><span>Orange</span></label>
+              <label><input type="radio" name="accent" value="blue"/><span class="lab-swatch lab-swatch-blue"></span><span>Blue</span></label>
+              <label><input type="radio" name="accent" value="green"/><span class="lab-swatch lab-swatch-green"></span><span>Green</span></label>
+              <label><input type="radio" name="accent" value="graphite"/><span class="lab-swatch lab-swatch-black"></span><span>Graphite</span></label>
+            </div>
+          </fieldset>
+          <div class="lab-form-row">
+            <label for="lab-radius"><span>圆角半径</span><output data-radius-label for="lab-radius">10px</output></label>
+            <input id="lab-radius" type="range" min="0" max="24" step="2" value="10" data-radius/>
+            <div class="lab-range-markers"><span>Sharp</span><span>Soft</span></div>
+          </div>
+          <div class="lab-form-row">
+            <label for="lab-density">布局密度</label>
+            <select id="lab-density" data-density>
+              <option value="compact">Compact · 紧凑</option>
+              <option value="balanced" selected>Balanced · 默认</option>
+              <option value="spacious">Spacious · 宽松</option>
+            </select>
+          </div>
+          <div class="lab-form-row">
+            <label for="lab-font">字体系列</label>
+            <select id="lab-font" data-font>
+              <option value="sans" selected>Inter / 中文系统字体</option>
+              <option value="mono">JetBrains Mono</option>
+            </select>
+          </div>
+          <div class="lab-separator"></div>
+          <p class="lab-help"><Icon name="ph:info" /> 参数只影响右侧实时预览，复制 CSS 后可应用到真实项目。</p>
+        </section>
+
+        <section class="lab-panel lab-preview-panel" aria-label="实时组件预览">
+          <div class="lab-panel-head"><div><span class="lab-small-heading">02 / PREVIEW</span><h2>实时预览</h2></div><span class="lab-live"><i></i> LIVE</span></div>
+          <div class="lab-preview-surface" data-preview>
+            <div class="lab-demo-toolbar"><span><Icon name="ph:circles-three"/> Nimbus UI Kit</span><span>COMPONENTS / PREVIEW</span></div>
+            <div class="lab-demo-content">
+              <div class="lab-demo-card">
+                <div class="lab-demo-card-top"><div class="lab-demo-avatar"><Icon name="ph:lightning" /></div><div><h3>Deploy a new project</h3><p>Configure your workspace and start building.</p></div><span class="lab-demo-badge">Active</span></div>
+                <label class="lab-demo-label" for="lab-demo-name">项目名称</label>
+                <input id="lab-demo-name" type="text" value="nimbus-workspace" data-project-name maxlength="48"/>
+                <div class="lab-demo-toggle"><label for="lab-demo-toggle">Enable preview deployment</label><input id="lab-demo-toggle" type="checkbox" checked data-project-toggle/></div>
+                <div class="lab-demo-buttons"><button data-demo-create type="button" class="lab-demo-primary"><Icon name="ph:plus" /> 创建项目</button><button data-demo-clear type="button" class="lab-demo-secondary">清空反馈</button></div>
+                <p class="lab-demo-message" role="status" aria-live="polite" data-demo-feedback>试着点击“创建项目”，查看真实交互反馈。</p>
+              </div>
+              <div class="lab-demo-foot"><span><Icon name="ph:shield-check" /> Accessible by default</span><span data-action-count>0 actions</span></div>
+            </div>
+          </div>
+          <div class="lab-code-title"><div><span class="lab-small-heading">03 / GENERATED CSS</span><h2>导出设计令牌</h2></div><button data-copy-css type="button" class="lab-button-secondary"><Icon name="ph:copy"/> 复制 CSS</button></div>
+          <pre class="lab-code" tabindex="0"><code data-css-output></code></pre>
+          <p data-copy-feedback role="status" aria-live="polite" class="lab-feedback"></p>
+        </section>
+      </div>
+      <section class="lab-more"><div><span class="lab-small-heading">WHAT'S NEXT</span><h2>把样式与真实内容组合起来</h2><p>继续阅读 Nimbus 的 MDX 组件示例，了解如何在文档中复用这些设计模式。</p></div><a href={withBase("/components/", import.meta.env.BASE_URL)} class="lab-button-primary">浏览组件展厅 <Icon name="ph:arrow-up-right"/></a></section>
+    </main>
+  </div>
+</BaseLayout>
+
+<script>
+  const colors: Record<string, string> = {
+    orange: "#C65B13",
+    blue: "#315FD6",
+    green: "#168466",
+    graphite: "#343434",
+  };
+  function mountPlayground() {
+    const root = document.querySelector<HTMLElement>("[data-nd-playground]");
+    if (!root || root.dataset.mounted === "true") return;
+    root.dataset.mounted = "true";
+    const preview = root.querySelector<HTMLElement>("[data-preview]")!;
+    const output = root.querySelector<HTMLElement>("[data-css-output]")!;
+    const radius = root.querySelector<HTMLInputElement>("[data-radius]")!;
+    const density = root.querySelector<HTMLSelectElement>("[data-density]")!;
+    const font = root.querySelector<HTMLSelectElement>("[data-font]")!;
+    const radiusLabel = root.querySelector<HTMLOutputElement>("[data-radius-label]")!;
+    const name = root.querySelector<HTMLInputElement>("[data-project-name]")!;
+    const toggle = root.querySelector<HTMLInputElement>("[data-project-toggle]")!;
+    const msg = root.querySelector<HTMLElement>("[data-demo-feedback]")!;
+    const count = root.querySelector<HTMLElement>("[data-action-count]")!;
+    const copyStatus = root.querySelector<HTMLElement>("[data-copy-feedback]")!;
+    let clicks = 0;
+    function accent() { return root.querySelector<HTMLInputElement>('input[name="accent"]:checked')?.value ?? "orange"; }
+    function update() {
+      const hex = colors[accent()] ?? colors.orange;
+      const size = Number(radius.value);
+      preview.style.setProperty("--lab-accent", hex);
+      preview.style.setProperty("--lab-radius", size + "px");
+      preview.dataset.density = density.value;
+      preview.dataset.font = font.value;
+      radiusLabel.value = size + "px";
+      output.textContent = [
+        "/* Nimbus component tokens */",
+        ":root {",
+        "  --nb-brand: " + hex + ";",
+        "  --nb-radius: " + size + "px;",
+        "  --demo-density: " + JSON.stringify(density.value) + ";",
+        "  --demo-font: " + (font.value === "mono" ? '"JetBrains Mono Variable", monospace' : '"Inter Variable", system-ui, sans-serif') + ";",
+        "}",
+        "",
+      ].join("\n");
+    }
+    root.querySelectorAll<HTMLInputElement>('input[name="accent"]').forEach(el => el.addEventListener("change", update));
+    radius.addEventListener("input", update);
+    density.addEventListener("change", update);
+    font.addEventListener("change", update);
+    root.querySelector<HTMLButtonElement>("[data-demo-create]")!.addEventListener("click", () => {
+      const title = name.value.trim();
+      if (!title) {
+        msg.textContent = "请输入项目名称后再创建。";
+        msg.dataset.status = "error";
+        name.focus();
+        return;
+      }
+      clicks += 1;
+      count.textContent = clicks + (clicks === 1 ? " action" : " actions");
+      msg.textContent = "已模拟创建 “" + title + "” · 预览部署：" + (toggle.checked ? "已开启" : "已关闭");
+      msg.dataset.status = "success";
+    });
+    root.querySelector<HTMLButtonElement>("[data-demo-clear]")!.addEventListener("click", () => {
+      msg.textContent = "反馈已清空。";
+      msg.dataset.status = "";
+    });
+    root.querySelector<HTMLButtonElement>("[data-reset]")!.addEventListener("click", () => {
+      root.querySelector<HTMLInputElement>('input[name="accent"][value="orange"]')!.checked = true;
+      radius.value = "10";
+      density.value = "balanced";
+      font.value = "sans";
+      update();
+    });
+    root.querySelector<HTMLButtonElement>("[data-copy-css]")!.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(output.textContent || "");
+        copyStatus.textContent = "CSS 令牌已复制到剪贴板。";
+      } catch {
+        copyStatus.textContent = "复制未被允许，请选择上方代码手动复制。";
+      }
+    });
+    update();
+  }
+  document.addEventListener("astro:page-load", mountPlayground);
+  mountPlayground();
+</script>

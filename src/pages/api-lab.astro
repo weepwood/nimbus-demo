@@ -1,0 +1,134 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Icon from "@cloudflare/nimbus-docs/components/Icon.astro";
+import { withBase } from "@cloudflare/nimbus-docs/runtime";
+const home = withBase("/", import.meta.env.BASE_URL);
+const showcase = withBase("/showcase/", import.meta.env.BASE_URL);
+const endpointBase = withBase("/demo-api/", import.meta.env.BASE_URL);
+---
+<BaseLayout title="API 请求实验室" description="真实请求项目中的公开 JSON 端点，探索请求、响应和错误处理。">
+  <div class="min-h-screen flex flex-col">
+    <Header />
+    <main id="main-content" tabindex="-1" data-pagefind-body class="lab-main">
+      <nav class="lab-breadcrumb" aria-label="位置"><a href={home}>首页</a><Icon name="ph:caret-right"/><a href={showcase}>实验室</a><Icon name="ph:caret-right"/><span>API Explorer</span></nav>
+      <div class="lab-intro">
+        <div class="lab-kicker"><Icon name="ph:brackets-curly"/> API EXPLORER / 02</div>
+        <div class="lab-intro-head"><div><h1>API 请求实验室<span class="lab-accent">.</span></h1><p>这是一个真正发送 HTTP 请求的页面。选择端点，点击发送后会调用本站公开的静态 JSON 接口，显示响应状态、耗时和 JSON 数据。</p></div><span class="lab-ready"><i></i> HTTP GET</span></div>
+      </div>
+      <div class="lab-layout" data-api-lab data-endpoint-base={endpointBase}>
+        <section class="lab-panel lab-control-panel" aria-label="请求配置">
+          <div class="lab-panel-head"><div><span class="lab-small-heading">01 / REQUEST</span><h2>请求构造器</h2></div><span class="lab-method">GET</span></div>
+          <fieldset class="lab-fieldset lab-endpoints">
+            <legend>选择端点</legend>
+            <label class="lab-endpoint"><input type="radio" name="endpoint" value="status.json" checked/><span><b><Icon name="ph:heartbeat" /> 服务状态</b><small>/demo-api/status.json</small></span><Icon name="ph:caret-right"/></label>
+            <label class="lab-endpoint"><input type="radio" name="endpoint" value="users.json"/><span><b><Icon name="ph:users-three" /> 演示用户</b><small>/demo-api/users.json</small></span><Icon name="ph:caret-right"/></label>
+            <label class="lab-endpoint"><input type="radio" name="endpoint" value="projects.json"/><span><b><Icon name="ph:folders" /> 项目列表</b><small>/demo-api/projects.json</small></span><Icon name="ph:caret-right"/></label>
+          </fieldset>
+          <div class="lab-form-row">
+            <label for="lab-request-url">Request URL</label>
+            <input id="lab-request-url" data-request-url readonly aria-label="请求 URL" />
+          </div>
+          <div class="lab-form-row">
+            <label>Request Headers</label>
+            <div class="lab-static-header"><span>Accept</span><code>application/json</code></div>
+          </div>
+          <button type="button" class="lab-button-primary lab-send" data-send><Icon name="ph:paper-plane-right"/> 发送 GET 请求</button>
+          <div class="lab-separator"></div>
+          <div class="lab-help"><Icon name="ph:info" /><span>仅请求本网站公开的静态 JSON 示例。没有后台数据库，也不收集或发送任何个人凭据。</span></div>
+        </section>
+        <section class="lab-panel lab-preview-panel" aria-label="响应内容">
+          <div class="lab-panel-head"><div><span class="lab-small-heading">02 / RESPONSE</span><h2>响应检查器</h2></div><span class="lab-live"><i></i> NETWORK</span></div>
+          <div class="lab-response-metrics">
+            <div><span>Status</span><strong data-status-code>—</strong></div><div><span>Duration</span><strong data-duration>—</strong></div><div><span>Size</span><strong data-response-size>—</strong></div>
+          </div>
+          <div class="lab-code-title"><div><span class="lab-small-heading">RESPONSE BODY</span><h2>application/json</h2></div><button type="button" class="lab-button-secondary" data-copy-response disabled><Icon name="ph:copy"/> 复制 JSON</button></div>
+          <pre class="lab-code lab-api-code" tabindex="0"><code data-response-body>// 请选择左侧端点并点击“发送 GET 请求”</code></pre>
+          <p data-api-feedback role="status" aria-live="polite" class="lab-feedback"></p>
+          <div class="lab-request-info"><span><Icon name="ph:lock-key"/> SAME ORIGIN</span><span>STATIC RESPONSE FIXTURE</span></div>
+        </section>
+      </div>
+      <section class="lab-more"><div><span class="lab-small-heading">LEARN BY EXAMPLE</span><h2>把 API 示例写进文档</h2><p>阅读代码示例、请求状态与使用限制，在实际项目中替换为你的 OpenAPI 或真实后端服务。</p></div><a href={withBase("/patterns/", import.meta.env.BASE_URL)} class="lab-button-primary">查看文档模式 <Icon name="ph:arrow-up-right"/></a></section>
+    </main>
+  </div>
+</BaseLayout>
+<script>
+  function mountApiLab() {
+    const root = document.querySelector<HTMLElement>("[data-api-lab]");
+    if (!root || root.dataset.mounted === "true") return;
+    root.dataset.mounted = "true";
+    const base = root.dataset.endpointBase || "/demo-api/";
+    const urlInput = root.querySelector<HTMLInputElement>("[data-request-url]")!;
+    const send = root.querySelector<HTMLButtonElement>("[data-send]")!;
+    const status = root.querySelector<HTMLElement>("[data-status-code]")!;
+    const duration = root.querySelector<HTMLElement>("[data-duration]")!;
+    const bytes = root.querySelector<HTMLElement>("[data-response-size]")!;
+    const result = root.querySelector<HTMLElement>("[data-response-body]")!;
+    const feedback = root.querySelector<HTMLElement>("[data-api-feedback]")!;
+    const copy = root.querySelector<HTMLButtonElement>("[data-copy-response]")!;
+    let responseText = "";
+    function selected() {
+      const endpoint = root.querySelector<HTMLInputElement>('input[name="endpoint"]:checked')?.value || "status.json";
+      const whitelist = new Set(["status.json", "users.json", "projects.json"]);
+      return whitelist.has(endpoint) ? endpoint : "status.json";
+    }
+    function updateUrl() {
+      urlInput.value = new URL(base + selected(), location.origin).href;
+      status.textContent = "—";
+      duration.textContent = "—";
+      bytes.textContent = "—";
+      result.textContent = "// 点击“发送 GET 请求”查看响应";
+      feedback.textContent = "";
+      responseText = "";
+      copy.disabled = true;
+    }
+    root.querySelectorAll<HTMLInputElement>('input[name="endpoint"]').forEach(x => x.addEventListener("change", updateUrl));
+    send.addEventListener("click", async () => {
+      send.disabled = true;
+      send.textContent = "请求中…";
+      result.textContent = "// Fetching…";
+      feedback.textContent = "";
+      const controller = new AbortController();
+      const abort = setTimeout(() => controller.abort(), 8000);
+      const start = performance.now();
+      try {
+        const response = await fetch(urlInput.value, {
+          method: "GET",
+          headers: { Accept: "application/json" },
+          signal: controller.signal,
+          cache: "no-store"
+        });
+        const body = await response.text();
+        responseText = body;
+        try { responseText = JSON.stringify(JSON.parse(body), null, 2); } catch { /* show response as text */ }
+        status.textContent = String(response.status) + (response.ok ? " OK" : " ERROR");
+        status.dataset.status = response.ok ? "success" : "error";
+        duration.textContent = Math.round(performance.now() - start) + " ms";
+        bytes.textContent = new TextEncoder().encode(body).length + " B";
+        result.textContent = responseText;
+        feedback.textContent = response.ok ? "请求完成。这是真实的 fetch 响应。" : "服务器返回非成功状态。";
+        copy.disabled = false;
+      } catch (e) {
+        responseText = "";
+        status.textContent = "FAILED";
+        status.dataset.status = "error";
+        duration.textContent = Math.round(performance.now() - start) + " ms";
+        bytes.textContent = "—";
+        result.textContent = "// " + (e instanceof Error ? e.message : "Network error");
+        feedback.textContent = "网络请求失败。请确认页面已正确部署。";
+        copy.disabled = true;
+      } finally {
+        clearTimeout(abort);
+        send.disabled = false;
+        send.innerHTML = '<svg aria-hidden="true" viewBox="0 0 20 20" fill="none" class="lab-send-icon"><path d="m3 9 14-6-6 14-2-6-6-2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>发送 GET 请求';
+      }
+    });
+    copy.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(responseText); feedback.textContent = "响应 JSON 已复制。"; }
+      catch { feedback.textContent = "剪贴板不可用，请手动选择响应内容。"; }
+    });
+    updateUrl();
+  }
+  document.addEventListener("astro:page-load", mountApiLab);
+  mountApiLab();
+</script>

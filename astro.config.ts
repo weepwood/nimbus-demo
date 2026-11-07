@@ -8,12 +8,12 @@ import { tableScroll } from "@cloudflare/nimbus-docs/markdown";
 const nimbusConfig = defineNimbusConfig({
   // Canonical origin is separate from the GitHub Pages project base.
   site: "https://weepwood.github.io",
-  title: "Nimbus Demo",
-  description: "基于 Cloudflare Nimbus 的交互式文档与组件展示站点",
+  title: "Nimbus Studio",
+  description: "探索 Cloudflare Nimbus：组件、代码示例、交互工具与开发者文档",
   locale: "zh-CN",
   github: "https://github.com/weepwood/nimbus-demo",
   socialImage: "/social.svg",
-  socialImageAlt: "Nimbus Demo documentation showcase",
+  socialImageAlt: "Nimbus Studio developer documentation and interactive demos",
   editPattern: "https://github.com/weepwood/nimbus-demo/edit/main/{path}",
   // The home page leads the sidebar; every other page joins it automatically.
   sidebar: {

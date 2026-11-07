@@ -60,18 +60,24 @@ const resolveSectionHref = (href: string): string =>
   withBase(href, import.meta.env.BASE_URL);
 ---
 
-<header class="sticky top-0 z-30 border-b border-border bg-card/80 backdrop-blur-lg">
-  <div class="mx-auto flex items-center justify-between gap-3 h-14 px-4 lg:px-6">
+<header class="nd-site-header sticky top-0 z-30 border-b border-border bg-card/95 backdrop-blur-xl">
+  <div class="nd-header-inner mx-auto flex items-center justify-between gap-3 h-14 px-4 lg:px-6">
     <div class="flex items-center gap-3 min-w-0">
       <slot name="brand">
         {/* The mark alone; the site title stays as the link's accessible name. */}
-        <a href={homeHref} class="flex shrink-0 items-center text-foreground transition-opacity hover:opacity-70">
-          <Logo class="h-5 w-8 shrink-0" />
-          <span class="hidden sm:inline text-sm font-semibold tracking-tight ms-2">Nimbus Demo</span>
+        <a href={homeHref} class="flex shrink-0 items-center gap-2.5 text-foreground no-underline transition-opacity hover:opacity-85">
+          <Logo class="h-8 w-8 shrink-0" />
+          <span class="nd-wordmark">nimbus<span>studio</span></span>
           <span class="sr-only">{config.title}</span>
         </a>
       </slot>
 
+      <nav class="nd-primary-nav" aria-label="站点主导航">
+        <a href={withBase("/", import.meta.env.BASE_URL)} aria-current={currentSlug === "/" ? "page" : undefined}>概览</a>
+        <a href={withBase("/quickstart/", import.meta.env.BASE_URL)} aria-current={currentSlug === "/quickstart" ? "page" : undefined}>文档</a>
+        <a href={withBase("/components/", import.meta.env.BASE_URL)} aria-current={currentSlug === "/components" ? "page" : undefined}>组件</a>
+        <a href={withBase("/showcase/", import.meta.env.BASE_URL)} aria-current={currentSlug === "/showcase" ? "page" : undefined}>交互实验室</a>
+      </nav>
       {showSections && (
         <nav aria-label="Sections" class="hidden md:flex items-center gap-1 ms-4 ps-4 border-s border-border h-6 min-w-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {sections.map((section) => (
@@ -92,7 +98,7 @@ const resolveSectionHref = (href: string): string =>
       )}
     </div>
 
-    <div class="flex items-center gap-2 shrink-0">
+    <div class="nd-header-actions flex items-center gap-2 shrink-0">
       <slot name="actions" />
       {config.search !== false && <SearchTrigger />}
       {config.github && (
@@ -110,6 +116,16 @@ const resolveSectionHref = (href: string): string =>
         </LinkButton>
       )}
       <ThemeToggle />
+      <details class="nd-mobile-menu">
+        <summary aria-label="打开站点导航"><Icon name="ph:list" class="h-[19px] w-[19px]" /></summary>
+        <nav aria-label="移动站点导航">
+          <a href={withBase("/", import.meta.env.BASE_URL)}>概览</a>
+          <a href={withBase("/quickstart/", import.meta.env.BASE_URL)}>开始使用</a>
+          <a href={withBase("/components/", import.meta.env.BASE_URL)}>组件</a>
+          <a href={withBase("/showcase/", import.meta.env.BASE_URL)}>交互实验室</a>
+          <a href={withBase("/configurator/", import.meta.env.BASE_URL)}>配置生成器</a>
+        </nav>
+      </details>
       {showSidebar && (
         <Button
           variant="ghost"

@@ -1,0 +1,56 @@
+---
+title: 搜索与信息架构
+description: 在 Nimbus 文档中使用 Pagefind、快捷键、侧边栏与清晰的页面层级。
+sidebar:
+  order: 9
+---
+
+## 全文搜索
+
+本项目保留 Nimbus Starter 的 Pagefind 集成。构建阶段会抓取最终 HTML 中的可索引内容，生成 /pagefind/ 静态文件，浏览器按需加载索引。
+
+<Aside type="tip" title="试试搜索">
+  按 Ctrl + K，macOS 上使用 ⌘ + K，然后输入「组件」「API」「主题」「部署」等词语。
+</Aside>
+
+## 为什么不是后端搜索？
+
+Pagefind 是基于静态文件的客户端搜索方案，不需要数据库或搜索服务实例，很适合文档数量中等、需要便宜部署的场景。
+
+| 能力 | 这里如何实现 |
+| --- | --- |
+| 文档内容 | MDX 在构建时转为 HTML |
+| 索引生成 | Pagefind 构建插件 |
+| 搜索交互 | Nimbus SearchDialog / SearchTrigger |
+| 键盘操作 | Ctrl + K / ⌘ + K |
+| 站点部署 | GitHub Pages 静态资源 |
+
+## 编写容易搜索的内容
+
+<Steps>
+  <Step title="清晰的页面名称">
+    页面标题应包含用户会搜索的术语，而不是只有抽象的营销词。
+  </Step>
+  <Step title="一页一个核心问题">
+    把配置、部署和故障排查分成独立文档页。
+  </Step>
+  <Step title="明确的章节标题">
+    用 ## 和 ### 组织内容，支持目录导航与搜索结果定位。
+  </Step>
+  <Step title="构建后检查">
+    执行 pnpm run check，验证真实生成的页面与内部链接。
+  </Step>
+</Steps>
+
+## 试用功能
+
+<CardGrid>
+  <Card title="API 请求实验室" icon="ph:brackets-curly">
+    发送真实 HTTP GET 请求，验证搜索之外的浏览器能力。
+  </Card>
+  <Card title="组件实验室" icon="ph:sliders-horizontal">
+    调节配色、圆角和布局密度，查看代码输出。
+  </Card>
+</CardGrid>
+
+前往 [功能演示中心](/showcase/) 查看完整列表。
