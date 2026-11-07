@@ -15,6 +15,15 @@
 - 每周 GitHub Actions 文档健康检查、每月 GitHub Actions 非破坏性 Dependabot PR 与 npm 兼容性人工审查 与可复用的反馈模板
 - 任务式侧栏（开始使用 / 组件设计 / 交互演示 / 参考资料）
 
+## 本轮：动效与交互完善（2026-11-07）
+
+- Motion Token 体系、按压/悬停/搜索/菜单动画，滚动入场
+- 首页真实可点击的文档预览操作
+- API Lab 取消请求、过期响应保护与超时文案
+- Playground 可重播、可中断的 WAAPI 动画
+- 阅读进度 transform 化、长文回到顶部
+- Astro ClientRouter 生命周期清理与 Reduced Motion 策略
+
 ## 下一轮候选 P1（未实现）
 
 1. 浏览器截图与交互 E2E：优先用 Playwright 固定环境建立 375/1440px 两组基线。

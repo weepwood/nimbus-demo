@@ -30,17 +30,17 @@ sidebar:
     <div className="nd-preview" aria-label="文档界面预览">
       <div className="nd-preview-top">
         <div className="nd-preview-brand"><span className="nd-mini-logo">N</span><strong>Nimbus Studio</strong><span> / Docs</span></div>
-        <div className="nd-preview-search"><Icon name="ph:magnifying-glass" /> Search <kbd>⌘ K</kbd></div>
+        <button className="nd-preview-search" type="button" data-search-trigger="" aria-keyshortcuts="Control+K" aria-label="搜索文档"><Icon name="ph:magnifying-glass" /> 搜索文档 <kbd><span data-shortcut-key>Ctrl</span> K</kbd></button>
       </div>
       <div className="nd-preview-body">
         <div className="nd-preview-rail">
           <div className="nd-preview-group">GET STARTED</div>
-          <div className="nd-preview-link active"><Icon name="ph:house" /> Overview</div>
-          <div className="nd-preview-link"><Icon name="ph:rocket-launch" /> Quickstart</div>
+          <a href="/" className="nd-preview-link active" aria-current="page"><Icon name="ph:house" /> Overview</a>
+          <a href="/quickstart/" className="nd-preview-link"><Icon name="ph:rocket-launch" /> Quickstart</a>
           <div className="nd-preview-group second">BUILD</div>
-          <div className="nd-preview-link"><Icon name="ph:squares-four" /> Components</div>
-          <div className="nd-preview-link"><Icon name="ph:code" /> API reference</div>
-          <div className="nd-preview-link"><Icon name="ph:palette" /> Design tokens</div>
+          <a href="/components/" className="nd-preview-link"><Icon name="ph:squares-four" /> Components</a>
+          <a href="/api-reference/" className="nd-preview-link"><Icon name="ph:code" /> API reference</a>
+          <a href="/theme/" className="nd-preview-link"><Icon name="ph:palette" /> Design tokens</a>
         </div>
         <div className="nd-preview-document">
           <div className="nd-preview-breadcrumb">Docs <Icon name="ph:caret-right" /> Overview</div>
@@ -48,9 +48,10 @@ sidebar:
           <h2>Build something<br/>remarkable.</h2>
           <p>Thoughtful documentation for humans and agents.</p>
           <div className="nd-preview-example">
-            <div className="nd-preview-example-header"><span><Icon name="ph:terminal-window" /> Terminal</span><Icon name="ph:copy" /></div>
+            <div className="nd-preview-example-header"><span><Icon name="ph:terminal-window" /> Terminal</span><button type="button" data-nd-copy-command="" aria-label="复制脚手架命令" title="复制脚手架命令"><Icon name="ph:copy" /></button></div>
             <div><span className="nd-code-prompt">$</span> npx @cloudflare/create-nimbus-docs</div>
           </div>
+          <p className="nd-preview-copy-feedback" data-nd-copy-feedback="" role="status" aria-live="polite"></p>
           <div className="nd-preview-notice"><Icon name="ph:lightning" /><span>From Markdown to a polished site, fast.</span></div>
         </div>
       </div>

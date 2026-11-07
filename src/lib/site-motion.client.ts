@@ -35,3 +35,19 @@ mount("[data-nd-reveal-root]", (root: HTMLElement) => {
     }
   };
 });
+
+/* Real clipboard action inside the homepage documentation preview. */
+mount("[data-nd-copy-command]", button => {
+  const root = button.closest(".nd-preview-document");
+  const status = root?.querySelector<HTMLElement>("[data-nd-copy-feedback]");
+  const controller = new AbortController();
+  button.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText("npx @cloudflare/create-nimbus-docs");
+      if (status) status.textContent = "脚手架命令已复制";
+    } catch {
+      if (status) status.textContent = "剪贴板不可用，请手动复制上方命令";
+    }
+  }, { signal: controller.signal });
+  return () => controller.abort();
+});

@@ -1,0 +1,17 @@
+---
+import Icon from "@cloudflare/nimbus-docs/components/Icon.astro";
+---
+<button
+  class="nd-back-to-top"
+  type="button"
+  aria-label="返回页面顶部"
+  title="返回页面顶部"
+  data-nd-back-to-top
+  hidden
+>
+  <Icon name="ph:arrow-up" class="size-4" />
+  <span>顶部</span>
+</button>
+<script>
+  import "./back-to-top.client";
+</script>

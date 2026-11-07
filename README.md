@@ -98,3 +98,17 @@ pnpm run preview
 - `.github/PULL_REQUEST_TEMPLATE.md`：统一功能、视觉、文档和回归验收要求。
 
 注意：CI/Pages 成功不能代替真实浏览器下的 UI 截图、无障碍和交互验收；手动测试结果请记录在 Issue 或验收文档中。
+
+## 交互与动效优化
+
+统一动效令牌：`--nd-motion-fast: 140ms`、`--nd-motion-normal: 220ms`、`--nd-motion-slow: 340ms`。
+
+- 首页预览里的搜索、侧边导航、终端复制命令都是真实可操作控件
+- API Lab 支持取消、超时提示、切换端点时中断请求，防止旧响应覆盖新页面
+- Playground 支持 140/220/360ms 调节与重复播放（Web Animations API，支持 cancel）
+- 长文阅读进度使用 transform 更新，滚动一段距离后出现“返回顶部”
+- 移动菜单在点击外部或按 Escape 时关闭
+- 入场效果采用 IntersectionObserver，**不依赖 JS 才能看到内容**
+- 动效支持 `prefers-reduced-motion`，降低不必要的跳动和用户干扰
+
+详见 [交互与动效系统规范](docs/MOTION_SYSTEM.md) 与 [线上动效说明](/nimbus-demo/motion/)。

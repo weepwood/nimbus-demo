@@ -67,3 +67,9 @@
 移动端 320/375/768px、桌面 1024/1440px；浅色、深色；键盘 Tab/Shift+Tab、Enter、Escape、Ctrl/⌘+K；对表单错误使用 aria-live；阅读收藏开关正确反映 aria-pressed。
 
 任何 CSS 调整只要影响全站，必须重复检查 Header、正文、代码块、Dialog、实验室和移动端菜单。
+
+## 动效系统
+
+动效从信息反馈出发而不是装饰：hover/press 140ms、层级切换 220ms、入场 340ms；统一用 `--nd-motion-*` 和 `--nd-ease-*` 令牌控制。
+
+详细规范和实测清单见 [MOTION_SYSTEM.md](MOTION_SYSTEM.md)。需要调整动画时优先修改 `src/styles/motion.css`，不要为每个页面临时定义不同时间和缓动。

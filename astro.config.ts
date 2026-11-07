@@ -29,7 +29,7 @@ const nimbusConfig = defineNimbusConfig({
         label: "组件与体验",
         icon: "ph:squares-four",
         collapsed: false,
-        items: ["components", "theme", "patterns", "search-guide", "reading-list-guide"],
+        items: ["components", "theme", "motion", "patterns", "search-guide", "reading-list-guide"],
       },
       {
         label: "交互演示",

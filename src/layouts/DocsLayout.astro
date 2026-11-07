@@ -19,6 +19,7 @@ import { ImageZoom } from "@/components/ui/image-zoom";
 import { PageActions } from "@/components/ui/page-actions";
 import ReadingActions from "@/components/reading/ReadingActions.astro";
 import ReadingProgress from "@/components/reading/ReadingProgress.astro";
+import BackToTop from "@/components/reading/BackToTop.astro";
 import ConnectMcp from "@/components/ConnectMcp.astro";
 import { capabilities } from "virtual:nimbus/agent-capabilities";
 import { Badge } from "@/components/ui/badge";
@@ -287,6 +288,7 @@ const showToc = headings !== false && (hasToc || headings.length > 0);
   </div>
 
   <ImageZoom />
+  {!isCustom && <BackToTop />}
 
   {showSidebar && (
     /* Mobile sidebar — native <dialog> for free focus trap, escape, backdrop. */

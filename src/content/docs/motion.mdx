@@ -1,0 +1,88 @@
+---
+title: 微交互与动效系统
+description: Nimbus Studio 交互反馈、动画节奏、页面过渡、减少动态效果与性能优化的实际实现。
+sidebar:
+  order: 15
+---
+
+动效的目的不是让页面持续运动，而是帮助读者理解界面的反馈、层级和状态变化。Nimbus Studio 统一使用轻量 CSS 过渡、原生浏览器 API 与 Astro 生命周期，不需要引入额外动画库。
+
+## 动效节奏
+
+| 类型 | 时长 | 使用场景 |
+| --- | --- | --- |
+| 快速反馈 | **140ms** | 按钮、链接、图标反馈 |
+| 常规过渡 | **220ms** | 菜单、搜索弹窗、标签页 |
+| 空间进入 | **340ms** | 进入视口的内容块 |
+
+~~~css title="src/styles/motion.css"
+:root {
+  --nd-motion-fast: 140ms;
+  --nd-motion-normal: 220ms;
+  --nd-motion-slow: 340ms;
+  --nd-ease-out: cubic-bezier(.22,1,.36,1);
+  --nd-ease-standard: cubic-bezier(.2,.7,.2,1);
+}
+~~~
+
+## 实际动效演示
+
+<CardGrid>
+  <Card title="组件过渡实验室" icon="ph:sliders-horizontal">
+    选择品牌色、圆角、空间密度与动效响应速度，按“播放过渡”来重复测试。
+  </Card>
+  <Card title="API 请求工作台" icon="ph:brackets-curly">
+    发起 GET 请求，查看等待、取消、失败、超时、成功以及响应信息。
+  </Card>
+</CardGrid>
+
+进入 [组件实验室](/playground/) 或 [API 请求实验室](/api-lab/) 体验实际交互。
+
+## 导航与搜索
+
+- 首页预览中的搜索按钮会打开真正的 Nimbus SearchDialog，而不是静态装饰。
+- 顶部移动菜单采用原生 `details`：可以点击菜单外部关闭，也可以按 Escape 并将焦点返回开关。
+- 标签页使用 Nimbus 的 `Tabs`，动画只作用于可见内容；键盘选择和 ARIA 语义不变。
+- 在长文中滚动后会出现“返回顶部”，按 Enter/Space 即可操作。
+
+## 可中断的异步交互
+
+API 请求必须与界面选择保持一致。切换端点时，旧请求会被取消且不再影响新端点；手动点击“取消”也会提供明确反馈。
+
+<Steps>
+  <Step title="开始请求">
+    显示加载状态、禁用重复发送，并开放“取消”按钮。
+  </Step>
+  <Step title="接口切换">
+    调用 `AbortController.abort()` 中止正在运行的请求，随后清除旧状态。
+  </Step>
+  <Step title="完成或失败">
+    只允许当前有效请求更新状态、耗时和响应，错误信息不应被旧结果覆盖。
+  </Step>
+</Steps>
+
+## 减少动态效果
+
+<Aside type="tip" title="系统偏好始终优先">
+  当操作系统设置了 `prefers-reduced-motion: reduce`，页面直接切换状态，不执行入场动画；Playground 的重播按钮只反馈说明，不启动动画。
+</Aside>
+
+~~~css
+@media (prefers-reduced-motion: no-preference) {
+  .nd-read-action {
+    transition: background 140ms, transform 140ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nd-read-action { transition: none; }
+}
+~~~
+
+## 为什么使用 CSS 与原生 API？
+
+CSS 在短时 hover / transition 上无需引入额外依赖，Web Animations API 可随时取消/重播；滚动触发通过 `IntersectionObserver` 在视口外才设置入场状态，避免 JS 禁用时页面被隐藏。阅读进度使用 `transform:scaleX()` 更新，减少布局开销。
+
+项目的实现说明与人工验收矩阵：[完整动效规范](https://github.com/weepwood/nimbus-demo/blob/main/docs/MOTION_SYSTEM.md)。
+
+继续参考 [设计系统](/theme/) 与 [组件展厅](/components/)。

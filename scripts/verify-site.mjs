@@ -51,6 +51,7 @@ const required = [
   "research/index.html",
   "tutorial/index.html",
   "openapi.json",
+  "motion/index.html",
 ];
 for (const item of required) checkFile(item);
 
@@ -190,6 +191,21 @@ if (existsSync(sampleDocument)) {
 const libraryPage = join(dist, "reading-list/index.html");
 if (existsSync(libraryPage) && !readFileSync(libraryPage, "utf8").includes("data-nd-bookmark-library")) {
   failures.push("Bookmark library root not rendered");
+}
+
+
+const animationPages = [
+  ["index.html", ["data-nd-copy-command", "data-nd-reveal-root", "nd-preview-link"]],
+  ["playground/index.html", ["data-motion-speed", "data-replay-animation", "data-motion-status"]],
+  ["api-lab/index.html", ["data-cancel-request", "data-response-container", "data-endpoint-base"]],
+  ["quickstart/index.html", ["data-nd-back-to-top", "data-nd-reading-progress"]],
+];
+for (const [file, markers] of animationPages) {
+  if (!checkFile(file)) continue;
+  const html = readFileSync(join(dist, file), "utf8");
+  for (const marker of markers) {
+    if (!html.includes(marker)) failures.push("Interaction control missing in " + file + ": " + marker);
+  }
 }
 
 console.log("Checked " + pages + " rendered pages, " + links + " local links and " + required.length + " artifacts.");
