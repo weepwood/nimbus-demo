@@ -6,18 +6,15 @@ import nimbus, {
 import { tableScroll } from "@cloudflare/nimbus-docs/markdown";
 
 const nimbusConfig = defineNimbusConfig({
-  // CHANGE_ME: your site's canonical origin (no trailing slash). Drives
-  // canonical URLs, absolute OG image URLs, robots.txt, sitemap, and the
-  // links in /llms.txt — leaving the placeholder breaks all of them.
+  // Canonical origin is separate from the GitHub Pages project base.
   site: "https://weepwood.github.io",
-  // CHANGE_ME: your project's name — used for <title>, the home H1, and OG.
   title: "Nimbus Demo",
-  // CHANGE_ME: a one-line description of your docs — used for meta + OG.
   description: "基于 Cloudflare Nimbus 的交互式文档与组件展示站点",
   locale: "zh-CN",
-  // CHANGE_ME: your repository — shown as the GitHub link in the header.
   github: "https://github.com/weepwood/nimbus-demo",
+  socialImage: "/social.svg",
   socialImageAlt: "Nimbus Demo documentation showcase",
+  editPattern: "https://github.com/weepwood/nimbus-demo/edit/main/{path}",
   // The home page leads the sidebar; every other page joins it automatically.
   sidebar: {
     items: ["index", { autogenerate: { collection: "docs" } }],

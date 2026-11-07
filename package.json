@@ -10,7 +10,8 @@
     "typecheck": "astro check",
     "lint:docs": "nimbus-docs lint",
     "lint:docs:fix": "nimbus-docs lint --fix",
-    "check": "pnpm run typecheck && pnpm run build"
+    "check": "pnpm run typecheck && pnpm run build && pnpm run lint:docs && pnpm run verify:site",
+    "verify:site": "node scripts/verify-site.mjs"
   },
   "dependencies": {
     "@cloudflare/nimbus-docs": "0.19.3",

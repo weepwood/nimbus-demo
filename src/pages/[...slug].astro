@@ -11,7 +11,6 @@ import {
   getLastUpdated,
   getTOC,
   stripBase,
-  withBase,
 } from "@cloudflare/nimbus-docs/runtime";
 import { components } from "../components";
 
@@ -19,7 +18,7 @@ export const getStaticPaths = getDocsStaticPaths;
 
 const page = await getDocsPage(Astro);
 if (page instanceof Response) return page;
-const { entry, Content, headings, markdownUrl, ogImageUrl } = page;
+const { entry, Content, headings, markdownUrl } = page;
 
 const currentSlug = stripBase(Astro.url.pathname, import.meta.env.BASE_URL).replace(/\/$/, "") || "/";
 
@@ -44,7 +43,8 @@ const lastUpdated = entry.data.lastUpdated ??
 // ever sees its options object (or undefined), never `false`.
 const tocConfig = entry.data.tableOfContents;
 const toc = tocOn && tocConfig !== false ? getTOC(headings, tocConfig) : false;
-const socialImage = entry.data.socialImage ?? withBase("/social.svg", import.meta.env.BASE_URL);
+// NimbusHead adds Astro BASE_URL exactly once; use a logical root-relative path.
+const socialImage = entry.data.socialImage ?? "/social.svg";
 ---
 
 <DocsLayout

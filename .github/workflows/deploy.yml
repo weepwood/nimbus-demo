@@ -17,19 +17,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
       - name: Set up pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v5
         with:
           version: 10.34.9
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '24'
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
+      - name: Check types
+        run: pnpm run typecheck
       - name: Build site
         run: pnpm run build
+      - name: Lint Nimbus documentation
+        run: pnpm run lint:docs
+      - name: Verify generated site, routes and links
+        run: pnpm run verify:site
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

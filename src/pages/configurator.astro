@@ -1,0 +1,262 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import { withBase } from "@cloudflare/nimbus-docs/runtime";
+
+const home = withBase("/", import.meta.env.BASE_URL);
+const quickstart = withBase("/quickstart/", import.meta.env.BASE_URL);
+---
+<BaseLayout title="项目配置生成器" description="根据域名、仓库和语言，生成可以直接使用的 Nimbus + Astro 配置。">
+  <div class="min-h-screen flex flex-col">
+    <Header />
+    <main id="main-content" tabindex="-1" class="builder-main" data-pagefind-body>
+      <nav class="builder-breadcrumb" aria-label="Breadcrumb"><a href={home}>首页</a><span aria-hidden="true">/</span><span>配置生成器</span></nav>
+      <header class="builder-intro">
+        <div class="builder-kicker"><span class="builder-indicator"></span> INTERACTIVE TOOL</div>
+        <h1>配置你的 Nimbus 项目</h1>
+        <p>填写基本资料，立即生成一份可以复制、下载或直接集成进项目的 <code>astro.config.ts</code>。无需账户，也不会将输入上传到服务器。</p>
+      </header>
+      <div class="builder-grid" data-config-builder>
+        <section class="builder-panel" aria-label="Site settings">
+          <div class="builder-panel-heading">
+            <div><span class="builder-panel-count">01 / SETTINGS</span><h2>站点信息</h2></div>
+            <button type="button" class="builder-reset" data-reset>恢复默认</button>
+          </div>
+          <form data-builder-form novalidate>
+            <div class="builder-field">
+              <label for="b-title">站点名称 <span aria-hidden="true">*</span></label>
+              <input id="b-title" name="title" type="text" autocomplete="off" maxlength="80" required value="My Developer Docs" />
+              <small>显示在浏览器标题和文档导航中。</small>
+            </div>
+            <div class="builder-field">
+              <label for="b-description">站点描述</label>
+              <textarea id="b-description" name="description" rows="3" maxlength="240">Developer guides, API reference and tutorials.</textarea>
+            </div>
+            <div class="builder-field">
+              <label for="b-site">站点 Origin <span aria-hidden="true">*</span></label>
+              <input id="b-site" name="site" type="url" inputmode="url" spellcheck="false" required value="https://example.com" placeholder="https://docs.example.com" />
+              <small>例如 https://example.com 或 https://username.github.io，不能包含路径。</small>
+            </div>
+            <div class="builder-field">
+              <label for="b-base">部署子路径</label>
+              <input id="b-base" name="base" type="text" spellcheck="false" value="/" placeholder="/my-docs" />
+              <small>自定义域名通常为 /，GitHub Pages 项目仓库通常为 /仓库名。</small>
+            </div>
+            <div class="builder-field">
+              <label for="b-github">GitHub 仓库</label>
+              <input id="b-github" name="github" type="url" spellcheck="false" value="https://github.com/yourname/my-docs" />
+            </div>
+            <div class="builder-field">
+              <label for="b-locale">文档语言</label>
+              <select id="b-locale" name="locale">
+                <option value="zh-CN" selected>简体中文 (zh-CN)</option>
+                <option value="en">English (en)</option>
+                <option value="ja">日本語 (ja)</option>
+              </select>
+            </div>
+          </form>
+        </section>
+        <section class="builder-panel builder-code-panel" aria-label="Generated configuration">
+          <div class="builder-panel-heading">
+            <div><span class="builder-panel-count">02 / OUTPUT</span><h2>生成配置</h2></div>
+            <span class="builder-ready" data-build-state>READY</span>
+          </div>
+          <p class="builder-error" role="alert" data-error hidden></p>
+          <div class="builder-code-window">
+            <div class="builder-code-bar"><span><span class="builder-code-dot"></span> astro.config.ts</span><span>TypeScript</span></div>
+            <pre tabindex="0"><code data-output aria-label="Generated Astro configuration"></code></pre>
+          </div>
+          <div class="builder-actions">
+            <button type="button" class="builder-action-primary" data-copy>复制配置</button>
+            <button type="button" class="builder-action-secondary" data-download>下载 .ts 文件</button>
+          </div>
+          <p class="builder-feedback" role="status" aria-live="polite" data-feedback></p>
+          <div class="builder-note"><span>i</span><p>这份配置需要项目中已安装 <code>@cloudflare/nimbus-docs</code>、<code>astro</code>、<code>tailwindcss</code> 和 <code>@tailwindcss/vite</code>。请先使用 <a href={quickstart}>快速开始</a> 创建工程。</p></div>
+        </section>
+      </div>
+      <section class="builder-next"><div><span>READY TO BUILD</span><h2>从配置走向完整站点</h2><p>复制生成文件，修改 MDX 内容，然后通过 Astro 编译构建。</p></div><a href={quickstart}>阅读快速开始 ↗</a></section>
+    </main>
+    <footer class="builder-footer">© 2026 Nimbus Demo · Built on <a href="https://github.com/cloudflare/nimbus" target="_blank" rel="noopener noreferrer">Cloudflare Nimbus</a></footer>
+  </div>
+</BaseLayout>
+<style>
+  .builder-main { width: min(1240px,100%); padding: 2rem clamp(1rem,4vw,3.5rem) 5rem; margin: 0 auto; flex: 1; }
+  .builder-breadcrumb { display: flex; align-items: center; gap: .7rem; color: var(--nb-muted-foreground); font-size: .76rem; }
+  .builder-breadcrumb a { color: inherit; text-decoration: none; }
+  .builder-breadcrumb a:hover { color: var(--nb-foreground); }
+  .builder-intro { padding: 4rem 0 3rem; max-width: 790px; }
+  .builder-kicker { font-family: var(--nb-font-mono),monospace; font-size: .68rem; font-weight: 700; letter-spacing: .14em; color: var(--nb-muted-foreground); display: flex; align-items: center; gap: .6rem; }
+  .builder-indicator { display: inline-block; height: 7px; width: 7px; background: #75c7a0; border-radius: 50%; }
+  .builder-intro h1 { font-size: clamp(2.1rem,4.1vw,3.9rem); font-weight: 750; letter-spacing: -.06em; line-height: 1.2; margin: 1rem 0 1.15rem; }
+  .builder-intro p { color: var(--nb-muted-foreground); max-width: 650px; line-height: 1.9; }
+  .builder-intro code { font-size: .86em; }
+  .builder-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.2fr); gap: 1.2rem; align-items: start; }
+  .builder-panel { border: 1px solid var(--nb-border); background: var(--nb-card); border-radius: 15px; padding: clamp(1.25rem,3vw,2rem); min-width: 0; }
+  .builder-panel-heading { display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.7rem; gap: 1rem; }
+  .builder-panel-heading h2 { font-weight: 700; letter-spacing: -.035em; margin-top: .35rem; font-size: 1.3rem; }
+  .builder-panel-count { font-family: var(--nb-font-mono),monospace; color: var(--nb-muted-foreground); letter-spacing: .11em; font-size: .64rem; }
+  .builder-reset { color: var(--nb-muted-foreground); background: transparent; border: none; cursor: pointer; font-size: .78rem; padding: .45rem .6rem; border-radius: 7px; }
+  .builder-reset:hover { background: var(--nb-muted); color: var(--nb-foreground); }
+  .builder-field { display: flex; flex-direction: column; gap: .55rem; margin-bottom: 1.35rem; }
+  .builder-field:last-child { margin-bottom: 0; }
+  .builder-field label { color: var(--nb-foreground); font-size: .83rem; font-weight: 650; }
+  .builder-field label span { color: #d85b5b; }
+  .builder-field input,.builder-field textarea,.builder-field select { width: 100%; min-width: 0; border: 1px solid var(--nb-border); background: var(--nb-background); color: var(--nb-foreground); border-radius: 8px; padding: .72rem .8rem; font-size: .84rem; line-height: 1.55; outline: none; transition: border-color .15s,box-shadow .15s; }
+  .builder-field input:focus,.builder-field textarea:focus,.builder-field select:focus { border-color: var(--nb-brand); box-shadow: 0 0 0 3px var(--nb-brand-wash); }
+  .builder-field small { color: var(--nb-muted-foreground); font-size: .72rem; line-height: 1.55; }
+  .builder-code-panel { position: sticky; top: 5rem; }
+  .builder-ready { border-radius: 6px; padding: .32rem .55rem; font-size: .63rem; letter-spacing: .07em; font-weight: 750; color: #288765; background: rgba(65,190,125,.1); }
+  .builder-code-window { overflow: hidden; border: 1px solid #30394c; border-radius: 10px; background: #101725; }
+  .builder-code-bar { display: flex; justify-content: space-between; align-items: center; font-family: var(--nb-font-mono),monospace; font-size: .7rem; color: #a5b1c6; padding: .85rem 1rem; border-bottom: 1px solid #30394c; }
+  .builder-code-bar span:first-child { display: flex; align-items: center; gap: .65rem; }
+  .builder-code-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #8d9df4; }
+  .builder-code-window pre { font-family: var(--nb-font-mono),monospace; overflow: auto; color: #d2dcf0; font-size: .72rem; line-height: 1.95; padding: 1.3rem; max-height: 540px; min-height: 375px; margin: 0; white-space: pre; }
+  .builder-code-window code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
+  .builder-actions { display: flex; gap: .65rem; margin-top: 1.2rem; flex-wrap: wrap; }
+  .builder-actions button { cursor: pointer; border-radius: 8px; font-size: .81rem; font-weight: 650; border: 1px solid var(--nb-border); padding: .72rem 1rem; transition: background .15s,transform .15s; }
+  .builder-actions button:hover { transform: translateY(-1px); }
+  .builder-action-primary { color: white; background: #272e43; border-color: #272e43!important; }
+  .builder-action-primary:hover { background: #3b4663; }
+  .builder-action-secondary { color: var(--nb-foreground); background: var(--nb-card); }
+  .builder-action-secondary:hover { background: var(--nb-muted); }
+  .builder-actions button:disabled { cursor: not-allowed; opacity: .5; transform: none; }
+  .builder-error { color: #bd3e3e; background: rgba(240,85,85,.075); border-radius: 7px; padding: .75rem; font-size: .78rem; margin-bottom: 1rem; }
+  .builder-feedback { min-height: 1.5rem; margin-top: .65rem; font-size: .78rem; color: var(--nb-muted-foreground); }
+  .builder-note { display: flex; gap: .75rem; align-items: flex-start; background: var(--nb-muted); color: var(--nb-muted-foreground); border-radius: 9px; padding: 1rem; font-size: .76rem; line-height: 1.75; margin-top: 1rem; }
+  .builder-note > span { display: grid; place-items: center; flex-shrink: 0; border: 1px solid var(--nb-border-strong); border-radius: 50%; width: 18px; height: 18px; font-size: .72rem; font-weight: 700; }
+  .builder-note a { text-decoration: underline; text-underline-offset: 3px; }
+  .builder-next { margin-top: 3rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; padding: 2rem; border: 1px solid var(--nb-border); border-radius: 12px; background: var(--nb-muted); }
+  .builder-next span { font-size: .65rem; font-family: var(--nb-font-mono),monospace; font-weight: 700; color: var(--nb-muted-foreground); letter-spacing: .11em; }
+  .builder-next h2 { font-size: 1.27rem; margin: .55rem 0; letter-spacing: -.03em; font-weight: 700; }
+  .builder-next p { color: var(--nb-muted-foreground); font-size: .82rem; line-height: 1.7; }
+  .builder-next a { display: inline-flex; flex-shrink: 0; padding: .85rem 1.1rem; border-radius: 8px; background: var(--nb-foreground); color: var(--nb-background); font-size: .8rem; font-weight: 650; text-decoration: none; }
+  .builder-footer { border-top: 1px solid var(--nb-border); padding: 1.6rem 2rem; text-align: center; font-size: .72rem; color: var(--nb-muted-foreground); }
+  .builder-footer a { color: inherit; }
+  @media (max-width: 850px) { .builder-grid { grid-template-columns: 1fr; } .builder-code-panel { position: static; } }
+  @media (max-width: 560px) { .builder-main { padding-top: 1.3rem; } .builder-intro { padding: 2.9rem 0 2rem; } .builder-next { align-items: start; flex-direction: column; } .builder-code-window pre { font-size: .64rem; padding: .8rem; } }
+  @media (prefers-reduced-motion: reduce) { .builder-actions button { transition: none; } .builder-actions button:hover { transform: none; } }
+</style>
+<script>
+  const main = document.querySelector<HTMLElement>("[data-config-builder]");
+  if (main) {
+    const form = main.querySelector<HTMLFormElement>("[data-builder-form]")!;
+    const output = main.querySelector<HTMLElement>("[data-output]")!;
+    const error = main.querySelector<HTMLElement>("[data-error]")!;
+    const feedback = main.querySelector<HTMLElement>("[data-feedback]")!;
+    const copy = main.querySelector<HTMLButtonElement>("[data-copy]")!;
+    const download = main.querySelector<HTMLButtonElement>("[data-download]")!;
+    const reset = main.querySelector<HTMLButtonElement>("[data-reset]")!;
+    const indicator = main.querySelector<HTMLElement>("[data-build-state]")!;
+    const defaults = Object.fromEntries(new FormData(form));
+    let generated = "";
+
+    const quote = (value: string) => JSON.stringify(value);
+    function build() {
+      feedback.textContent = "";
+      const data = Object.fromEntries(new FormData(form));
+      const title = String(data.title || "").trim();
+      const description = String(data.description || "").trim();
+      const siteInput = String(data.site || "").trim();
+      const baseInput = String(data.base || "/").trim();
+      const githubInput = String(data.github || "").trim();
+      const locale = String(data.locale || "zh-CN");
+      let message = "";
+      let origin = "";
+
+      if (!title) message = "请填写站点名称。";
+      if (!message) {
+        try {
+          const url = new URL(siteInput);
+          if (!["https:", "http:"].includes(url.protocol) || url.pathname !== "/" || url.search || url.hash || url.username || url.password) throw new Error();
+          origin = url.origin;
+        } catch {
+          message = "站点 Origin 必须是 http(s) 域名，不能含路径、参数或凭据。";
+        }
+      }
+      let base = baseInput.replace(/\/+/g, "/");
+      if (!base.startsWith("/")) base = "/" + base;
+      if (base.length > 1) base = base.replace(/\/+$/, "");
+      if (!message && /[?#\\\s"'<>]/.test(base)) message = "部署子路径不能包含空白、查询参数或特殊字符。";
+      if (!message && githubInput) {
+        try {
+          const url = new URL(githubInput);
+          if (url.protocol !== "https:" || url.hostname !== "github.com" || url.pathname.split("/").filter(Boolean).length < 2) throw new Error();
+        } catch {
+          message = "请提供有效的 GitHub 仓库地址，或留空。";
+        }
+      }
+      if (message) {
+        error.textContent = message;
+        error.hidden = false;
+        output.textContent = "// 请先修正左侧输入信息。";
+        generated = "";
+        indicator.textContent = "INVALID";
+        copy.disabled = download.disabled = true;
+        return;
+      }
+      error.hidden = true;
+      indicator.textContent = "READY";
+      copy.disabled = download.disabled = false;
+      generated = [
+        'import { defineConfig } from "astro/config";',
+        'import tailwindcss from "@tailwindcss/vite";',
+        'import nimbus, { defineConfig as defineNimbusConfig } from "@cloudflare/nimbus-docs";',
+        "",
+        "const docs = defineNimbusConfig({",
+        "  site: " + quote(origin) + ",",
+        "  title: " + quote(title) + ",",
+        "  description: " + quote(description) + ",",
+        "  locale: " + quote(locale) + ",",
+        ...(githubInput ? ["  github: " + quote(githubInput.replace(/\/+$/, "")) + ","] : []),
+        '  sidebar: { items: ["index", { autogenerate: { collection: "docs" } }] },',
+        "});",
+        "",
+        "export default defineConfig({",
+        "  site: " + quote(origin) + ",",
+        ...(base !== "/" ? ["  base: " + quote(base) + ","] : []),
+        '  output: "static",',
+        "  vite: { plugins: [tailwindcss()] },",
+        "  integrations: [nimbus(docs)],",
+        "});",
+        "",
+      ].join("\n");
+      output.textContent = generated;
+    }
+    form.addEventListener("input", build);
+    form.addEventListener("change", build);
+    form.addEventListener("submit", (event) => event.preventDefault());
+    reset.addEventListener("click", () => {
+      for (const element of Array.from(form.elements)) {
+        if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement || element instanceof HTMLSelectElement) {
+          const value = defaults[element.name];
+          if (value !== undefined) element.value = String(value);
+        }
+      }
+      build();
+      feedback.textContent = "已恢复默认设置。";
+    });
+    copy.addEventListener("click", async () => {
+      if (!generated) return;
+      try {
+        await navigator.clipboard.writeText(generated);
+        feedback.textContent = "已复制到剪贴板。";
+      } catch {
+        feedback.textContent = "浏览器未授予剪贴板权限，请手动选择代码复制。";
+      }
+    });
+    download.addEventListener("click", () => {
+      if (!generated) return;
+      const blob = new Blob([generated], { type: "text/typescript;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "astro.config.ts";
+      document.body.append(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      feedback.textContent = "已生成配置文件。";
+    });
+    build();
+  }
+</script>

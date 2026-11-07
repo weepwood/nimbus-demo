@@ -1,0 +1,62 @@
+---
+title: 常见问题
+description: 解决 Nimbus Demo 本地开发、GitHub Pages、搜索、路径和主题的常见问题。
+sidebar:
+  order: 7
+---
+
+## 为什么发布到 GitHub Pages 后出现 404？
+
+本项目的页面路径包含部署子目录 `/nimbus-demo/`。如果创建的是新的仓库，请修改 `astro.config.ts` 的 `base` 为实际仓库名，或在使用自定义域名时将其改为 `/`。
+
+站内自定义链接统一使用 `SiteLink` 组件，避免手动拼接部署前缀。
+
+## 为什么搜索没有结果？
+
+搜索使用 Pagefind。它在 `pnpm build` 完成时建立静态索引。在开发模式下无法保证搜索行为与生产环境完全一致，请执行：
+
+~~~bash
+pnpm build
+pnpm preview
+~~~
+
+然后从预览站点使用 Ctrl + K（macOS 为 ⌘ + K）进行测试。
+
+## 新建文档如何进入导航？
+
+在 `src/content/docs/` 下添加 `.mdx`，填入必需的 frontmatter，构建时 Nimbus 会自动生成侧边栏。示例见 <SiteLink href="/writing-pages/">文档写作</SiteLink>。
+
+## 如何在 MDX 中生成正确的站内链接？
+
+普通 Markdown 的根路径链接通常从域名根目录开始。如果项目部署在子目录下，应使用本项目内置的 `SiteLink`：
+
+~~~mdx
+<SiteLink href="/quickstart/">快速开始</SiteLink>
+~~~
+
+`SiteLink` 会根据 Astro 的 `BASE_URL` 生成正确路径。
+
+## 如何修改品牌和页面外观？
+
+- UI 主设计令牌：`src/styles/globals.css`
+- 演示首页样式：`src/styles/demo.css`
+- 顶部栏：`src/components/Header.astro`
+- 通用组件：`src/components/ui/`
+
+不建议直接修改 `node_modules` 中的 Nimbus 代码。
+
+## 如何生成属于自己的站点配置？
+
+打开 <SiteLink href="/configurator/">项目配置生成器</SiteLink>，填写站点 URL、仓库地址、子路径、语言等信息，然后复制或下载生成的 `astro.config.ts`。
+
+## 如何检查发布产物是否完整？
+
+~~~bash
+pnpm run check
+~~~
+
+此命令依次执行类型检查、Astro 静态构建、Nimbus 文档校验和生成后站点链接检查。
+
+## 有额外组件可以安装吗？
+
+可以。Nimbus 的官方 Registry 提供可选择安装的组件和能力。参考 [官方 Registry](https://nimbus-docs.com/registry)。
