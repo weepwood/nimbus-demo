@@ -1,0 +1,47 @@
+name: 🐛 Bug / 功能问题
+description: 报告 Nimbus Studio 页面或交互上的可复现故障
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请提供可复现的信息。不要提交密码、令牌、Cookie 或任何敏感数据。
+  - type: input
+    id: page
+    attributes:
+      label: 问题页面
+      placeholder: https://weepwood.github.io/nimbus-demo/...
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      placeholder: |
+        1. 打开...
+        2. 点击...
+        3. 出现...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望结果
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际结果
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: 浏览器 / 操作系统 / 屏幕宽度
+      placeholder: Chrome 156, Windows 11, 1440px
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 截图或控制台日志（可选）
+      description: 上传前请移除个人信息

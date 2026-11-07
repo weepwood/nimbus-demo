@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Nimbus 官方使用文档
+    url: https://nimbus-docs.com/
+    about: 如果问题属于 Nimbus 框架本身，先检查官方文档与上游仓库

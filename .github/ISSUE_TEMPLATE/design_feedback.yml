@@ -1,0 +1,40 @@
+name: 🎨 设计与体验反馈
+description: 反馈对比度、排版、移动端、图标或交互问题
+title: "[Design] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Nimbus Studio 使用独立品牌并借鉴成熟文档 UI 的设计原则。请指出具体视觉问题和期望的交互效果。
+  - type: input
+    id: page
+    attributes:
+      label: 页面地址
+      placeholder: https://weepwood.github.io/nimbus-demo/...
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: 问题类型
+      options:
+        - 阅读排版和信息密度
+        - 颜色、对比度或深浅主题
+        - 移动端响应式
+        - 导航、搜索和信息架构
+        - 图标、字体及细节一致性
+        - 键盘、无障碍与动效
+        - 其他
+    validations:
+      required: true
+  - type: textarea
+    id: detail
+    attributes:
+      label: 当前问题与改善建议
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 截图或参考链接（可选）
+      description: 第三方设计需注意许可证

@@ -89,3 +89,12 @@ pnpm run preview
 - 文档页底部：收藏、复制链接、通过 GitHub Issue 反馈问题
 - `/api-reference/`：三个公开静态 JSON 端点的文档
 - `/openapi.json`：OpenAPI 3.1 规格文件
+
+## 持续迭代机制
+
+- `.github/workflows/weekly-audit.yml`：每周自动重新执行 `pnpm run check`，记录静态站点健康情况。定时检查**不会自动修改或部署代码**。
+- `.github/dependabot.yml`：每月检查 npm 与 GitHub Actions 依赖更新，生成 PR 供审查，不自动合并。
+- [功能 Bug 反馈](https://github.com/weepwood/nimbus-demo/issues/new/choose) 和 [设计体验反馈](https://github.com/weepwood/nimbus-demo/issues/new/choose)：提供可复现步骤、浏览器和截图。
+- `.github/PULL_REQUEST_TEMPLATE.md`：统一功能、视觉、文档和回归验收要求。
+
+注意：CI/Pages 成功不能代替真实浏览器下的 UI 截图、无障碍和交互验收；手动测试结果请记录在 Issue 或验收文档中。
