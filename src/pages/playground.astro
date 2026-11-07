@@ -103,7 +103,7 @@ const showcase = withBase("/showcase/", import.meta.env.BASE_URL);
     const count = root.querySelector<HTMLElement>("[data-action-count]")!;
     const copyStatus = root.querySelector<HTMLElement>("[data-copy-feedback]")!;
     let clicks = 0;
-    function accent() { return root.querySelector<HTMLInputElement>('input[name="accent"]:checked')?.value ?? "orange"; }
+    function accent() { return root!.querySelector<HTMLInputElement>('input[name="accent"]:checked')?.value ?? "orange"; }
     function update() {
       const hex = colors[accent()] ?? colors.orange;
       const size = Number(radius.value);

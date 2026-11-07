@@ -1,19 +1,20 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
+import Icon from "@cloudflare/nimbus-docs/components/Icon.astro";
 import { withBase } from "@cloudflare/nimbus-docs/runtime";
 
 const home = withBase("/", import.meta.env.BASE_URL);
 const quickstart = withBase("/quickstart/", import.meta.env.BASE_URL);
 ---
-<BaseLayout title="项目配置生成器" description="根据域名、仓库和语言，生成可以直接使用的 Nimbus + Astro 配置。">
+<BaseLayout title="Nimbus 项目配置生成器" description="根据域名、仓库和语言，生成可以直接使用的 Nimbus + Astro 配置。">
   <div class="min-h-screen flex flex-col">
     <Header />
     <main id="main-content" tabindex="-1" class="builder-main" data-pagefind-body>
       <nav class="builder-breadcrumb" aria-label="Breadcrumb"><a href={home}>首页</a><span aria-hidden="true">/</span><span>配置生成器</span></nav>
       <header class="builder-intro">
-        <div class="builder-kicker"><span class="builder-indicator"></span> INTERACTIVE TOOL</div>
-        <h1>配置你的 Nimbus 项目</h1>
+        <div class="builder-kicker"><span class="builder-indicator"></span> PROJECT CONFIGURATOR / 03</div>
+        <h1>从配置开始构建<span style="color:var(--nd-orange-strong)">.</span></h1>
         <p>填写基本资料，立即生成一份可以复制、下载或直接集成进项目的 <code>astro.config.ts</code>。无需账户，也不会将输入上传到服务器。</p>
       </header>
       <div class="builder-grid" data-config-builder>
@@ -67,8 +68,8 @@ const quickstart = withBase("/quickstart/", import.meta.env.BASE_URL);
             <pre tabindex="0"><code data-output aria-label="Generated Astro configuration"></code></pre>
           </div>
           <div class="builder-actions">
-            <button type="button" class="builder-action-primary" data-copy>复制配置</button>
-            <button type="button" class="builder-action-secondary" data-download>下载 .ts 文件</button>
+            <button type="button" class="builder-action-primary" data-copy><Icon name="ph:copy" class="inline-block w-4 h-4 me-1.5" />复制配置</button>
+            <button type="button" class="builder-action-secondary" data-download><Icon name="ph:download-simple" class="inline-block w-4 h-4 me-1.5" />下载 .ts 文件</button>
           </div>
           <p class="builder-feedback" role="status" aria-live="polite" data-feedback></p>
           <div class="builder-note"><span>i</span><p>这份配置需要项目中已安装 <code>@cloudflare/nimbus-docs</code>、<code>astro</code>、<code>tailwindcss</code> 和 <code>@tailwindcss/vite</code>。请先使用 <a href={quickstart}>快速开始</a> 创建工程。</p></div>
@@ -91,7 +92,7 @@ const quickstart = withBase("/quickstart/", import.meta.env.BASE_URL);
   .builder-intro p { color: var(--nb-muted-foreground); max-width: 650px; line-height: 1.9; }
   .builder-intro code { font-size: .86em; }
   .builder-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.2fr); gap: 1.2rem; align-items: start; }
-  .builder-panel { border: 1px solid var(--nb-border); background: var(--nb-card); border-radius: 15px; padding: clamp(1.25rem,3vw,2rem); min-width: 0; }
+  .builder-panel { border: 1px solid var(--nb-border); background: var(--nb-card); border-radius: 11px; padding: clamp(1.25rem,3vw,2rem); min-width: 0; }
   .builder-panel-heading { display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.7rem; gap: 1rem; }
   .builder-panel-heading h2 { font-weight: 700; letter-spacing: -.035em; margin-top: .35rem; font-size: 1.3rem; }
   .builder-panel-count { font-family: var(--nb-font-mono),monospace; color: var(--nb-muted-foreground); letter-spacing: .11em; font-size: .64rem; }
@@ -105,22 +106,22 @@ const quickstart = withBase("/quickstart/", import.meta.env.BASE_URL);
   .builder-field input:focus,.builder-field textarea:focus,.builder-field select:focus { border-color: var(--nb-brand); box-shadow: 0 0 0 3px var(--nb-brand-wash); }
   .builder-field small { color: var(--nb-muted-foreground); font-size: .72rem; line-height: 1.55; }
   .builder-code-panel { position: sticky; top: 5rem; }
-  .builder-ready { border-radius: 6px; padding: .32rem .55rem; font-size: .63rem; letter-spacing: .07em; font-weight: 750; color: #288765; background: rgba(65,190,125,.1); }
+  .builder-ready { border-radius: 6px; padding: .32rem .55rem; font-size: .63rem; letter-spacing: .07em; font-weight: 750; color: #168466; background: rgba(65,190,125,.1); }
   .builder-code-window { overflow: hidden; border: 1px solid #30394c; border-radius: 10px; background: #101725; }
   .builder-code-bar { display: flex; justify-content: space-between; align-items: center; font-family: var(--nb-font-mono),monospace; font-size: .7rem; color: #a5b1c6; padding: .85rem 1rem; border-bottom: 1px solid #30394c; }
   .builder-code-bar span:first-child { display: flex; align-items: center; gap: .65rem; }
-  .builder-code-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #8d9df4; }
+  .builder-code-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #f48120; }
   .builder-code-window pre { font-family: var(--nb-font-mono),monospace; overflow: auto; color: #d2dcf0; font-size: .72rem; line-height: 1.95; padding: 1.3rem; max-height: 540px; min-height: 375px; margin: 0; white-space: pre; }
   .builder-code-window code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
   .builder-actions { display: flex; gap: .65rem; margin-top: 1.2rem; flex-wrap: wrap; }
   .builder-actions button { cursor: pointer; border-radius: 8px; font-size: .81rem; font-weight: 650; border: 1px solid var(--nb-border); padding: .72rem 1rem; transition: background .15s,transform .15s; }
   .builder-actions button:hover { transform: translateY(-1px); }
-  .builder-action-primary { color: white; background: #272e43; border-color: #272e43!important; }
-  .builder-action-primary:hover { background: #3b4663; }
+  .builder-action-primary { color: white; background: #c65b13; border-color: #272e43!important; }
+  .builder-action-primary:hover { background: #a74b11; }
   .builder-action-secondary { color: var(--nb-foreground); background: var(--nb-card); }
   .builder-action-secondary:hover { background: var(--nb-muted); }
   .builder-actions button:disabled { cursor: not-allowed; opacity: .5; transform: none; }
-  .builder-error { color: #bd3e3e; background: rgba(240,85,85,.075); border-radius: 7px; padding: .75rem; font-size: .78rem; margin-bottom: 1rem; }
+  .builder-error { color: #c44848; background: rgba(240,85,85,.075); border-radius: 7px; padding: .75rem; font-size: .78rem; margin-bottom: 1rem; }
   .builder-feedback { min-height: 1.5rem; margin-top: .65rem; font-size: .78rem; color: var(--nb-muted-foreground); }
   .builder-note { display: flex; gap: .75rem; align-items: flex-start; background: var(--nb-muted); color: var(--nb-muted-foreground); border-radius: 9px; padding: 1rem; font-size: .76rem; line-height: 1.75; margin-top: 1rem; }
   .builder-note > span { display: grid; place-items: center; flex-shrink: 0; border: 1px solid var(--nb-border-strong); border-radius: 50%; width: 18px; height: 18px; font-size: .72rem; font-weight: 700; }

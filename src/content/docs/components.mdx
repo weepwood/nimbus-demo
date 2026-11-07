@@ -1,92 +1,129 @@
 ---
 title: 组件展厅
-description: Nimbus 自带的 MDX UI 组件，展示可复用的文档交互模式。
+description: Nimbus 官方源代码组件的真实渲染示例：提示、标签、步骤、交互式折叠、切换与卡片。
 sidebar:
   order: 2
 ---
 
-这页直接使用官方 Starter 提供的 MDX 组件。它们已经在 src/components.ts 中注册，因此可以在文档中直接使用。
+Nimbus 的 UI 组件是你项目里的 Astro 源代码，而不是只能调用的黑盒依赖。下面所有实例都由当前站点直接渲染。
 
-## Aside · 提示块
-
-<Aside type="note" title="Note">
-  将需要强调的信息从段落中抽离出来。
+<Aside type="tip" title="动手体验">
+  想改变颜色、圆角和组件密度，可以打开 [UI 组件实验室](/playground/)。想看完整的使用场景，可以继续阅读 [文档模式](/patterns/)。
 </Aside>
 
-<Aside type="tip" title="Tip">
-  组件的外观由源代码和设计令牌控制，可以直接修改。
-</Aside>
+## Badge · 状态标签
 
-<Aside type="caution" title="Caution">
-  不要把凭据、令牌或隐私信息写进公开的 MDX。
-</Aside>
+<Badge variant="success" text="Stable" /> <Badge variant="warning" text="Beta" /> <Badge variant="danger" text="Deprecated" /> <Badge variant="info" text="Preview" /> <Badge variant="outline" text="Experimental" />
 
-<Aside type="danger" title="Danger">
-  危险操作应该在文档里明确告知不可逆的后果。
-</Aside>
+标签用于标注功能成熟度、状态和版本。不要只依靠不同颜色，也要有可读的文字。
 
-## Tabs · 交互式标签页
+~~~mdx title="src/content/docs/example.mdx"
+<Badge variant="success" text="Stable" />
+<Badge variant="warning" text="Beta" />
+~~~
 
-<Tabs syncKey="platform">
-  <TabItem label="Windows">
-    Windows 用户可以使用 Ctrl + K 打开搜索。
-  </TabItem>
+## Aside · 信息提示
+
+<Aside type="note" title="Note">文档可以在不改变主体阅读流的前提下强调补充信息。</Aside>
+
+<Aside type="tip" title="Tip">推荐做法：将一个完整答案写在正文，将额外技巧放进提示块。</Aside>
+
+<Aside type="caution" title="Caution">在执行影响生产环境的操作前确认风险。</Aside>
+
+<Aside type="danger" title="Danger">删除数据等不可逆操作需要明确警告。</Aside>
+
+## Tabs · 同步选项卡
+
+选择不同平台查看说明；将 syncKey 设置为相同值后，不同的 Tabs 实例可以记住当前选择。
+
+<Tabs syncKey="docs-platform">
   <TabItem label="macOS">
-    macOS 用户可以使用 ⌘ + K 打开搜索。
+    使用 ⌘ + K 打开搜索对话框。
+  </TabItem>
+  <TabItem label="Windows">
+    使用 Ctrl + K 打开搜索对话框。
   </TabItem>
   <TabItem label="Linux">
-    Linux 用户可以使用 Ctrl + K 打开搜索。
+    使用 Ctrl + K 打开搜索对话框。
   </TabItem>
 </Tabs>
 
-## Steps · 分步流程
+<Tabs syncKey="docs-platform">
+  <TabItem label="macOS">
+    此处会与上方 macOS 选项同步。
+  </TabItem>
+  <TabItem label="Windows">
+    此处会与上方 Windows 选项同步。
+  </TabItem>
+  <TabItem label="Linux">
+    此处会与上方 Linux 选项同步。
+  </TabItem>
+</Tabs>
+
+## Collapsible · 可交互折叠面板
+
+这个面板可以通过鼠标、触摸与键盘展开和收起：
+
+<Collapsible>
+  <CollapsibleTrigger class="flex items-center justify-between gap-3 rounded-lg border border-border px-4 py-3 text-sm font-semibold hover:bg-accent">
+    <span>点击展开隐藏内容</span><Icon name="ph:caret-down" class="h-4 w-4" />
+  </CollapsibleTrigger>
+  <CollapsibleContent>
+    <div class="rounded-b-lg border border-t-0 border-border px-4 py-4 text-sm leading-relaxed text-muted-foreground">
+      Nimbus 使用独立组件与轻量客户端脚本处理展开状态。所有内容仍然保留在 HTML 中，而不是远程加载。
+    </div>
+  </CollapsibleContent>
+</Collapsible>
+
+## Steps · 分步说明
 
 <Steps>
-  <Step title="编写内容">
-    新建 MDX 文件并声明 title 和 description。
+  <Step title="创建文件">
+    在 src/content/docs 下新建 .mdx 文档。
   </Step>
-  <Step title="运行校验">
-    使用 Nimbus 检查 Frontmatter 和内部链接。
+  <Step title="补充信息">
+    添加 title、description 以及 sidebar.order。
   </Step>
-  <Step title="发布站点">
-    Astro 静态构建后由 Pages 或其他静态主机交付。
+  <Step title="执行检查">
+    运行 pnpm run check，检查类型、文档链接和静态输出。
   </Step>
 </Steps>
 
-## Card · 内容卡片
+## Card · 导航与信息卡片
 
 <CardGrid>
-  <Card title="内容集合" icon="ph:books">
-    使用 Astro Content Collections 管理有类型的文档数据。
+  <Card title="文档内容" icon="ph:book-open-text">
+    通过 Content Collections 管理路由、内容、Frontmatter 校验。
   </Card>
-  <Card title="设计令牌" icon="ph:paint-brush">
-    在全局 CSS 中维护主题色彩、尺寸、排版和边框。
+  <Card title="可复用 UI" icon="ph:squares-four">
+    所有主要组件都位于 src/components/ui，可以在项目中直接调整。
   </Card>
-  <Card title="内容搜索" icon="ph:magnifying-glass">
-    构建时创建 Pagefind 索引，支持快捷键唤起。
+  <Card title="设计令牌" icon="ph:palette">
+    全局 CSS Tokens 与 Tailwind 语义类控制颜色、字号、圆角。
   </Card>
-  <Card title="AI 友好输出" icon="ph:robot">
-    自动生成面向 Agent 的 Markdown 和 llms.txt。
+  <Card title="AI 可读输出" icon="ph:robot">
+    页面 Markdown、llms.txt 方便 Agent 获取结构化内容。
   </Card>
 </CardGrid>
 
-## PackageManagers · 安装命令
+## PackageManagers · 多包管理器切换
 
 <PackageManagers pkg="@cloudflare/nimbus-docs" />
 
-## Render · 可复用片段
+## 图标系统
 
-下面这段内容来自 src/content/partials/example.mdx：
+统一使用 Iconify 的 Phosphor 图标集。图标是矢量 SVG，遵循 `currentColor`，可以自动适配深浅色主题。
+
+<Icon name="ph:house" class="inline-block h-6 w-6" /> <Icon name="ph:magnifying-glass" class="inline-block h-6 w-6" /> <Icon name="ph:terminal-window" class="inline-block h-6 w-6" /> <Icon name="ph:rocket-launch" class="inline-block h-6 w-6" /> <Icon name="ph:shield-check" class="inline-block h-6 w-6" /> <Icon name="ph:gear-six" class="inline-block h-6 w-6" />
+
+~~~mdx
+<Icon name="ph:rocket-launch" class="h-6 w-6" />
+~~~
+
+## Partial · 内容复用
 
 <Render file="example" />
 
-## 代码块
+下一步：[访问交互实验室](/showcase/) · [查看部署指南](/deploy/)
 
-~~~ts title="src/components.ts"
-import { Aside } from "./components/ui/aside";
-import { Tabs, TabItem } from "./components/ui/tabs";
-
-export const components = { Aside, Tabs, TabItem };
-~~~
-
-更多组件和扩展请访问 [Nimbus Registry](https://nimbus-docs.com/registry)。
+参考： [Cloudflare Docs 组件规范](https://developers.cloudflare.com/style-guide/build-the-page/components/)。

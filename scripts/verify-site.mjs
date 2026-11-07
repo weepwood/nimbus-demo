@@ -34,6 +34,14 @@ const required = [
   "sitemap-index.xml",
   "pagefind/pagefind.js",
   "quickstart/index.md",
+  "showcase/index.html",
+  "playground/index.html",
+  "api-lab/index.html",
+  "patterns/index.html",
+  "search-guide/index.html",
+  "demo-api/status.json",
+  "demo-api/users.json",
+  "demo-api/projects.json",
   "social.svg",
   "favicon.svg",
 ];
@@ -93,8 +101,19 @@ for (const file of allHtml(dist)) {
     }
   }
 }
-if (pages < 8) failures.push("Expected at least eight pages; only found " + pages);
-if (links < 8) failures.push("Expected navigable local links; found " + links);
+if (pages < 13) failures.push("Expected at least thirteen pages; only found " + pages);
+if (links < 25) failures.push("Expected navigable local links; found " + links);
+
+for (const endpoint of ["status", "users", "projects"]) {
+  const file = "demo-api/" + endpoint + ".json";
+  if (!checkFile(file)) continue;
+  try {
+    const body = JSON.parse(readFileSync(join(dist, file), "utf8"));
+    if (body.ok !== true) failures.push("Demo endpoint must report ok: " + file);
+  } catch {
+    failures.push("Demo endpoint is not valid JSON: " + file);
+  }
+}
 
 if (checkFile("robots.txt")) {
   const robots = readFileSync(join(dist, "robots.txt"), "utf8");

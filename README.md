@@ -1,8 +1,8 @@
-# Nimbus Demo
+# Nimbus Studio · 基于 Cloudflare Nimbus 的交互式文档演示
 
-基于 [Cloudflare Nimbus](https://github.com/cloudflare/nimbus) 与 [Astro](https://astro.build/) 构建的中文开发者文档演示站点。项目从 Nimbus 官方 `template` Starter（templates-v0.8.3）初始化，保留框架自带导航、Pagefind 搜索、MDX、暗色主题、文档目录和 Agent 友好的 Markdown 输出。
+基于 [Cloudflare Nimbus](https://github.com/cloudflare/nimbus) 与 [Astro](https://astro.build/) 构建的中文开发者文档与交互体验站点。项目从 Nimbus 官方 `template` Starter（templates-v0.8.3）初始化，保留框架自带导航、Pagefind 搜索、MDX、暗色主题、文档目录和 Agent 友好的 Markdown 输出。
 
-**在线地址：** https://weepwood.github.io/nimbus-demo/
+**在线站点：** https://weepwood.github.io/nimbus-demo/
 
 ## 技术栈
 
@@ -34,10 +34,15 @@ pnpm run preview
 
 | 页面 | 内容 |
 |---|---|
-| 首页 | Nimbus 视觉展示与文档入口 |
+| 首页 | Cloudflare 风格的独立品牌、功能导航与文档体验预览 |
 | 快速开始 | 安装、运行与修改首页 |
 | 组件展厅 | Aside、Steps、Tabs、Card、PackageManagers |
 | 项目配置生成器 | 实时编辑、校验、复制及下载 Astro 配置 |
+| 交互组件实验室 | 切换强调色、圆角、布局密度和字体、导出 CSS、测试状态反馈 |
+| API 请求实验室 | 对公开静态 JSON 端点执行真实 GET、查看状态码、耗时、响应与异常 |
+| 功能演示中心 | 所有可运行示例入口，按能力分类 |
+| 文档模式 | 完整的安装、Tabs、Badge、Collapsible 与 API 示例 |
+| 搜索与信息架构 | Pagefind 构建、键盘快捷键与内容组织建议 |
 | 常见问题 | 路由、搜索、部署和主题排查 |
 | 设计系统 | OKLCH、语义 Token、明暗主题 |
 | 文档写作 | Frontmatter、MDX 与 Partial |
@@ -57,3 +62,13 @@ pnpm run preview
 - 本仓库 `LICENSE` 沿用 Nimbus 的 MIT 授权文本；第三方依赖各自遵循其许可证。
 
 该项目是个人技术展示，与 Cloudflare 官方没有关联。
+
+## 新增实际功能
+
+- `/showcase/` — 查看所有示例功能
+- `/playground/` — 交互式 UI 设计令牌实验室，配色、密度、圆角、字体与复制代码
+- `/api-lab/` — 对本网站 3 个公开 JSON 静态接口发起真实 fetch 请求。**这不是线上业务 API，也不连接数据库。**
+- `/configurator/` — Astro/Nimbus 配置生成器
+- `/components/`、`/patterns/` — Nimbus UI 和文档模式示例
+
+视觉设计采用云平台开发者文档常见的橙灰配色与高信息密度原则，但使用独立的 Nimbus Studio 标识，不代表 Cloudflare 官方产品。

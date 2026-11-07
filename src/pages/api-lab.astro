@@ -68,7 +68,7 @@ const endpointBase = withBase("/demo-api/", import.meta.env.BASE_URL);
     const copy = root.querySelector<HTMLButtonElement>("[data-copy-response]")!;
     let responseText = "";
     function selected() {
-      const endpoint = root.querySelector<HTMLInputElement>('input[name="endpoint"]:checked')?.value || "status.json";
+      const endpoint = root!.querySelector<HTMLInputElement>('input[name="endpoint"]:checked')?.value || "status.json";
       const whitelist = new Set(["status.json", "users.json", "projects.json"]);
       return whitelist.has(endpoint) ? endpoint : "status.json";
     }
