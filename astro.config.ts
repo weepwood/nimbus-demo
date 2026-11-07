@@ -9,15 +9,15 @@ const nimbusConfig = defineNimbusConfig({
   // CHANGE_ME: your site's canonical origin (no trailing slash). Drives
   // canonical URLs, absolute OG image URLs, robots.txt, sitemap, and the
   // links in /llms.txt — leaving the placeholder breaks all of them.
-  site: "https://example.com",
+  site: "https://weepwood.github.io",
   // CHANGE_ME: your project's name — used for <title>, the home H1, and OG.
-  title: "Nimbus",
+  title: "Nimbus Demo",
   // CHANGE_ME: a one-line description of your docs — used for meta + OG.
-  description: "Nimbus, authoring tool for docs",
-  locale: "en",
+  description: "基于 Cloudflare Nimbus 的交互式文档与组件展示站点",
+  locale: "zh-CN",
   // CHANGE_ME: your repository — shown as the GitHub link in the header.
-  github: "https://github.com/cloudflare/nimbus",
-  socialImageAlt: "Nimbus documentation preview",
+  github: "https://github.com/weepwood/nimbus-demo",
+  socialImageAlt: "Nimbus Demo documentation showcase",
   // The home page leads the sidebar; every other page joins it automatically.
   sidebar: {
     items: ["index", { autogenerate: { collection: "docs" } }],
@@ -25,6 +25,8 @@ const nimbusConfig = defineNimbusConfig({
 });
 
 export default defineConfig({
+  site: "https://weepwood.github.io",
+  base: "/nimbus-demo",
   // nimbus:adapter
   output: "static",
   // Tailwind v4 via its Vite plugin (the integration Astro recommends for

@@ -1,119 +1,82 @@
 ---
-title: Writing pages
-description: Create a page, organise the sidebar, and use Markdown and components to write it.
+title: 文档写作
+description: 使用 MDX、Frontmatter、内容集合与可复用片段组织开发者文档。
 sidebar:
-  order: 3
+  order: 4
 ---
 
-Every page is an `.mdx` file in `src/content/docs/`. The file path becomes the URL, so `src/content/docs/guides/deploy.mdx` is served at `/guides/deploy/`. Start from the [introduction](/) if you haven't opened the project yet.
+所有主文档都位于 src/content/docs/，支持 Markdown 和 MDX。
 
-## Create a page
+## 创建文档
 
-Add a file with a `title` in its frontmatter. The title becomes the page heading, so don't repeat it in the body.
+在 src/content/docs 下创建一个新的 MDX 文件：
 
-```mdx title="src/content/docs/guides/deploy.mdx" {2-3}
+~~~mdx title="src/content/docs/my-guide.mdx"
 ---
-title: Deploy
-description: Ship the site to production.
+title: 我的新指南
+description: 一篇新的 Nimbus 文档。
+sidebar:
+  order: 6
 ---
 
-Run the build, then upload the output.
-```
+在这里编写正文。
 
-Frontmatter is validated at build time. A missing title or a misspelled field fails the build with a message that names the file and the field.
+## 第一部分
 
-- `title` is required. Everything else is optional.
-- `description` appears under the heading, in search results, and in social cards.
-- `sidebar` controls where the page sits in the navigation.
-  - `order` sorts pages within a group, lowest first.
-  - `badge` adds a short label next to the link.
+可以使用 Markdown 标题、列表和代码块。
+~~~
 
-### Frontmatter fields
+Nimbus 会根据文件位置生成路由并通过 sidebar 的规则管理导航顺序。
 
-| Field | Type | Description |
-| --- | --- | --- |
-| `title` | string | The page heading and the `<title>` tag. |
-| `description` | string | One-line summary for search, social cards, and the page header. |
-| `sidebar.order` | number | Position within the sidebar group. Lower numbers come first. |
-| `draft` | boolean | Builds the page in development only. It never reaches production. |
+## Frontmatter 配置
 
-## Write with Markdown
+| 字段 | 用途 |
+| --- | --- |
+| title | 文档标题，必填 |
+| description | 页面简介与 SEO 描述 |
+| sidebar.order | 侧边栏显示顺序 |
+| draft | 是否作为草稿 |
+| tableOfContents | 控制右侧章节目录 |
 
-Standard Markdown works everywhere: **bold**, *italic*, [links](/), `inline code`, lists, tables, and fenced code blocks. Press <kbd>⌘</kbd> <kbd>K</kbd> to search the site for anything else.
-
-> Write the page you would want to find. One topic per page, and a title that says what the reader will be able to do.
-
-Code blocks are highlighted at build time. Add a `title` to show a filename, and line numbers in braces to draw attention to specific lines.
-
-```ts title="astro.config.ts" {3}
-const nimbusConfig = defineNimbusConfig({
-  site: "https://docs.example.com",
-  title: "My docs",
-  description: "Guides and reference for My product.",
-});
-```
-
-<Aside type="tip" title="Preview as you write">
-  The dev server reloads the page on every save. Run `npm run dev` and keep the page open next to your editor.
+<Aside type="note">
+  Frontmatter 由内容集合和 Schema 校验。生产环境构建时可以发现无效字段或格式。
 </Aside>
 
-### Organise the sidebar
-
-Folders become sidebar groups. Inside a group, pages sort by `sidebar.order`, then by title.
-
-1. Create a folder in `src/content/docs/`, for example `guides/`.
-2. Move related pages into it.
-3. Set `sidebar.order` on each page to fix the order.
-
-## Use components
-
-Components are available in every `.mdx` file without an import. Install more from the registry when you need them.
-
-<Steps>
-  <Step title="Add a component">
-    Run `npx @cloudflare/nimbus-docs add accordion` to copy it into `src/components/ui/`.
-  </Step>
-  <Step title="Register it">
-    Add it to `src/components.ts` so every page can use it.
-  </Step>
-</Steps>
+## 使用 MDX 组件
 
 <Tabs>
-  <TabItem label="npm">
-    ```sh
-    npx @cloudflare/nimbus-docs add accordion
-    ```
+  <TabItem label="MDX 示例">
+    ~~~mdx
+    <Aside type="tip">
+      这个信息使用 Nimbus 组件显示。
+    </Aside>
+    ~~~
   </TabItem>
-  <TabItem label="pnpm">
-    ```sh
-    pnpm dlx @cloudflare/nimbus-docs add accordion
-    ```
+  <TabItem label="注册入口">
+    ~~~ts
+    export const components = {
+      Aside,
+      Tabs,
+      Steps,
+    };
+    ~~~
   </TabItem>
 </Tabs>
 
-#### What ships with the starter
+## 复用内容
 
-<dl>
-  <dt>Aside</dt>
-  <dd>Notes, tips, cautions, and warnings that stand apart from the text.</dd>
-  <dt>Steps</dt>
-  <dd>Numbered procedures, each with a title and its own content.</dd>
-  <dt>Tabs</dt>
-  <dd>The same content in several variants, such as one command per package manager.</dd>
-</dl>
+对于重复出现的说明，将其放入 src/content/partials/ 并使用 Render 引入：
 
-<details>
-  <summary>Can I use plain Markdown files instead of MDX?</summary>
+<Render file="example" />
 
-  Yes. MDX is a superset of Markdown, so any `.md` content works unchanged in an `.mdx` file. You only need MDX syntax when you add a component.
-</details>
+## 文档质量
 
----
+运行下列命令进行检查：
 
-<Aside type="note">
-  Every page also has a Markdown version for agents and readers who prefer plain text. Add `index.md` to any page URL to see it.
-</Aside>
+~~~bash
+pnpm typecheck
+pnpm build
+pnpm lint:docs
+~~~
 
-Pages you write today keep working when you upgrade Nimbus[^1]. Use <mark>highlights</mark> sparingly; they lose their meaning when everything is marked.
-
-[^1]: Changes that need your attention are listed by `npx @cloudflare/nimbus-docs migrate --dry-run`.
+Nimbus 同时可以生成供 AI Agent 使用的 Markdown 页面、llms.txt 和 llms-full.txt 文件。更多详细内容请阅读 [官方写作指南](https://nimbus-docs.com/writing/)。

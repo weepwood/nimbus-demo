@@ -1,0 +1,57 @@
+---
+title: 部署指南
+description: 构建 Nimbus 静态站点，并通过 GitHub Actions 发布到 GitHub Pages。
+sidebar:
+  order: 6
+---
+
+本演示项目默认面向 GitHub Pages 的项目子路径部署，并提供自动化 CI 与 Pages 工作流。
+
+## GitHub Pages
+
+<Steps>
+  <Step title="启用 Pages">
+    在仓库 Settings → Pages 中，把 Build and deployment 的 Source 设置为 GitHub Actions。
+  </Step>
+  <Step title="检查站点路径">
+    astro.config.ts 中配置了 site 为 https://weepwood.github.io，base 为 /nimbus-demo。
+  </Step>
+  <Step title="推送 main">
+    部署工作流会自动安装依赖、执行构建并上传 dist 静态文件。
+  </Step>
+  <Step title="访问页面">
+    发布成功后打开 https://weepwood.github.io/nimbus-demo/。
+  </Step>
+</Steps>
+
+<Aside type="caution" title="Pages 权限">
+  首次部署可能需要在仓库设置中允许 GitHub Actions 使用 Pages。存在仓库或组织权限限制时，工作流不会自动绕过它们。
+</Aside>
+
+## 本地构建
+
+~~~bash
+pnpm install
+pnpm typecheck
+pnpm build
+pnpm preview
+~~~
+
+Astro 生成的静态目录是 dist。独立的 Check 工作流也会检查 TypeScript 类型及构建是否成功。
+
+## 部署到其他平台
+
+<Tabs>
+  <TabItem label="Cloudflare">
+    将构建命令设置为 pnpm build、输出目录设置为 dist，并按照目标域名调整 site 与 base。静态内容不需要额外 Worker 才能运行。
+  </TabItem>
+  <TabItem label="Netlify / Vercel">
+    同样可以使用 pnpm build 和 dist 输出目录。若部署在域名根路径，将 base 改为 / 并调整首页演示链接。
+  </TabItem>
+</Tabs>
+
+## 完善生产部署
+
+建议将安装生成的 pnpm-lock.yaml 提交到仓库，将 CI 改为 pnpm install --frozen-lockfile，并开启 Pages 的自定义域名与 HTTPS。
+
+Nimbus 的服务端适配器不是本静态演示的必需项。需要动态渲染或远程 MCP 等能力时，再按 [官方部署文档](https://nimbus-docs.com/deploy/) 配置。

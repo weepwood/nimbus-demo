@@ -11,6 +11,7 @@ import {
   getLastUpdated,
   getTOC,
   stripBase,
+  withBase,
 } from "@cloudflare/nimbus-docs/runtime";
 import { components } from "../components";
 
@@ -43,7 +44,7 @@ const lastUpdated = entry.data.lastUpdated ??
 // ever sees its options object (or undefined), never `false`.
 const tocConfig = entry.data.tableOfContents;
 const toc = tocOn && tocConfig !== false ? getTOC(headings, tocConfig) : false;
-const socialImage = entry.data.socialImage ?? ogImageUrl;
+const socialImage = entry.data.socialImage ?? withBase("/social.svg", import.meta.env.BASE_URL);
 ---
 
 <DocsLayout

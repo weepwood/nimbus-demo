@@ -1,50 +1,52 @@
 ---
-title: Introduction
-description: What your product does, who it's for, and where to start.
+title: Nimbus Demo
+description: 使用 Astro、Nimbus 与 MDX 打造精致、快速、面向人和 AI 的文档体验。
+mode: custom
 sidebar:
   order: 0
 ---
 
-Describe your product in two sentences: what it does, and who it's for. A reader should know within ten seconds whether they're in the right place.
+<div className="demo-home">
+  <section className="demo-hero">
+    <div className="demo-hero-copy">
+      <p className="demo-eyebrow"><span className="demo-status-dot"></span> CLOUDFLARE NIMBUS · FRAMEWORK SHOWCASE</p>
+      <h1 className="demo-hero-title">让知识拥有<br /><span>更好的呈现方式。</span></h1>
+      <p className="demo-hero-description">从一篇 MDX 开始，构建轻盈、清晰而且易于扩展的产品文档。这里是基于 Cloudflare Nimbus 官方 Starter 的真实、可修改的示例。</p>
+      <div className="demo-hero-actions">
+        <a className="demo-btn demo-btn-primary" href="/nimbus-demo/quickstart/">开始探索 <span aria-hidden="true">↗</span></a>
+        <a className="demo-btn demo-btn-secondary" href="/nimbus-demo/components/">查看组件展厅 <span aria-hidden="true">→</span></a>
+      </div>
+      <div className="demo-hero-metadata"><span><span className="demo-check">✓</span> Astro 7</span><span><span className="demo-check">✓</span> Nimbus 0.19</span><span><span className="demo-check">✓</span> MDX Ready</span></div>
+    </div>
+    <div className="demo-window" aria-label="Nimbus configuration preview">
+      <div className="demo-window-toolbar"><div className="demo-window-lights"><i></i><i></i><i></i></div><span>astro.config.ts</span><span className="demo-window-language">TypeScript</span></div>
+      <div className="demo-window-body">
+        <div className="demo-code-line"><span className="demo-line-no">01</span><span><span className="demo-code-purple">import</span> nimbus <span className="demo-code-purple">from</span> <span className="demo-code-green">"@cloudflare/nimbus-docs"</span>;</span></div>
+        <div className="demo-code-line"><span className="demo-line-no">02</span><span></span></div>
+        <div className="demo-code-line"><span className="demo-line-no">03</span><span><span className="demo-code-purple">const</span> site = <span className="demo-code-blue">defineConfig</span>({ "{" }</span></div>
+        <div className="demo-code-line"><span className="demo-line-no">04</span><span>  <span className="demo-code-blue">title</span>: <span className="demo-code-green">"Nimbus Demo"</span>,</span></div>
+        <div className="demo-code-line"><span className="demo-line-no">05</span><span>  <span className="demo-code-blue">locale</span>: <span className="demo-code-green">"zh-CN"</span>,</span></div>
+        <div className="demo-code-line"><span className="demo-line-no">06</span><span>  <span className="demo-code-blue">search</span>: <span className="demo-code-purple">true</span>,</span></div>
+        <div className="demo-code-line"><span className="demo-line-no">07</span><span>{ "}" });</span></div>
+      </div>
+      <div className="demo-window-footer"><span><span className="demo-terminal-dot"></span> BUILT FOR DEVELOPERS</span><span>★ Open source</span></div>
+    </div>
+  </section>
 
-<Aside type="tip" title="This page is yours">
-  Edit `src/content/docs/index.mdx` and save. The page reloads with your changes.
-</Aside>
+  <section className="demo-section" id="explore">
+    <div className="demo-section-heading"><div><p className="demo-section-kicker">EXPLORE THE FRAMEWORK</p><h2>从设计到交付，一站体验</h2></div><p>不仅是一套页面样式，而是一条可持续维护的文档工程链路。</p></div>
+    <div className="demo-feature-grid">
+      <a className="demo-feature" href="/nimbus-demo/components/"><span className="demo-feature-icon">◇</span><span className="demo-feature-title">组件展厅 <span>↗</span></span><span className="demo-feature-description">Tabs、Cards、Steps、Aside 等内置 MDX 组件，可交互、可修改。</span><span className="demo-feature-label">01 / COMPONENTS</span></a>
+      <a className="demo-feature" href="/nimbus-demo/theme/"><span className="demo-feature-icon">◈</span><span className="demo-feature-title">主题系统 <span>↗</span></span><span className="demo-feature-description">基于 OKLCH 和 CSS 设计令牌构建的明暗主题与布局系统。</span><span className="demo-feature-label">02 / DESIGN TOKENS</span></a>
+      <a className="demo-feature" href="/nimbus-demo/writing-pages/"><span className="demo-feature-icon">▤</span><span className="demo-feature-title">文档工作流 <span>↗</span></span><span className="demo-feature-description">MDX、Frontmatter、可复用片段与自动生成侧边栏。</span><span className="demo-feature-label">03 / AUTHORING</span></a>
+      <a className="demo-feature" href="/nimbus-demo/architecture/"><span className="demo-feature-icon">⌘</span><span className="demo-feature-title">工程架构 <span>↗</span></span><span className="demo-feature-description">内容集合、构建时校验、搜索索引和 AI 可读 Markdown 输出。</span><span className="demo-feature-label">04 / ARCHITECTURE</span></a>
+    </div>
+  </section>
 
-## What you can do
+  <section className="demo-callout">
+    <div><span className="demo-section-kicker">READY TO SHIP</span><h2>保持内容简单，让体验更进一步。</h2><p>无需自行组装每一个页面组件。基于 Nimbus 官方工程骨架，专注于内容和产品。</p></div>
+    <a className="demo-btn demo-btn-dark" href="/nimbus-demo/deploy/">了解如何部署 ↗</a>
+  </section>
 
-List the three things people come here to do, in the words they would use.
-
-- Something a reader can accomplish on day one.
-- Something they'll need once they're up and running.
-- Something that makes your product different.
-
-## Get started
-
-Show the shortest path to something working. Name the prerequisites first, then one command or one click at a time.
-
-<Steps>
-  <Step title="Install">
-    ```sh
-    npm install your-package
-    ```
-  </Step>
-  <Step title="See it work">
-    Show the one result that proves the setup worked.
-  </Step>
-</Steps>
-
-## Add your next page
-
-Create a file beside this one. It joins the sidebar as soon as you save.
-
-```mdx title="src/content/docs/quickstart.mdx"
----
-title: Quickstart
-description: From nothing to a working setup in five minutes.
----
-
-Your first guide starts here.
-```
-
-Before you publish, run `npx @cloudflare/nimbus-docs check` to catch mistakes before your readers do.
+  <footer className="demo-home-footer"><span>© 2026 Nimbus Demo</span><span>Powered by <a href="https://github.com/cloudflare/nimbus" target="_blank" rel="noopener noreferrer">Cloudflare Nimbus</a> · <a href="https://github.com/weepwood/nimbus-demo" target="_blank" rel="noopener noreferrer">GitHub</a></span></footer>
+</div>

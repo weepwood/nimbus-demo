@@ -1,6 +1,6 @@
 {
-  "name": "starter",
-  "version": "0.0.0",
+  "name": "nimbus-demo",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,10 +9,11 @@
     "preview": "astro preview",
     "typecheck": "astro check",
     "lint:docs": "nimbus-docs lint",
-    "lint:docs:fix": "nimbus-docs lint --fix"
+    "lint:docs:fix": "nimbus-docs lint --fix",
+    "check": "pnpm run typecheck && pnpm run build"
   },
   "dependencies": {
-    "@cloudflare/nimbus-docs": "^0.19.3",
+    "@cloudflare/nimbus-docs": "0.19.3",
     "@fontsource-variable/inter": "^5.2.8",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@iconify-json/ph": "^1.2.0",
@@ -30,5 +31,6 @@
     "pagefind": "^1.5.2",
     "tailwindcss": "^4.1.4",
     "typescript": "^5.8.3"
-  }
+  },
+  "packageManager": "pnpm@10.34.9"
 }

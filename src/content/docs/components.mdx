@@ -1,167 +1,92 @@
 ---
-title: Components
-description: The components every page can use, and the MDX that renders each one.
+title: 组件展厅
+description: Nimbus 自带的 MDX UI 组件，展示可复用的文档交互模式。
 sidebar:
-  order: 4
+  order: 2
 ---
 
-Every `.mdx` file can use these components without an import. Each one is a file in `src/components/ui/`, so you can change how it looks or works.
+这页直接使用官方 Starter 提供的 MDX 组件。它们已经在 src/components.ts 中注册，因此可以在文档中直接使用。
 
-## Aside
+## Aside · 提示块
 
-Set a note, tip, caution, or warning apart from the text around it.
-
-<Aside type="note">
-  Pages are validated at build time.
+<Aside type="note" title="Note">
+  将需要强调的信息从段落中抽离出来。
 </Aside>
 
-<Aside type="caution" title="Before you deploy">
-  Set `site` in `astro.config.ts` to your production URL.
+<Aside type="tip" title="Tip">
+  组件的外观由源代码和设计令牌控制，可以直接修改。
 </Aside>
 
-```mdx
-<Aside type="note">
-  Pages are validated at build time.
+<Aside type="caution" title="Caution">
+  不要把凭据、令牌或隐私信息写进公开的 MDX。
 </Aside>
 
-<Aside type="caution" title="Before you deploy">
-  Set `site` in `astro.config.ts` to your production URL.
+<Aside type="danger" title="Danger">
+  危险操作应该在文档里明确告知不可逆的后果。
 </Aside>
-```
 
-| Prop | Value |
-|---|---|
-| `type` | `note` (default), `tip`, `caution`, or `danger` |
-| `title` | Text above the content. Defaults to the type's name. |
-| `icon` | Any `ph:` icon name, in place of the type's icon. |
+## Tabs · 交互式标签页
 
-For a title with formatting, pass it as a slot: `<Fragment slot="title">Uses <code>env</code></Fragment>`.
-
-## Steps
-
-Number a procedure. Each step has a title and its own content.
-
-<Steps>
-  <Step title="Create the page">
-    Add `src/content/docs/deploy.mdx` with a `title`.
-  </Step>
-  <Step title="Preview it">
-    Run `npm run dev` and open the page.
-  </Step>
-</Steps>
-
-```mdx
-<Steps>
-  <Step title="Create the page">
-    Add `src/content/docs/deploy.mdx` with a `title`.
-  </Step>
-  <Step title="Preview it">
-    Run `npm run dev` and open the page.
-  </Step>
-</Steps>
-```
-
-| Prop | Value |
-|---|---|
-| `start` on `Steps` | The first step's number. Defaults to 1. |
-| `title` on `Step` | The step's heading. Also accepts a `title` slot. |
-
-## Tabs
-
-Show the same content in several variants. Give tabs a `syncKey`, and the reader's choice carries over to every set of tabs with the same key.
-
-<Tabs syncKey="os">
-  <TabItem label="macOS">
-    Press <kbd>⌘</kbd> <kbd>K</kbd> to search.
-  </TabItem>
+<Tabs syncKey="platform">
   <TabItem label="Windows">
-    Press <kbd>Ctrl</kbd> <kbd>K</kbd> to search.
+    Windows 用户可以使用 Ctrl + K 打开搜索。
+  </TabItem>
+  <TabItem label="macOS">
+    macOS 用户可以使用 ⌘ + K 打开搜索。
+  </TabItem>
+  <TabItem label="Linux">
+    Linux 用户可以使用 Ctrl + K 打开搜索。
   </TabItem>
 </Tabs>
 
-```mdx
-<Tabs syncKey="os">
-  <TabItem label="macOS">
-    Press <kbd>⌘</kbd> <kbd>K</kbd> to search.
-  </TabItem>
-  <TabItem label="Windows">
-    Press <kbd>Ctrl</kbd> <kbd>K</kbd> to search.
-  </TabItem>
-</Tabs>
-```
+## Steps · 分步流程
 
-| Prop | Value |
-|---|---|
-| `syncKey` on `Tabs` | Tabs with the same key switch together, and remember the choice. |
-| `label` on `TabItem` | The tab's name. Required. |
+<Steps>
+  <Step title="编写内容">
+    新建 MDX 文件并声明 title 和 description。
+  </Step>
+  <Step title="运行校验">
+    使用 Nimbus 检查 Frontmatter 和内部链接。
+  </Step>
+  <Step title="发布站点">
+    Astro 静态构建后由 Pages 或其他静态主机交付。
+  </Step>
+</Steps>
 
-## Package managers
-
-Write an install command once and show it for npm, pnpm, Yarn, and Bun.
-
-<PackageManagers pkg="your-package" />
-
-```mdx
-<PackageManagers pkg="your-package" />
-```
-
-Add `dev` for a dev dependency, or `type="run" args="build"` for a script.
-
-## Cards
-
-Link readers to the next places to go, in a grid that stacks on small screens.
+## Card · 内容卡片
 
 <CardGrid>
-  <Card title="Write a page" icon="ph:pencil-simple">
-    Create an `.mdx` file in `src/content/docs/`.
+  <Card title="内容集合" icon="ph:books">
+    使用 Astro Content Collections 管理有类型的文档数据。
   </Card>
-  <Card title="Change the theme" icon="ph:palette">
-    Edit the colour and type tokens in `src/styles/globals.css`.
+  <Card title="设计令牌" icon="ph:paint-brush">
+    在全局 CSS 中维护主题色彩、尺寸、排版和边框。
+  </Card>
+  <Card title="内容搜索" icon="ph:magnifying-glass">
+    构建时创建 Pagefind 索引，支持快捷键唤起。
+  </Card>
+  <Card title="AI 友好输出" icon="ph:robot">
+    自动生成面向 Agent 的 Markdown 和 llms.txt。
   </Card>
 </CardGrid>
 
-```mdx
-<CardGrid>
-  <Card title="Write a page" icon="ph:pencil-simple">
-    Create an `.mdx` file in `src/content/docs/`.
-  </Card>
-  <Card title="Change the theme" icon="ph:palette">
-    Edit the colour and type tokens in `src/styles/globals.css`.
-  </Card>
-</CardGrid>
-```
+## PackageManagers · 安装命令
 
-| Prop | Value |
-|---|---|
-| `title` on `Card` | The card's heading. Also accepts a `title` slot. |
-| `icon` on `Card` | Any `ph:` icon name. Also accepts an `icon` slot. |
+<PackageManagers pkg="@cloudflare/nimbus-docs" />
 
-Icons come from [Phosphor](https://phosphoricons.com): use any name with the `ph:` prefix.
+## Render · 可复用片段
 
-## Partials
-
-Write a passage once and include it on any page. Partials live in `src/content/partials/`.
+下面这段内容来自 src/content/partials/example.mdx：
 
 <Render file="example" />
 
-```mdx
-<Render file="example" />
-```
+## 代码块
 
-## Restyle any part
+~~~ts title="src/components.ts"
+import { Aside } from "./components/ui/aside";
+import { Tabs, TabItem } from "./components/ui/tabs";
 
-Every part of every component has a `data-slot` attribute, so you can restyle one piece from `src/styles/globals.css` without editing the component.
+export const components = { Aside, Tabs, TabItem };
+~~~
 
-```css title="src/styles/globals.css"
-[data-slot="card-title"] {
-  letter-spacing: -0.01em;
-}
-```
-
-Corners come from two tokens in the same file: `--nb-radius` for cards, callouts, code blocks and buttons, and `--nb-radius-sm` for the small marks inside them. Change them to re-round the whole site.
-
-## Add more
-
-Accordions, file trees, link cards, embeds, and more install from the registry when you need them. Each one lands as a file in `src/components/ui/`, like the components above.
-
-<PackageManagers type="dlx" pkg="@cloudflare/nimbus-docs" args="add accordion" />
+更多组件和扩展请访问 [Nimbus Registry](https://nimbus-docs.com/registry)。

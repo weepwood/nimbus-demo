@@ -1,0 +1,58 @@
+---
+title: 主题系统
+description: 使用 Nimbus 设计令牌、Tailwind CSS 4 和深浅色切换定制文档外观。
+sidebar:
+  order: 3
+---
+
+Nimbus Starter 将主题规则留在项目源码中，而不是锁在不可修改的依赖内部。本项目直接采用官方提供的 tokens 并附加独立的展示页样式。
+
+## 设计令牌
+
+主要配置位于 src/styles/globals.css。
+
+~~~css title="src/styles/globals.css"
+:root {
+  --nb-background: oklch(0.99 0 0);
+  --nb-foreground: oklch(0.21 0 0);
+  --nb-card: oklch(1 0 0);
+  --nb-border: oklch(0.935 0 0);
+}
+~~~
+
+这些变量将映射到 Tailwind 工具类，并被按钮、导航、内容卡片等 UI 组件统一使用。
+
+## 双主题切换
+
+点击顶部导航右侧的主题按钮，观察页面、代码块、卡片与导航的变化。
+
+<Aside type="tip" title="系统主题">
+  未手动设置主题时，Nimbus 会跟随操作系统的浅色或深色偏好。
+</Aside>
+
+## 主题结构
+
+<Steps>
+  <Step title="修改全局 token">
+    打开 src/styles/globals.css，调整 --nb- 开头的变量。
+  </Step>
+  <Step title="调整具体组件">
+    修改 src/components/ui 内的 Astro 组件。大部分组件的样式由 Tailwind 类组合实现。
+  </Step>
+  <Step title="添加独立的展示样式">
+    本项目在 src/styles/demo.css 中定义首页专属样式，避免覆盖官方框架设计。
+  </Step>
+</Steps>
+
+## 字体及响应式
+
+本项目使用 Inter Variable 作为界面字体，JetBrains Mono 作为代码字体。文本内容栏宽度、侧边栏和目录栏通过 CSS 变量统一控制。
+
+~~~css title="示意"
+:root {
+  --nb-font-sans: "Inter Variable", sans-serif;
+  --nb-font-mono: "JetBrains Mono Variable", monospace;
+}
+~~~
+
+需要更深度的布局调整时，查看 src/layouts/DocsLayout.astro 和 src/components/Header.astro。

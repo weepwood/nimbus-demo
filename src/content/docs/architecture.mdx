@@ -1,0 +1,61 @@
+---
+title: 架构解析
+description: 理解 Nimbus 如何把 MDX、Astro、组件、搜索和静态部署组合起来。
+sidebar:
+  order: 5
+---
+
+Nimbus 是一个基于 Astro 的文档工程框架，并不是传统的全客户端 SPA。它将文档站点拆成内容、组件、构建与发布四层。
+
+## 内容到页面
+
+<Steps>
+  <Step title="编写内容">
+    文档存放在 src/content/docs，公共片段位于 src/content/partials。
+  </Step>
+  <Step title="结构化校验">
+    content.config.ts 中使用 Nimbus 的 docsCollection 和 partialsCollection 处理内容。
+  </Step>
+  <Step title="Astro 构建">
+    Astro 编译页面布局、MDX 和样式，生成 HTML、脚本及静态资源。
+  </Step>
+  <Step title="内容交付">
+    静态目录 dist 可以部署在 GitHub Pages 等静态托管平台。
+  </Step>
+</Steps>
+
+## 核心目录
+
+~~~text
+src/
+├── content/docs/           文档内容
+├── content/partials/       可复用片段
+├── components/ui/          可维护的组件源码
+├── components.ts           MDX 全局组件注册
+├── layouts/                页面布局
+├── pages/                  Astro 路由和附加内容输出
+└── styles/                 UI 样式与设计令牌
+astro.config.ts             Nimbus 和 Astro 集成配置
+~~~
+
+## 为什么选择 Astro
+
+| 能力 | 价值 |
+| --- | --- |
+| 静态预渲染 | 文档页无需实时服务器即可打开 |
+| 部分交互 | 仅在必要区域启用浏览器脚本 |
+| MDX | 内容与组件可以在同一文件中组合 |
+| Content Collections | 数据结构可维护、可校验 |
+| Pages 与 Workers 兼容 | 可按部署需求扩展 |
+
+## 搜索、SEO 与 AI 读取
+
+Nimbus 可使用 Pagefind 构建本地文档搜索索引。SEO 元信息与 sitemap 由构建流程处理，Markdown 页面以及 llms.txt 使内容更容易被工具和 Agent 消费。
+
+<Aside type="tip" title="不是照搬 Cloudflare Docs">
+  Cloudflare 官方开发者文档在 Nimbus 之外还有独立 Worker、R2 和自定义 AI Search。这个演示项目保持官方 Starter 的轻量架构，并未复制这些专属服务。
+</Aside>
+
+## 进一步阅读
+
+查看 [Nimbus 官方仓库](https://github.com/cloudflare/nimbus) 和 [Nimbus 框架文档](https://nimbus-docs.com/)。
