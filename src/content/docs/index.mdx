@@ -13,8 +13,8 @@ sidebar:
       <h1 className="demo-hero-title">让知识拥有<br /><span>更好的呈现方式。</span></h1>
       <p className="demo-hero-description">从一篇 MDX 开始，构建轻盈、清晰而且易于扩展的产品文档。这里是基于 Cloudflare Nimbus 官方 Starter 的真实、可修改的示例。</p>
       <div className="demo-hero-actions">
-        <a className="demo-btn demo-btn-primary" href="/nimbus-demo/quickstart/">开始探索 <span aria-hidden="true">↗</span></a>
-        <a className="demo-btn demo-btn-secondary" href="/nimbus-demo/components/">查看组件展厅 <span aria-hidden="true">→</span></a>
+        <SiteLink class="demo-btn demo-btn-primary" href="/quickstart/">开始探索 <span aria-hidden="true">↗</span></SiteLink>
+        <SiteLink class="demo-btn demo-btn-secondary" href="/configurator/">在线生成配置 <span aria-hidden="true">↗</span></SiteLink>
       </div>
       <div className="demo-hero-metadata"><span><span className="demo-check">✓</span> Astro 7</span><span><span className="demo-check">✓</span> Nimbus 0.19</span><span><span className="demo-check">✓</span> MDX Ready</span></div>
     </div>
@@ -36,16 +36,16 @@ sidebar:
   <section className="demo-section" id="explore">
     <div className="demo-section-heading"><div><p className="demo-section-kicker">EXPLORE THE FRAMEWORK</p><h2>从设计到交付，一站体验</h2></div><p>不仅是一套页面样式，而是一条可持续维护的文档工程链路。</p></div>
     <div className="demo-feature-grid">
-      <a className="demo-feature" href="/nimbus-demo/components/"><span className="demo-feature-icon">◇</span><span className="demo-feature-title">组件展厅 <span>↗</span></span><span className="demo-feature-description">Tabs、Cards、Steps、Aside 等内置 MDX 组件，可交互、可修改。</span><span className="demo-feature-label">01 / COMPONENTS</span></a>
-      <a className="demo-feature" href="/nimbus-demo/theme/"><span className="demo-feature-icon">◈</span><span className="demo-feature-title">主题系统 <span>↗</span></span><span className="demo-feature-description">基于 OKLCH 和 CSS 设计令牌构建的明暗主题与布局系统。</span><span className="demo-feature-label">02 / DESIGN TOKENS</span></a>
-      <a className="demo-feature" href="/nimbus-demo/writing-pages/"><span className="demo-feature-icon">▤</span><span className="demo-feature-title">文档工作流 <span>↗</span></span><span className="demo-feature-description">MDX、Frontmatter、可复用片段与自动生成侧边栏。</span><span className="demo-feature-label">03 / AUTHORING</span></a>
-      <a className="demo-feature" href="/nimbus-demo/architecture/"><span className="demo-feature-icon">⌘</span><span className="demo-feature-title">工程架构 <span>↗</span></span><span className="demo-feature-description">内容集合、构建时校验、搜索索引和 AI 可读 Markdown 输出。</span><span className="demo-feature-label">04 / ARCHITECTURE</span></a>
+      <SiteLink class="demo-feature" href="/components/"><span className="demo-feature-icon">◇</span><span className="demo-feature-title">组件展厅 <span>↗</span></span><span className="demo-feature-description">Tabs、Cards、Steps、Aside 等内置 MDX 组件，可交互、可修改。</span><span className="demo-feature-label">01 / COMPONENTS</span></SiteLink>
+      <SiteLink class="demo-feature" href="/theme/"><span className="demo-feature-icon">◈</span><span className="demo-feature-title">主题系统 <span>↗</span></span><span className="demo-feature-description">基于 OKLCH 和 CSS 设计令牌构建的明暗主题与布局系统。</span><span className="demo-feature-label">02 / DESIGN TOKENS</span></SiteLink>
+      <SiteLink class="demo-feature" href="/writing-pages/"><span className="demo-feature-icon">▤</span><span className="demo-feature-title">文档工作流 <span>↗</span></span><span className="demo-feature-description">MDX、Frontmatter、可复用片段与自动生成侧边栏。</span><span className="demo-feature-label">03 / AUTHORING</span></SiteLink>
+      <SiteLink class="demo-feature" href="/architecture/"><span className="demo-feature-icon">⌘</span><span className="demo-feature-title">工程架构 <span>↗</span></span><span className="demo-feature-description">内容集合、构建时校验、搜索索引和 AI 可读 Markdown 输出。</span><span className="demo-feature-label">04 / ARCHITECTURE</span></SiteLink>
     </div>
   </section>
 
   <section className="demo-callout">
     <div><span className="demo-section-kicker">READY TO SHIP</span><h2>保持内容简单，让体验更进一步。</h2><p>无需自行组装每一个页面组件。基于 Nimbus 官方工程骨架，专注于内容和产品。</p></div>
-    <a className="demo-btn demo-btn-dark" href="/nimbus-demo/deploy/">了解如何部署 ↗</a>
+    <SiteLink class="demo-btn demo-btn-dark" href="/deploy/">了解如何部署 ↗</SiteLink>
   </section>
 
   <footer className="demo-home-footer"><span>© 2026 Nimbus Demo</span><span>Powered by <a href="https://github.com/cloudflare/nimbus" target="_blank" rel="noopener noreferrer">Cloudflare Nimbus</a> · <a href="https://github.com/weepwood/nimbus-demo" target="_blank" rel="noopener noreferrer">GitHub</a></span></footer>
