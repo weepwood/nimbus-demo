@@ -1,0 +1,81 @@
+---
+title: 示例 API 参考
+description: Nimbus Studio 提供三个真实可访问的静态 JSON 端点，同时发布 OpenAPI 3.1 契约。
+sidebar:
+  order: 10
+---
+
+本站提供三个可访问的 JSON 示例接口，供学习 HTTP 请求、响应检查和 API 文档写作。
+
+<Aside type="caution" title="这是演示接口，不是业务后端">
+  三个端点均由 Astro 在构建时生成 JSON 文件。GET 请求是真实网络请求，但内容是固定的公开模拟数据，不存在数据库、会话、身份认证或写入能力。不要将其用作在线服务健康检查。
+</Aside>
+
+## 快速体验
+
+在 [API 请求实验室](/api-lab/) 可以切换端点、执行 `fetch`、查看响应状态和耗时，并复制 JSON。
+
+完整机器可读的 API 契约：[下载 OpenAPI 3.1 描述文件](/openapi.json)。
+
+## GET /demo-api/status.json
+
+<Badge variant="success" text="200 OK" /> <Badge variant="info" text="Public" />
+
+返回静态构建的版本信息和功能列表。这里的 `ok: true` 仅表示模拟数据中的固定字段，**并非实时健康状态**。
+
+~~~bash
+curl https://weepwood.github.io/nimbus-demo/demo-api/status.json
+~~~
+
+~~~json
+{
+  "ok": true,
+  "service": "nimbus-demo",
+  "version": "1.0",
+  "mode": "static-fixture",
+  "features": ["MDX", "Pagefind", "Themes", "Interactive demos"]
+}
+~~~
+
+## GET /demo-api/users.json
+
+<Badge variant="success" text="200 OK" /> <Badge variant="warning" text="Mock data" />
+
+返回三个虚构的用户记录，字段包括 `id`、`name`、`role` 和 `active`。
+
+~~~ts
+const response = await fetch("/nimbus-demo/demo-api/users.json");
+if (!response.ok) throw new Error("Request failed");
+const users = await response.json();
+console.log(users.data);
+~~~
+
+<Aside type="note">
+  以上是当前 GitHub Pages 子路径的示例。部署到其他域名时，独立 Astro 页面应使用 `withBase` 处理路径。
+</Aside>
+
+## GET /demo-api/projects.json
+
+<Badge variant="success" text="200 OK" /> <Badge variant="warning" text="Mock data" />
+
+返回文档、组件库、API Explorer 三个模拟项目，并提供技术栈与状态字段。
+
+~~~bash
+curl https://weepwood.github.io/nimbus-demo/demo-api/projects.json
+~~~
+
+## 端点总览
+
+| 请求 | 路径 | 响应 |
+| --- | --- | --- |
+| GET | `/demo-api/status.json` | `StatusResponse` |
+| GET | `/demo-api/users.json` | `UsersResponse` |
+| GET | `/demo-api/projects.json` | `ProjectsResponse` |
+
+详细响应 Schema 定义保存在 `public/openapi.json`，用于文档核验，确保示例数据结构与说明一致。
+
+## 何时使用真正的 OpenAPI 参考？
+
+当项目接入实际后端、需要请求鉴权和参数校验时，可参考 [Nimbus Registry 的 api-reference 配方](https://nimbus-docs.com/registry/)，将真实 OpenAPI 规格挂载为可导航的 API 参考页。
+
+本站目前只实现公开静态端点与手写示例，不声称已接入真实 Cloudflare API。

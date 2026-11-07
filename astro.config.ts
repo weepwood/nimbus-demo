@@ -17,7 +17,39 @@ const nimbusConfig = defineNimbusConfig({
   editPattern: "https://github.com/weepwood/nimbus-demo/edit/main/{path}",
   // The home page leads the sidebar; every other page joins it automatically.
   sidebar: {
-    items: ["index", { autogenerate: { collection: "docs" } }],
+    items: [
+      "index",
+      {
+        label: "入门与写作",
+        icon: "ph:rocket-launch",
+        collapsed: false,
+        items: ["quickstart", "tutorial", "writing-pages", "faq"],
+      },
+      {
+        label: "组件与体验",
+        icon: "ph:squares-four",
+        collapsed: false,
+        items: ["components", "theme", "patterns", "search-guide", "reading-list-guide"],
+      },
+      {
+        label: "交互演示",
+        icon: "ph:flask",
+        collapsed: false,
+        items: [
+          "showcase",
+          { label: "UI 组件实验室", link: "/playground/" },
+          { label: "API 请求实验室", link: "/api-lab/" },
+          { label: "配置生成器", link: "/configurator/" },
+          { label: "我的阅读清单", link: "/reading-list/" },
+        ],
+      },
+      {
+        label: "参考与更新",
+        icon: "ph:code",
+        collapsed: false,
+        items: ["api-reference", "architecture", "research", "changelog", "deploy"],
+      },
+    ],
   },
 });
 

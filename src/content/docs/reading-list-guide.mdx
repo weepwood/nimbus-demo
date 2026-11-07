@@ -1,0 +1,51 @@
+---
+title: 阅读清单与页面操作
+description: 收藏、分享、阅读进度以及通过 GitHub Issue 反馈文档问题。
+sidebar:
+  order: 11
+---
+
+Nimbus Studio 在文档正文添加了几项实用的阅读工具。它们不依赖外部服务，只使用浏览器原生能力或指向公开的 GitHub Issue 页面。
+
+## 收藏一篇文档
+
+<Steps>
+  <Step title="打开任意文档">
+    例如 [快速开始](/quickstart/) 或 [组件展厅](/components/)。
+  </Step>
+  <Step title="到达文档底部">
+    点击“收藏本页”，按钮状态会变成“已收藏”。
+  </Step>
+  <Step title="查看本机收藏">
+    打开 [阅读清单](/reading-list/)，这里可以访问或移除保存的文档。
+  </Step>
+</Steps>
+
+收藏记录包含页面路径、标题和收藏日期，使用浏览器 `localStorage` 存储，**没有账号和跨设备同步**。
+
+## 阅读进度
+
+阅读文档时，顶部橙色细条反映当前页面文章内容的阅读位置。短文与长文会根据文章高度分别计算；它只提供辅助反馈，不用于记录用户行为。
+
+## 分享页面
+
+点击“复制链接”，系统会尝试调用浏览器的 Clipboard API。没有授予权限时，可从地址栏复制链接。
+
+## 报告问题
+
+“反馈问题”会打开 GitHub Issue 创建页，预填写当前文档的标题与地址。是否提交由用户自己决定；本站不会静默发送消息。
+
+<Aside type="caution" title="本地数据不是可靠备份">
+  清除站点数据、使用无痕窗口或更换浏览器，都可能丢失收藏。若无法访问本地存储，页面会明确提示。
+</Aside>
+
+## 开发实现
+
+- `src/components/reading/ReadingActions.astro`：页面底部操作区域
+- `src/components/reading/ReadingProgress.astro`：阅读进度
+- `src/lib/reading-list.ts`：收藏记录校验与本地存取
+- `src/pages/reading-list.astro`：收藏管理页
+
+相关组件会在 Astro ClientRouter 导航后重新绑定。样式会尊重 `prefers-reduced-motion`。
+
+你也可以继续查看 [设计系统](/theme/) 和 [项目架构](/architecture/)。

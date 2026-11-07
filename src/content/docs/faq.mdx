@@ -1,6 +1,6 @@
 ---
 title: 常见问题
-description: 解决 Nimbus Demo 本地开发、GitHub Pages、搜索、路径和主题的常见问题。
+description: 解决 Nimbus Studio 本地开发、GitHub Pages、搜索、路径和主题的常见问题。
 sidebar:
   order: 7
 ---
@@ -60,3 +60,17 @@ pnpm run check
 ## 有额外组件可以安装吗？
 
 可以。Nimbus 的官方 Registry 提供可选择安装的组件和能力。参考 [官方 Registry](https://nimbus-docs.com/registry)。
+
+## 阅读清单的数据存在哪里？
+
+文档页底部的收藏按钮会把页面标题、路径和收藏时间存入浏览器 `localStorage`。它不会发送给 GitHub 或任何后端，因此不同设备之间不会自动同步。
+
+可以在 [阅读清单](/reading-list/) 中移除或者清空收藏。详见 [阅读工具说明](/reading-list-guide/)。
+
+## 为什么 API 工作台返回固定数据？
+
+当前的 [API 请求工作台](/api-lab/) 调用的是真实网络 GET 请求，但访问的是预渲染静态 JSON，故返回固定的公开模拟数据。完整字段和行为记录在 [API 参考](/api-reference/) 与 [OpenAPI 规格](/openapi.json)。
+
+## 如何提出文档问题？
+
+文档底部提供“反馈问题”，它会打开 GitHub Issue 创建页面，并预填当前页面标题和链接。不会自动发送消息，用户需要自行确认并提交。

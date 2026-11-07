@@ -1,0 +1,92 @@
+---
+title: 从零构建文档站
+description: 基于 Nimbus Studio 完成一次从克隆项目、添加文档、调整主题到本地检查的端到端教程。
+sidebar:
+  order: 14
+---
+
+本教程使用本站的开源仓库，演示一个从本地开发到可部署文档页面的完整过程。它假定你有 Node.js 24、pnpm 10 和 Git。
+
+## 预期结果
+
+完成后，你将有一个运行在本机的 Nimbus 站点、一篇新增的 MDX 页面，并能通过生产构建和内部链接检查。
+
+<Steps>
+  <Step title="获取项目源码">
+    ~~~bash
+    git clone https://github.com/weepwood/nimbus-demo.git
+    cd nimbus-demo
+    corepack enable
+    pnpm install --frozen-lockfile
+    ~~~
+  </Step>
+  <Step title="启动开发环境">
+    ~~~bash
+    pnpm dev
+    ~~~
+
+    打开控制台显示的本地地址。注意本项目 `base` 为 `/nimbus-demo/`。
+  </Step>
+  <Step title="添加一篇真实内容">
+    新建 `src/content/docs/my-first-guide.mdx`：
+
+    ~~~mdx
+    ---
+    title: 我的第一篇指南
+    description: 使用 Nimbus 创建和发布第一篇文档。
+    sidebar:
+      order: 20
+    ---
+
+    ## 目标
+
+    让读者知道如何启动项目。
+
+    ## 运行
+
+    ```bash
+    pnpm dev
+    ```
+    ~~~
+
+    <Aside type="caution">
+      本仓库使用显式的侧栏分组配置。新文件创建后，还需在 astro.config.ts 的 `sidebar.items` 中将它添加到合适的分组，或改回文件系统自动生成模式。
+    </Aside>
+  </Step>
+  <Step title="调整项目主题">
+    在 `src/styles/globals.css` 中找到 `--nb-brand` 和 `--nb-radius`。建议先修改语义令牌，再编辑组件局部 CSS。
+  </Step>
+  <Step title="验证最终产物">
+    ~~~bash
+    pnpm run check
+    pnpm preview
+    ~~~
+
+    check 会对 Astro、Nimbus 内容、内部链接与 API 数据样例进行校验。生产预览下可使用 Pagefind 搜索。
+  </Step>
+</Steps>
+
+## 发布到不同域名
+
+若发布到 `https://username.github.io/repository/`，请检查 `astro.config.ts`：
+
+~~~ts
+export default defineConfig({
+  site: "https://username.github.io",
+  base: "/repository",
+  output: "static",
+});
+~~~
+
+本项目的现有配置已指向 `weepwood.github.io/nimbus-demo/`。若部署路径发生改变，`scripts/verify-site.mjs` 中的部署目标校验也需要同步调整。
+
+## 后续实践
+
+- [交互组件实验室](/playground/)
+- [API 参考及规格](/api-reference/)
+- [阅读清单及页面操作](/reading-list-guide/)
+- [部署指南](/deploy/)
+
+<Aside type="tip">
+  文档和代码一起交付。新增示例时，应同时更新入口、用例说明、质量检查以及更新日志。
+</Aside>

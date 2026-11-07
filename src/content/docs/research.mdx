@@ -1,0 +1,57 @@
+---
+title: 设计参考与选型
+description: 对比 Cloudflare Docs、Fumadocs、Starlight、Nextra、Mintlify 的文档体验，并说明 Nimbus Studio 的设计取舍。
+sidebar:
+  order: 13
+---
+
+Nimbus Studio 基于 Nimbus 的 Astro 技术栈，其他文档项目用于借鉴信息架构和交互模式。本站不会因为参考一个 UI，就同时引入它的完整框架依赖。
+
+## 对比项目
+
+| 项目 | 观察维度 | 在本站的实践 |
+| --- | --- | --- |
+| [Cloudflare Docs](https://developers.cloudflare.com/style-guide/) | 文档分类、操作步骤与内容语义 | 首页 + 快速开始 + 示例 + API 参考 + 故障排查 |
+| [Fumadocs](https://www.fumadocs.dev/docs/ui) | 可定制界面、多布局与组件复用 | 保留自有 Astro UI，轻量化操作区 |
+| [Astro Starlight](https://starlight.astro.build/) | 内容集合、无障碍与代码高亮 | MDX Schema、语义组件、深浅色与静态构建 |
+| [Nextra](https://nextra.site/docs/docs-theme/start) | 搜索、侧栏、文章目录和翻页 | Nimbus TOC、Pagefind 与上/下篇 |
+| [Mintlify](https://www.mintlify.com/library/developer-documentation-101) | 从入门到参考的完整学习路径 | 用户任务导向的文档类型和更新日志 |
+| [Nimbus](https://nimbus-docs.com/registry/) | 自有组件、功能配方、Agent 输出 | 维护仓库内源代码与 llms.txt |
+
+## 核心取舍
+
+<Aside type="tip" title="更少的组件，不等于更少的能力">
+  优先让现有 Nimbus 组件更好地组合，只有经过使用场景验证后才增加新的客户端交互。
+</Aside>
+
+<Steps>
+  <Step title="先解决信息检索">
+    标准化“概览、入门、组件、示例、参考、常见问题与更新记录”，让页面在菜单中有可预测的位置。
+  </Step>
+  <Step title="然后改善阅读体验">
+    提供搜索、章节目录、阅读进度、收藏、分享和问题反馈，尽可能让文档只承载有用的内容。
+  </Step>
+  <Step title="最后增加可运行示例">
+    API Lab、配置生成器和组件实验室必须真正响应用户操作，并清楚标注演示与生产能力的边界。
+  </Step>
+  <Step title="用构建证据验收">
+    类型校验、文档 lint、链接和 OpenAPI 契约检查通过后才部署。
+  </Step>
+</Steps>
+
+## 没有直接复制哪些内容？
+
+- 未复制 Cloudflare 的正式品牌、商标或网站页面源代码
+- 未引入 Next.js/Nextra 或 React/Fumadocs 作为第二套文档运行时
+- 未接入 Mintlify 的托管编辑器、云搜索或在线协作
+- 未声称已有账号、多语言切换、真实业务 API 或云端同步
+
+## 深入阅读
+
+- [Cloudflare 信息架构](https://developers.cloudflare.com/style-guide/documentation-content-strategy/information-architecture/)
+- [Fumadocs 定制布局](https://www.fumadocs.dev/docs/guides/customize-ui)
+- [Starlight 项目结构](https://starlight.astro.build/guides/project-structure/)
+- [Nimbus 侧栏配置](https://nimbus-docs.com/navigation/sidebar/)
+- [本站设计系统](/theme/) 与 [文档写作](/writing-pages/)
+
+仓库还包含可追溯的 [完整研究记录](https://github.com/weepwood/nimbus-demo/blob/main/docs/RESEARCH.md)、[设计规范](https://github.com/weepwood/nimbus-demo/blob/main/docs/DESIGN_SYSTEM.md) 和 [迭代计划](https://github.com/weepwood/nimbus-demo/blob/main/docs/ROADMAP.md)。

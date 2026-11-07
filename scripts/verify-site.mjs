@@ -44,6 +44,13 @@ const required = [
   "demo-api/projects.json",
   "social.svg",
   "favicon.svg",
+  "reading-list/index.html",
+  "reading-list-guide/index.html",
+  "api-reference/index.html",
+  "changelog/index.html",
+  "research/index.html",
+  "tutorial/index.html",
+  "openapi.json",
 ];
 for (const item of required) checkFile(item);
 
@@ -101,8 +108,8 @@ for (const file of allHtml(dist)) {
     }
   }
 }
-if (pages < 13) failures.push("Expected at least thirteen pages; only found " + pages);
-if (links < 25) failures.push("Expected navigable local links; found " + links);
+if (pages < 20) failures.push("Expected at least twenty pages; only found " + pages);
+if (links < 100) failures.push("Expected navigable local links; found " + links);
 
 for (const endpoint of ["status", "users", "projects"]) {
   const file = "demo-api/" + endpoint + ".json";
@@ -121,7 +128,68 @@ if (checkFile("robots.txt")) {
 }
 if (checkFile("llms.txt")) {
   const llms = readFileSync(join(dist, "llms.txt"), "utf8");
-  if (!llms.includes("Nimbus Demo")) failures.push("LLM index has unexpected title");
+  if (!llms.includes("Nimbus Studio")) failures.push("LLM index has unexpected title");
+}
+
+
+// Keep the machine-readable contract in sync with the generated fixture files.
+// This intentionally checks stable fixture examples: it does not claim to
+// validate arbitrary API payloads or external network services.
+if (checkFile("openapi.json")) {
+  try {
+    const spec = JSON.parse(readFileSync(join(dist, "openapi.json"), "utf8"));
+    if (spec.openapi !== "3.1.0") failures.push("OpenAPI must use version 3.1.0");
+    if (spec.servers?.[0]?.url !== "https://weepwood.github.io/nimbus-demo") {
+      failures.push("OpenAPI server URL does not match the deployed base");
+    }
+    const contractPaths = Object.keys(spec.paths ?? {});
+    const expectedPaths = ["status", "users", "projects"].map(name => "/demo-api/" + name + ".json");
+    if (JSON.stringify([...contractPaths].sort()) !== JSON.stringify([...expectedPaths].sort())) {
+      failures.push("OpenAPI endpoints do not match expected static fixtures");
+    }
+    for (const path of expectedPaths) {
+      const operation = spec.paths?.[path]?.get;
+      const response = operation?.responses?.["200"]?.content?.["application/json"];
+      const schemaRef = response?.schema?.["$ref"];
+      if (!schemaRef || !schemaRef.startsWith("#/components/schemas/")) {
+        failures.push("Missing 200 JSON Schema for " + path);
+        continue;
+      }
+      const schemaName = schemaRef.split("/").at(-1);
+      const schema = spec.components?.schemas?.[schemaName];
+      const target = path.replace(/^\//, "");
+      if (!checkFile(target)) continue;
+      const fixture = JSON.parse(readFileSync(join(dist, target), "utf8"));
+      if (!schema || !Array.isArray(schema.required)) {
+        failures.push("Missing required field schema for " + path);
+        continue;
+      }
+      for (const key of schema.required) {
+        if (!(key in fixture)) failures.push("Missing " + key + " in " + target);
+      }
+      if (JSON.stringify(fixture) !== JSON.stringify(response.example)) {
+        failures.push("OpenAPI example differs from built fixture " + target);
+      }
+      if (path.includes("users") || path.includes("projects")) {
+        if (!Array.isArray(fixture.data) || fixture.total !== fixture.data.length) {
+          failures.push("Invalid list total or data in " + target);
+        }
+      }
+    }
+  } catch (error) {
+    failures.push("Invalid OpenAPI or fixture JSON: " + String(error));
+  }
+}
+
+const sampleDocument = join(dist, "quickstart/index.html");
+if (existsSync(sampleDocument)) {
+  const documentHtml = readFileSync(sampleDocument, "utf8");
+  if (!documentHtml.includes("data-nd-reading-actions")) failures.push("Document reading actions not rendered");
+  if (!documentHtml.includes("data-nd-reading-progress")) failures.push("Document progress indicator not rendered");
+}
+const libraryPage = join(dist, "reading-list/index.html");
+if (existsSync(libraryPage) && !readFileSync(libraryPage, "utf8").includes("data-nd-bookmark-library")) {
+  failures.push("Bookmark library root not rendered");
 }
 
 console.log("Checked " + pages + " rendered pages, " + links + " local links and " + required.length + " artifacts.");

@@ -72,3 +72,20 @@ pnpm run preview
 - `/components/`、`/patterns/` — Nimbus UI 和文档模式示例
 
 视觉设计采用云平台开发者文档常见的橙灰配色与高信息密度原则，但使用独立的 Nimbus Studio 标识，不代表 Cloudflare 官方产品。
+
+## 文档与设计资源
+
+- [竞品对照与设计决策](docs/RESEARCH.md)：Cloudflare / Fumadocs / Starlight / Nextra / Mintlify
+- [设计系统](docs/DESIGN_SYSTEM.md)：语义色彩、字体、图标、响应式、无障碍
+- [内容组织规范](docs/CONTENT_STRATEGY.md)：Overview、Quickstart、How-to、Reference、Troubleshooting
+- [项目架构](docs/ARCHITECTURE.md)：构建、导航、API Fixture 与隐私边界
+- [质量验收清单](docs/QUALITY_CHECKLIST.md)：自动与手工测试矩阵
+- [迭代计划](docs/ROADMAP.md)：已实现和候选事项
+- [项目更新日志](CHANGELOG.md)：发布能力与已知限制
+
+## 阅读工具与 API 规范
+
+- `/reading-list/`：使用浏览器本地存储管理收藏；不会同步到后端
+- 文档页底部：收藏、复制链接、通过 GitHub Issue 反馈问题
+- `/api-reference/`：三个公开静态 JSON 端点的文档
+- `/openapi.json`：OpenAPI 3.1 规格文件

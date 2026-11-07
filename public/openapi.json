@@ -1,0 +1,313 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Nimbus Studio 示例接口",
+    "version": "1.0.0",
+    "description": "只读、构建时预渲染的演示 JSON 接口。无后台数据库、无身份认证、不可写入。"
+  },
+  "servers": [
+    {
+      "url": "https://weepwood.github.io/nimbus-demo",
+      "description": "GitHub Pages 静态部署"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Demo",
+      "description": "可公开读取的模拟数据"
+    }
+  ],
+  "paths": {
+    "/demo-api/status.json": {
+      "get": {
+        "tags": [
+          "Demo"
+        ],
+        "operationId": "getStatus",
+        "summary": "读取演示服务状态",
+        "description": "返回静态构建的服务状态，不代表实时探活。",
+        "responses": {
+          "200": {
+            "description": "静态状态信息",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                },
+                "example": {
+                  "ok": true,
+                  "service": "nimbus-demo",
+                  "version": "1.0",
+                  "mode": "static-fixture",
+                  "features": [
+                    "MDX",
+                    "Pagefind",
+                    "Themes",
+                    "Interactive demos"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/demo-api/users.json": {
+      "get": {
+        "tags": [
+          "Demo"
+        ],
+        "operationId": "listUsers",
+        "summary": "列出模拟用户",
+        "description": "所有用户都是虚构样例数据，不包含真实账号。",
+        "responses": {
+          "200": {
+            "description": "模拟用户列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsersResponse"
+                },
+                "example": {
+                  "ok": true,
+                  "total": 3,
+                  "data": [
+                    {
+                      "id": "usr_001",
+                      "name": "Alex Chen",
+                      "role": "admin",
+                      "active": true
+                    },
+                    {
+                      "id": "usr_002",
+                      "name": "Morgan Lee",
+                      "role": "editor",
+                      "active": true
+                    },
+                    {
+                      "id": "usr_003",
+                      "name": "Taylor Kim",
+                      "role": "viewer",
+                      "active": false
+                    }
+                  ],
+                  "note": "Public demo data. No real user records."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/demo-api/projects.json": {
+      "get": {
+        "tags": [
+          "Demo"
+        ],
+        "operationId": "listProjects",
+        "summary": "列出模拟项目",
+        "description": "全部为构建阶段的公开静态数据。",
+        "responses": {
+          "200": {
+            "description": "模拟项目列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectsResponse"
+                },
+                "example": {
+                  "ok": true,
+                  "total": 3,
+                  "data": [
+                    {
+                      "id": "prj_docs",
+                      "name": "Documentation",
+                      "stack": [
+                        "Astro",
+                        "MDX"
+                      ],
+                      "status": "active"
+                    },
+                    {
+                      "id": "prj_ui",
+                      "name": "Component Library",
+                      "stack": [
+                        "Astro",
+                        "CSS"
+                      ],
+                      "status": "active"
+                    },
+                    {
+                      "id": "prj_api",
+                      "name": "API Explorer",
+                      "stack": [
+                        "TypeScript"
+                      ],
+                      "status": "preview"
+                    }
+                  ],
+                  "note": "Static fixture generated during build."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "StatusResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ok",
+          "service",
+          "version",
+          "mode",
+          "features"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "const": true
+          },
+          "service": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string",
+            "const": "static-fixture"
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "role",
+          "active"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "admin",
+              "editor",
+              "viewer"
+            ]
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      },
+      "UsersResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ok",
+          "total",
+          "data",
+          "note"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "const": true
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            }
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      },
+      "Project": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "stack",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "stack": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "preview"
+            ]
+          }
+        }
+      },
+      "ProjectsResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ok",
+          "total",
+          "data",
+          "note"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "const": true
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Project"
+            }
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

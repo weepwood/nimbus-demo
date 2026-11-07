@@ -1,0 +1,52 @@
+---
+title: 更新日志
+description: Nimbus Studio 的版本演进、功能变化、验证结果和已知限制。
+sidebar:
+  order: 12
+---
+
+项目的目标是持续改善文档阅读、示例可用性与工程质量。以下内容对应已经在仓库实现的工作，而不是未来功能承诺。
+
+## 2026-11-07 · 阅读体验与内容体系
+
+<Badge variant="success" text="Released" />
+
+**新增**
+- 可保存的本地阅读清单，支持取消收藏、清空和跨标签页同步
+- 文档阅读进度提示、复制链接以及 GitHub Issue 反馈入口
+- OpenAPI 3.1 机器可读示例契约及 API 参考页
+- 竞品研究、设计规范、文档规范和项目验收清单
+
+**优化**
+- 修正文档侧边栏的 `sticky` 定位冲突
+- 统一页面操作文字及 404 页面中文提示
+- 扩展自动化检查，覆盖新页面与 OpenAPI Schema
+
+## 2026-11-07 · Nimbus Studio 视觉与示例
+
+<Badge variant="success" text="Released" />
+
+**新增**
+- 品牌首页、组件展厅、功能中心和配置生成器
+- 可调配色、圆角、密度和字体的组件实验室
+- 三个公开静态 JSON 端点及交互式 API 请求实验室
+
+**优化**
+- Cloudflare Developers 方向的橙灰视觉语言
+- 统一 Phosphor/ Iconify 图标、Inter 与 JetBrains Mono 字体
+- GitHub Pages 子路径、搜索索引与站点构建检查
+
+## 2026-11-07 · 项目初始化
+
+- 从 Cloudflare Nimbus 官方 Starter 初始化，保留 Astro 和 Nimbus 组件源代码
+- 接入 GitHub Pages 与 CI/CD、类型校验、文档链接验证
+- 使用 `pnpm-lock.yaml` 保障可重复构建
+
+## 已知边界
+
+- API 是公开静态数据，不支持写入、登录、真实健康检查
+- 收藏只保存在浏览器当前站点的本地存储
+- GitHub Pages 是静态部署，不含服务器侧账号或数据库
+- 构建测试不能代替所有浏览器的人工视觉与键盘回归
+
+完整的实施计划和验收项记录在仓库 `docs/` 目录。
