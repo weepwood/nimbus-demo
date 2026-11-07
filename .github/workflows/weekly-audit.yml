@@ -27,6 +27,10 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Validate Astro, Nimbus content and generated site
         run: pnpm run check
+      - name: Review npm updates (informational only)
+        run: |
+          echo "Checking for available package updates. Nimbus/Astro peers require manual compatibility review."
+          pnpm outdated --long || true
       - name: Write summary
         if: always()
         run: |
@@ -35,5 +39,5 @@ jobs:
             echo ""
             echo "- Commit: $(git rev-parse --short HEAD)"
             echo "- Workflow: Weekly documentation health"
-            echo "- This checks generated artifacts, not live browser rendering or external sites."
+            echo "- This checks generated artifacts and reports possible package updates. It does not auto-upgrade dependencies, test live browser rendering, or test external sites."
           } >> "$GITHUB_STEP_SUMMARY"

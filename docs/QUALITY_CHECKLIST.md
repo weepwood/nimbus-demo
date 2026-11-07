@@ -17,7 +17,7 @@
 ## 定期巡检
 
 - [ ] 每周定时 Actions 重新执行完整 `pnpm run check`，若失败需通过工作流日志定位并创建 Issue
-- [ ] 每月检查 Dependabot 提出的依赖更新 PR，合并前必须先查看 CI、Nimbus 上游变更和许可
+- [ ] 每月检查 GitHub Actions Dependabot PR，并根据每周 pnpm outdated 报告人工评估 npm 更新；合并前必须验证 CI、Nimbus 上游约束和许可证
 - [ ] 收到设计或功能反馈后记录影响范围、修复步骤与回归证据
 
 ## 手动（必须在真实浏览器确认）

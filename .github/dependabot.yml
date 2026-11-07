@@ -1,17 +1,7 @@
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "monthly"
-    open-pull-requests-limit: 2
-    groups:
-      safe-updates:
-        patterns: ["*"]
-        update-types: ["minor", "patch"]
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
+  # Nimbus/Astro peers are intentionally pinned. Their upgrades need a
+  # compatibility review rather than automatic package updates.
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

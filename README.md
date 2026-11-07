@@ -93,7 +93,7 @@ pnpm run preview
 ## 持续迭代机制
 
 - `.github/workflows/weekly-audit.yml`：每周自动重新执行 `pnpm run check`，记录静态站点健康情况。定时检查**不会自动修改或部署代码**。
-- `.github/dependabot.yml`：每月检查 npm 与 GitHub Actions 依赖更新，生成 PR 供审查，不自动合并。
+- `.github/dependabot.yml`：每月对 GitHub Actions 的非破坏性更新生成分组 PR，供审查且不会自动合并。Nimbus/Astro npm 依赖为固定版本，每周巡检仅报告可用升级，实际版本变更需人工核对兼容性。
 - [功能 Bug 反馈](https://github.com/weepwood/nimbus-demo/issues/new/choose) 和 [设计体验反馈](https://github.com/weepwood/nimbus-demo/issues/new/choose)：提供可复现步骤、浏览器和截图。
 - `.github/PULL_REQUEST_TEMPLATE.md`：统一功能、视觉、文档和回归验收要求。
 

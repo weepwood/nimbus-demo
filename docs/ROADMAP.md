@@ -12,7 +12,7 @@
 - 建立独立的设计规范、研究记录、内容策略、架构和测试清单
 - 阅读进度、收藏/移除/清空、复制链接、GitHub Issue 反馈
 - API OpenAPI 3.1 静态契约与构建检查
-- 每周 GitHub Actions 文档健康检查、每月 Dependabot 更新 PR 与可复用的反馈模板
+- 每周 GitHub Actions 文档健康检查、每月 GitHub Actions 非破坏性 Dependabot PR 与 npm 兼容性人工审查 与可复用的反馈模板
 - 任务式侧栏（开始使用 / 组件设计 / 交互演示 / 参考资料）
 
 ## 下一轮候选 P1（未实现）
