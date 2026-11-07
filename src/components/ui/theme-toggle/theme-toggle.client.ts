@@ -27,7 +27,10 @@ function initThemeToggle(button: HTMLElement): () => void {
   }
 
   function syncPressed() {
-    button.setAttribute("aria-pressed", String(document.documentElement.dataset.mode === "dark"));
+    const isDark = document.documentElement.dataset.mode === "dark";
+    button.setAttribute("aria-pressed", String(isDark));
+    button.setAttribute("aria-label", isDark ? "切换到浅色主题" : "切换到深色主题");
+    button.setAttribute("title", isDark ? "切换到浅色主题" : "切换到深色主题");
   }
 
   window.__nbApplyTheme?.();

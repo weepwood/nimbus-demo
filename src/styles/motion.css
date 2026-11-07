@@ -1,0 +1,171 @@
+/*
+ * Nimbus Studio motion system
+ * Functional transitions before decorative effects. All entrance effects
+ * are progressive enhancements: content remains visible without JavaScript.
+ */
+:root {
+  --nd-motion-fast: 140ms;
+  --nd-motion-normal: 220ms;
+  --nd-motion-slow: 340ms;
+  --nd-ease-out: cubic-bezier(.22,1,.36,1);
+  --nd-ease-standard: cubic-bezier(.2,.7,.2,1);
+  --nd-ease-in-out: cubic-bezier(.65,0,.35,1);
+}
+@media (prefers-reduced-motion: no-preference) {
+  html:focus-within { scroll-behavior: smooth; }
+  .nd-site-header {
+    transition: background-color var(--nd-motion-normal) var(--nd-ease-standard),
+      border-color var(--nd-motion-normal) var(--nd-ease-standard);
+  }
+  .nd-primary-nav a {
+    transition: color var(--nd-motion-fast), background-color var(--nd-motion-fast),
+      border-color var(--nd-motion-normal) var(--nd-ease-standard);
+  }
+  .nd-capability-icon, .nd-hub-card-icon, .nd-demo-card-top svg {
+    transition: color var(--nd-motion-normal), background-color var(--nd-motion-normal),
+      transform var(--nd-motion-normal) var(--nd-ease-out);
+  }
+  .nd-capability:hover .nd-capability-icon,
+  .nd-hub-card:hover .nd-hub-card-icon {
+    background: color-mix(in oklch, var(--nd-orange) 11%, var(--nb-card));
+    transform: translateY(-2px);
+  }
+  .nd-capability h3 svg, .nd-demo-card-content h3 svg,
+  .nd-hub-card h3 svg, .nd-section-link svg,
+  .nd-button svg, .nd-hub-card-action svg {
+    transition: transform var(--nd-motion-normal) var(--nd-ease-out),
+      color var(--nd-motion-fast);
+  }
+  .nd-capability:hover h3 svg,
+  .nd-demo-card:hover h3 svg,
+  .nd-hub-card:hover h3 svg { transform: translate(2px,-2px); color: var(--nd-orange-strong); }
+  .nd-section-link:hover svg,.nd-hub-card:hover .nd-hub-card-action svg,
+  .nd-button:hover svg { transform: translateX(3px); }
+  .nd-button:active,.nd-demo-card:active,.nd-hub-card:active {
+    transform: translateY(0) scale(.99);
+  }
+  .nd-read-action, .lab-button-primary, .lab-button-secondary,
+  .lab-demo-buttons button, .builder-actions button {
+    transition: color var(--nd-motion-fast), background var(--nd-motion-fast),
+      border-color var(--nd-motion-fast), transform var(--nd-motion-fast) var(--nd-ease-out);
+  }
+  .nd-read-action:active,.lab-button-primary:active,.lab-button-secondary:active,
+  .lab-demo-buttons button:active,.builder-actions button:active {
+    transform: scale(.97);
+  }
+  .nd-reading-list-link svg {
+    transition: transform var(--nd-motion-normal) var(--nd-ease-out);
+  }
+  .nd-reading-list-link:hover svg { transform: translateY(-2px); }
+  .nd-mobile-menu[open] > nav {
+    transform-origin: top right;
+    animation: nd-menu-enter var(--nd-motion-normal) var(--nd-ease-out) both;
+  }
+  [data-search-dialog][open] [data-slot="dialog-content"] {
+    animation: nd-dialog-enter var(--nd-motion-normal) var(--nd-ease-out) both;
+  }
+  [data-search-dialog][open]::backdrop {
+    animation: nd-backdrop-enter var(--nd-motion-fast) ease-out both;
+  }
+  [data-nb-tabs] [data-nb-tabs-content]:not([hidden]) {
+    animation: nd-content-enter var(--nd-motion-normal) var(--nd-ease-out) both;
+  }
+  [data-nd-enter="pending"] {
+    opacity: 0;
+    transform: translate3d(0,14px,0);
+  }
+  [data-nd-enter="visible"] {
+    transition: opacity var(--nd-motion-slow) var(--nd-ease-out),
+      transform var(--nd-motion-slow) var(--nd-ease-out);
+    transition-delay: var(--nd-enter-delay,0ms);
+    opacity: 1;
+    transform: translateZ(0);
+  }
+  .lab-preview-surface {
+    transition: border-color var(--nd-motion-normal), background-color var(--nd-motion-normal);
+  }
+  .lab-demo-card, .lab-demo-avatar, .lab-demo-primary, .lab-demo-badge,
+  .lab-demo-card input[type="text"] {
+    transition: border-radius var(--lab-motion-duration,var(--nd-motion-normal)) var(--nd-ease-standard),
+      background-color var(--lab-motion-duration,var(--nd-motion-normal)) var(--nd-ease-standard),
+      border-color var(--lab-motion-duration,var(--nd-motion-normal)) var(--nd-ease-standard),
+      color var(--lab-motion-duration,var(--nd-motion-normal)) var(--nd-ease-standard),
+      padding var(--lab-motion-duration,var(--nd-motion-normal)) var(--nd-ease-standard);
+  }
+  .lab-demo-content,.lab-demo-toggle {
+    transition: padding var(--lab-motion-duration,var(--nd-motion-normal)) var(--nd-ease-standard),
+      margin var(--lab-motion-duration,var(--nd-motion-normal)) var(--nd-ease-standard);
+  }
+  .lab-preview-surface[data-demo-state="success"] .lab-demo-card {
+    border-color:color-mix(in oklch,var(--lab-accent) 44%,var(--nb-border));
+  }
+  [data-api-lab][data-request-state="loading"] .lab-code {
+    background-image:linear-gradient(110deg,transparent 24%,rgba(255,255,255,.035) 42%,transparent 60%);
+    background-size:240% 100%;
+    animation:nd-loading-shimmer 1.5s ease-in-out infinite;
+  }
+  .builder-code-window, .lab-code { transition:border-color var(--nd-motion-normal); }
+  .builder-code-window:focus-within, .lab-code:focus-visible { border-color:var(--nd-orange-strong); }
+}
+@keyframes nd-content-enter {
+  from { opacity:.15; transform:translateY(5px); }
+  to { opacity:1; transform:translateY(0); }
+}
+@keyframes nd-menu-enter {
+  from { opacity:0; transform:translateY(-6px) scale(.98); }
+  to { opacity:1; transform:translateY(0) scale(1); }
+}
+@keyframes nd-dialog-enter {
+  from { opacity:0; transform:translateY(-9px) scale(.985); }
+  to { opacity:1; transform:translateY(0) scale(1); }
+}
+@keyframes nd-backdrop-enter { from {opacity:0} to {opacity:1} }
+@keyframes nd-loading-shimmer { 0% { background-position:180% 0; } 100% { background-position:-130% 0; } }
+.nd-mobile-menu summary:focus-visible,.nd-read-action:focus-visible,
+.lab-endpoint:focus-within,.nd-reading-list-link:focus-visible {
+  outline:2px solid var(--nd-orange-strong);
+  outline-offset:3px;
+}
+[data-api-lab][data-request-state="loading"] .lab-send {
+  position:relative; cursor:progress;
+}
+[data-api-lab] [data-cancel-request][hidden] { display:none; }
+[data-api-lab] .lab-request-actions {
+  display:flex; gap:.55rem; margin-top:1.2rem;
+}
+[data-api-lab] .lab-request-actions .lab-send { margin:0; flex:1; }
+[data-api-lab] .lab-request-actions [data-cancel-request] {
+  flex:none; min-width:76px;
+}
+[data-api-lab][data-request-state="success"] .lab-response-metrics {
+  border-color: color-mix(in oklch,#239c6c 35%,var(--nb-border));
+}
+[data-nd-playground] .lab-motion-actions { display:flex; flex-wrap:wrap; align-items:center; gap:.75rem; }
+[data-nd-playground] [data-replay-animation] { display:inline-flex; align-items:center; gap:.35rem; }
+[data-nd-playground] [data-speed-label] { font-variant-numeric:tabular-nums; }
+.nd-site-header [aria-current="location"] { color:var(--nb-foreground); }
+.nd-primary-nav [aria-current="location"] { border-bottom-color:var(--nd-orange); }
+@media(hover:none) {
+  .nd-demo-card:hover,.nd-hub-card:hover,.nd-button:hover { transform:none; }
+  .nd-hub-card:hover .nd-hub-card-icon,.nd-capability:hover .nd-capability-icon { transform:none; }
+}
+@media(prefers-reduced-motion:reduce) {
+  html:focus-within { scroll-behavior:auto; }
+  .nd-mobile-menu[open] > nav,[data-search-dialog][open] [data-slot="dialog-content"],
+  [data-search-dialog][open]::backdrop,[data-nb-tabs] [data-nb-tabs-content]:not([hidden]),
+  [data-api-lab][data-request-state="loading"] .lab-code {
+    animation:none !important;
+  }
+  [data-nd-enter="pending"],[data-nd-enter="visible"] { opacity:1!important; transform:none!important; }
+  .nd-site-header,.nd-primary-nav a,.nd-capability-icon,.nd-hub-card-icon,
+  .nd-demo-card-top svg,.nd-capability h3 svg,.nd-demo-card-content h3 svg,
+  .nd-hub-card h3 svg,.nd-section-link svg,.nd-button svg,.nd-hub-card-action svg,
+  .nd-read-action,.lab-button-primary,.lab-button-secondary,.lab-demo-buttons button,
+  .builder-actions button,.nd-reading-list-link svg,.lab-preview-surface,
+  .lab-demo-card,.lab-demo-avatar,.lab-demo-primary,.lab-demo-badge,
+  .lab-demo-card input[type="text"],.lab-demo-content,.lab-demo-toggle,
+  .builder-code-window,.lab-code {
+    transition:none!important;
+  }
+  .nd-button:active,.nd-demo-card:active,.nd-hub-card:active { transform:none!important; }
+}

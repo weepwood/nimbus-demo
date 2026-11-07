@@ -50,8 +50,20 @@ const showcase = withBase("/showcase/", import.meta.env.BASE_URL);
               <option value="mono">JetBrains Mono</option>
             </select>
           </div>
+          <div class="lab-form-row">
+            <label for="lab-motion-speed">动效响应速度</label>
+            <select id="lab-motion-speed" data-motion-speed>
+              <option value="140">快速 · 140ms</option>
+              <option value="220" selected>标准 · 220ms</option>
+              <option value="360">舒缓 · 360ms</option>
+            </select>
+            <div class="lab-motion-actions">
+              <button type="button" class="lab-button-secondary" data-replay-animation><Icon name="ph:play-circle" class="size-4" /> 播放过渡</button>
+              <span data-motion-status class="lab-feedback" role="status" aria-live="polite">动画可以随时重新触发。</span>
+            </div>
+          </div>
           <div class="lab-separator"></div>
-          <p class="lab-help"><Icon name="ph:info" /> 参数只影响右侧实时预览，复制 CSS 后可应用到真实项目。</p>
+          <p class="lab-help"><Icon name="ph:info" /> 参数只影响右侧实时预览。点击“播放过渡”体验动效；系统启用减少动态效果时仅更新内容。</p>
         </section>
 
         <section class="lab-panel lab-preview-panel" aria-label="实时组件预览">
@@ -81,52 +93,90 @@ const showcase = withBase("/showcase/", import.meta.env.BASE_URL);
 </BaseLayout>
 
 <script>
+  import { mount } from "@cloudflare/nimbus-docs/client";
+
   const colors: Record<string, string> = {
     orange: "#C65B13",
     blue: "#315FD6",
     green: "#168466",
     graphite: "#343434",
   };
-  function mountPlayground() {
-    const root = document.querySelector<HTMLElement>("[data-nd-playground]");
-    if (!root || root.dataset.mounted === "true") return;
-    root.dataset.mounted = "true";
+
+  mount("[data-nd-playground]", root => {
+    const controller = new AbortController();
+    const { signal } = controller;
     const preview = root.querySelector<HTMLElement>("[data-preview]")!;
+    const demoCard = preview.querySelector<HTMLElement>(".lab-demo-card")!;
     const output = root.querySelector<HTMLElement>("[data-css-output]")!;
     const radius = root.querySelector<HTMLInputElement>("[data-radius]")!;
     const density = root.querySelector<HTMLSelectElement>("[data-density]")!;
     const font = root.querySelector<HTMLSelectElement>("[data-font]")!;
+    const speed = root.querySelector<HTMLSelectElement>("[data-motion-speed]")!;
     const radiusLabel = root.querySelector<HTMLOutputElement>("[data-radius-label]")!;
     const name = root.querySelector<HTMLInputElement>("[data-project-name]")!;
     const toggle = root.querySelector<HTMLInputElement>("[data-project-toggle]")!;
     const msg = root.querySelector<HTMLElement>("[data-demo-feedback]")!;
     const count = root.querySelector<HTMLElement>("[data-action-count]")!;
     const copyStatus = root.querySelector<HTMLElement>("[data-copy-feedback]")!;
+    const motionStatus = root.querySelector<HTMLElement>("[data-motion-status]")!;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let activeAnimation: Animation | null = null;
     let clicks = 0;
-    function accent() { return root!.querySelector<HTMLInputElement>('input[name="accent"]:checked')?.value ?? "orange"; }
+
+    function accent() {
+      return root.querySelector<HTMLInputElement>('input[name="accent"]:checked')?.value ?? "orange";
+    }
+    function duration() { return Number(speed.value); }
     function update() {
       const hex = colors[accent()] ?? colors.orange;
       const size = Number(radius.value);
       preview.style.setProperty("--lab-accent", hex);
       preview.style.setProperty("--lab-radius", size + "px");
+      preview.style.setProperty("--lab-motion-duration", duration() + "ms");
       preview.dataset.density = density.value;
       preview.dataset.font = font.value;
       radiusLabel.value = size + "px";
       output.textContent = [
-        "/* Nimbus component tokens */",
+        "/* Nimbus Studio interactive design tokens */",
         ":root {",
         "  --nb-brand: " + hex + ";",
         "  --nb-radius: " + size + "px;",
         "  --demo-density: " + JSON.stringify(density.value) + ";",
+        "  --demo-motion-duration: " + duration() + "ms;",
+        "  --demo-motion-easing: cubic-bezier(.22,1,.36,1);",
         "  --demo-font: " + (font.value === "mono" ? '"JetBrains Mono Variable", monospace' : '"Inter Variable", system-ui, sans-serif') + ";",
         "}",
         "",
       ].join("\n");
     }
-    root.querySelectorAll<HTMLInputElement>('input[name="accent"]').forEach(el => el.addEventListener("change", update));
-    radius.addEventListener("input", update);
-    density.addEventListener("change", update);
-    font.addEventListener("change", update);
+
+    function replay() {
+      activeAnimation?.cancel();
+      activeAnimation = null;
+      if (reducedMotion.matches) {
+        motionStatus.textContent = "已遵循系统“减少动态效果”偏好，跳过动画。";
+        return;
+      }
+      // WAAPI cancels/restarts cleanly. Only opacity and transform are animated.
+      activeAnimation = demoCard.animate([
+        { opacity: .5, transform: "translate3d(0,12px,0) scale(.985)" },
+        { opacity: 1, transform: "translate3d(0,0,0) scale(1)" },
+      ], { duration: duration(), easing: "cubic-bezier(.22,1,.36,1)", fill: "none" });
+      motionStatus.textContent = "正在展示 " + duration() + "ms 过渡，点击可立即重新播放。";
+      const current = activeAnimation;
+      current.addEventListener("finish", () => {
+        if (activeAnimation === current) motionStatus.textContent = "动画结束。再次点击可以重新播放。";
+      }, { once: true });
+    }
+
+    root.querySelectorAll<HTMLInputElement>('input[name="accent"]').forEach(el =>
+      el.addEventListener("change", update, { signal }));
+    radius.addEventListener("input", update, { signal });
+    density.addEventListener("change", update, { signal });
+    font.addEventListener("change", update, { signal });
+    speed.addEventListener("change", update, { signal });
+    root.querySelector<HTMLButtonElement>("[data-replay-animation]")!.addEventListener("click", replay, { signal });
+
     root.querySelector<HTMLButtonElement>("[data-demo-create]")!.addEventListener("click", () => {
       const title = name.value.trim();
       if (!title) {
@@ -135,22 +185,31 @@ const showcase = withBase("/showcase/", import.meta.env.BASE_URL);
         name.focus();
         return;
       }
-      clicks += 1;
+      clicks++;
       count.textContent = clicks + (clicks === 1 ? " action" : " actions");
       msg.textContent = "已模拟创建 “" + title + "” · 预览部署：" + (toggle.checked ? "已开启" : "已关闭");
       msg.dataset.status = "success";
-    });
+      preview.dataset.demoState = "success";
+    }, { signal });
+
     root.querySelector<HTMLButtonElement>("[data-demo-clear]")!.addEventListener("click", () => {
       msg.textContent = "反馈已清空。";
       msg.dataset.status = "";
-    });
+      delete preview.dataset.demoState;
+    }, { signal });
+
     root.querySelector<HTMLButtonElement>("[data-reset]")!.addEventListener("click", () => {
       root.querySelector<HTMLInputElement>('input[name="accent"][value="orange"]')!.checked = true;
       radius.value = "10";
       density.value = "balanced";
       font.value = "sans";
+      speed.value = "220";
+      activeAnimation?.cancel();
+      activeAnimation = null;
+      motionStatus.textContent = "已恢复标准动效参数。";
       update();
-    });
+    }, { signal });
+
     root.querySelector<HTMLButtonElement>("[data-copy-css]")!.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(output.textContent || "");
@@ -158,9 +217,21 @@ const showcase = withBase("/showcase/", import.meta.env.BASE_URL);
       } catch {
         copyStatus.textContent = "复制未被允许，请选择上方代码手动复制。";
       }
-    });
+    }, { signal });
+
+    const onPreference = () => {
+      if (reducedMotion.matches) {
+        activeAnimation?.cancel();
+        activeAnimation = null;
+        motionStatus.textContent = "系统已启用减少动态效果。";
+      }
+    };
+    reducedMotion.addEventListener("change", onPreference, { signal });
+
     update();
-  }
-  document.addEventListener("astro:page-load", mountPlayground);
-  mountPlayground();
+    return () => {
+      activeAnimation?.cancel();
+      controller.abort();
+    };
+  });
 </script>

@@ -75,9 +75,9 @@ const resolveSectionHref = (href: string): string =>
 
       <nav class="nd-primary-nav" aria-label="站点主导航">
         <a href={withBase("/", import.meta.env.BASE_URL)} aria-current={currentSlug === "/" ? "page" : undefined}>概览</a>
-        <a href={withBase("/quickstart/", import.meta.env.BASE_URL)} aria-current={currentSlug === "/quickstart" ? "page" : undefined}>文档</a>
-        <a href={withBase("/components/", import.meta.env.BASE_URL)} aria-current={currentSlug === "/components" ? "page" : undefined}>组件</a>
-        <a href={withBase("/showcase/", import.meta.env.BASE_URL)} aria-current={currentSlug === "/showcase" ? "page" : undefined}>交互实验室</a>
+        <a href={withBase("/quickstart/", import.meta.env.BASE_URL)} aria-current={["/quickstart","/tutorial","/writing-pages","/faq","/api-reference"].includes(currentSlug) ? "location" : undefined}>文档</a>
+        <a href={withBase("/components/", import.meta.env.BASE_URL)} aria-current={["/components","/theme","/patterns"].includes(currentSlug) ? "location" : undefined}>组件</a>
+        <a href={withBase("/showcase/", import.meta.env.BASE_URL)} aria-current={currentSlug === "/showcase" || ["/api-lab","/playground","/configurator"].includes(currentSlug) ? "location" : undefined}>交互实验室</a>
       </nav>
       {showSections && (
         <nav aria-label="Sections" class="hidden md:flex items-center gap-1 ms-4 ps-4 border-s border-border h-6 min-w-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -120,7 +120,7 @@ const resolveSectionHref = (href: string): string =>
         <Icon name="ph:bookmark-simple" class="size-[18px]" />
       </a>
       <ThemeToggle />
-      <details class="nd-mobile-menu">
+      <details class="nd-mobile-menu" data-nd-mobile-menu>
         <summary aria-label="打开站点导航"><Icon name="ph:list" class="h-[19px] w-[19px]" /></summary>
         <nav aria-label="移动站点导航">
           <a href={withBase("/", import.meta.env.BASE_URL)}>概览</a>
@@ -164,3 +164,7 @@ const resolveSectionHref = (href: string): string =>
     </nav>
   )}
 </header>
+
+<script>
+  import "./header-interactions.client";
+</script>

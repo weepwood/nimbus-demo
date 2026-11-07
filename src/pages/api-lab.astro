@@ -33,7 +33,10 @@ const endpointBase = withBase("/demo-api/", import.meta.env.BASE_URL);
             <label>Request Headers</label>
             <div class="lab-static-header"><span>Accept</span><code>application/json</code></div>
           </div>
-          <button type="button" class="lab-button-primary lab-send" data-send><Icon name="ph:paper-plane-right"/> 发送 GET 请求</button>
+          <div class="lab-request-actions">
+            <button type="button" class="lab-button-primary lab-send" data-send><Icon name="ph:paper-plane-right"/><span data-send-label>发送 GET 请求</span></button>
+            <button type="button" class="lab-button-secondary" data-cancel-request hidden><Icon name="ph:x" class="size-4"/> 取消</button>
+          </div>
           <div class="lab-separator"></div>
           <div class="lab-help"><Icon name="ph:info" /><span>仅请求本网站公开的静态 JSON 示例。没有后台数据库，也不收集或发送任何个人凭据。</span></div>
         </section>
@@ -43,7 +46,7 @@ const endpointBase = withBase("/demo-api/", import.meta.env.BASE_URL);
             <div><span>Status</span><strong data-status-code>—</strong></div><div><span>Duration</span><strong data-duration>—</strong></div><div><span>Size</span><strong data-response-size>—</strong></div>
           </div>
           <div class="lab-code-title"><div><span class="lab-small-heading">RESPONSE BODY</span><h2>application/json</h2></div><button type="button" class="lab-button-secondary" data-copy-response disabled><Icon name="ph:copy"/> 复制 JSON</button></div>
-          <pre class="lab-code lab-api-code" tabindex="0"><code data-response-body>// 请选择左侧端点并点击“发送 GET 请求”</code></pre>
+          <pre class="lab-code lab-api-code" tabindex="0" data-response-container aria-busy="false"><code data-response-body>// 请选择左侧端点并点击“发送 GET 请求”</code></pre>
           <p data-api-feedback role="status" aria-live="polite" class="lab-feedback"></p>
           <div class="lab-request-info"><span><Icon name="ph:lock-key"/> SAME ORIGIN</span><span>STATIC RESPONSE FIXTURE</span></div>
         </section>
@@ -53,82 +56,158 @@ const endpointBase = withBase("/demo-api/", import.meta.env.BASE_URL);
   </div>
 </BaseLayout>
 <script>
-  function mountApiLab() {
-    const root = document.querySelector<HTMLElement>("[data-api-lab]");
-    if (!root || root.dataset.mounted === "true") return;
-    root.dataset.mounted = "true";
+  import { mount } from "@cloudflare/nimbus-docs/client";
+
+  /**
+   * A request has one lifecycle. Changing endpoints, cancelling or navigating
+   * aborts the old fetch and invalidates its response to prevent stale output.
+   */
+  mount("[data-api-lab]", root => {
     const base = root.dataset.endpointBase || "/demo-api/";
     const urlInput = root.querySelector<HTMLInputElement>("[data-request-url]")!;
     const send = root.querySelector<HTMLButtonElement>("[data-send]")!;
+    const sendLabel = root.querySelector<HTMLElement>("[data-send-label]")!;
+    const cancel = root.querySelector<HTMLButtonElement>("[data-cancel-request]")!;
     const status = root.querySelector<HTMLElement>("[data-status-code]")!;
     const duration = root.querySelector<HTMLElement>("[data-duration]")!;
     const bytes = root.querySelector<HTMLElement>("[data-response-size]")!;
     const result = root.querySelector<HTMLElement>("[data-response-body]")!;
+    const resultFrame = root.querySelector<HTMLElement>("[data-response-container]")!;
     const feedback = root.querySelector<HTMLElement>("[data-api-feedback]")!;
     const copy = root.querySelector<HTMLButtonElement>("[data-copy-response]")!;
+    const lifecycle = new AbortController();
+    let active: AbortController | null = null;
+    let timeoutId = 0;
+    let generation = 0;
     let responseText = "";
+
+    const known = new Set(["status.json", "users.json", "projects.json"]);
     function selected() {
-      const endpoint = root!.querySelector<HTMLInputElement>('input[name="endpoint"]:checked')?.value || "status.json";
-      const whitelist = new Set(["status.json", "users.json", "projects.json"]);
-      return whitelist.has(endpoint) ? endpoint : "status.json";
+      const name = root.querySelector<HTMLInputElement>('input[name="endpoint"]:checked')?.value || "status.json";
+      return known.has(name) ? name : "status.json";
     }
-    function updateUrl() {
+
+    function setBusy(busy: boolean) {
+      send.disabled = busy;
+      sendLabel.textContent = busy ? "正在请求…" : "发送 GET 请求";
+      cancel.hidden = !busy;
+      root.dataset.requestState = busy ? "loading" : "idle";
+      resultFrame.setAttribute("aria-busy", String(busy));
+    }
+
+    function abortActive() {
+      if (active) {
+        active.abort();
+        active = null;
+      }
+      window.clearTimeout(timeoutId);
+      timeoutId = 0;
+    }
+
+    function reset() {
+      generation++;
+      abortActive();
+      setBusy(false);
       urlInput.value = new URL(base + selected(), location.origin).href;
       status.textContent = "—";
+      delete status.dataset.status;
       duration.textContent = "—";
       bytes.textContent = "—";
-      result.textContent = "// 点击“发送 GET 请求”查看响应";
+      result.textContent = '// 点击“发送 GET 请求”查看响应';
       feedback.textContent = "";
       responseText = "";
       copy.disabled = true;
     }
-    root.querySelectorAll<HTMLInputElement>('input[name="endpoint"]').forEach(x => x.addEventListener("change", updateUrl));
-    send.addEventListener("click", async () => {
-      send.disabled = true;
-      send.textContent = "请求中…";
-      result.textContent = "// Fetching…";
-      feedback.textContent = "";
-      const controller = new AbortController();
-      const abort = setTimeout(() => controller.abort(), 8000);
+
+    function cancelRequest() {
+      if (!active) return;
+      generation++;
+      abortActive();
+      setBusy(false);
+      result.textContent = "// 请求已取消";
+      feedback.textContent = "请求已取消，你可以选择新的端点重试。";
+      status.textContent = "CANCELLED";
+      delete status.dataset.status;
+      duration.textContent = "—";
+      bytes.textContent = "—";
+      responseText = "";
+      copy.disabled = true;
+    }
+
+    async function run() {
+      if (active) return;
+      const token = ++generation;
+      const request = new AbortController();
+      active = request;
+      let timedOut = false;
+      timeoutId = window.setTimeout(() => { timedOut = true; request.abort(); }, 8000);
+      responseText = "";
+      copy.disabled = true;
+      setBusy(true);
+      status.textContent = "PENDING";
+      duration.textContent = "—";
+      bytes.textContent = "—";
+      result.textContent = "// Fetching...";
+      feedback.textContent = "正在向本站的静态 JSON 端点发送 GET 请求。";
       const start = performance.now();
       try {
         const response = await fetch(urlInput.value, {
           method: "GET",
           headers: { Accept: "application/json" },
-          signal: controller.signal,
-          cache: "no-store"
+          signal: request.signal,
+          cache: "no-store",
         });
         const body = await response.text();
-        responseText = body;
-        try { responseText = JSON.stringify(JSON.parse(body), null, 2); } catch { /* show response as text */ }
+        if (token !== generation) return;
+        try { responseText = JSON.stringify(JSON.parse(body), null, 2); }
+        catch { responseText = body; }
         status.textContent = String(response.status) + (response.ok ? " OK" : " ERROR");
         status.dataset.status = response.ok ? "success" : "error";
+        root.dataset.requestState = response.ok ? "success" : "error";
         duration.textContent = Math.round(performance.now() - start) + " ms";
         bytes.textContent = new TextEncoder().encode(body).length + " B";
         result.textContent = responseText;
-        feedback.textContent = response.ok ? "请求完成。这是真实的 fetch 响应。" : "服务器返回非成功状态。";
+        feedback.textContent = response.ok ? "请求完成：返回的是本站的公开静态演示数据。" : "端点返回了非成功状态。";
         copy.disabled = false;
-      } catch (e) {
+      } catch (error) {
+        if (token !== generation) return;
         responseText = "";
-        status.textContent = "FAILED";
+        status.textContent = timedOut ? "TIMEOUT" : "FAILED";
         status.dataset.status = "error";
+        root.dataset.requestState = "error";
         duration.textContent = Math.round(performance.now() - start) + " ms";
         bytes.textContent = "—";
-        result.textContent = "// " + (e instanceof Error ? e.message : "Network error");
-        feedback.textContent = "网络请求失败。请确认页面已正确部署。";
+        result.textContent = "// " + (error instanceof Error ? error.message : "Network error");
+        feedback.textContent = timedOut ? "请求超时（8 秒），请检查网络后重试。" : "网络请求失败，请确认网络连接与部署状态。";
         copy.disabled = true;
       } finally {
-        clearTimeout(abort);
-        send.disabled = false;
-        send.innerHTML = '<svg aria-hidden="true" viewBox="0 0 20 20" fill="none" class="lab-send-icon"><path d="m3 9 14-6-6 14-2-6-6-2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>发送 GET 请求';
+        if (token === generation) {
+          abortActive();
+          setBusy(false);
+          // setBusy clears loading; preserve the final status for styling.
+          root.dataset.requestState = status.dataset.status === "success" ? "success" : status.dataset.status === "error" ? "error" : "idle";
+        }
       }
-    });
+    }
+
+    root.querySelectorAll<HTMLInputElement>('input[name="endpoint"]').forEach(item =>
+      item.addEventListener("change", reset, { signal: lifecycle.signal }));
+    send.addEventListener("click", () => { void run(); }, { signal: lifecycle.signal });
+    cancel.addEventListener("click", cancelRequest, { signal: lifecycle.signal });
     copy.addEventListener("click", async () => {
-      try { await navigator.clipboard.writeText(responseText); feedback.textContent = "响应 JSON 已复制。"; }
-      catch { feedback.textContent = "剪贴板不可用，请手动选择响应内容。"; }
-    });
-    updateUrl();
-  }
-  document.addEventListener("astro:page-load", mountApiLab);
-  mountApiLab();
+      if (!responseText) return;
+      try {
+        await navigator.clipboard.writeText(responseText);
+        feedback.textContent = "响应内容已复制。";
+      } catch {
+        feedback.textContent = "无法访问剪贴板，请手动选择响应内容。";
+      }
+    }, { signal: lifecycle.signal });
+    reset();
+    return () => {
+      generation++;
+      abortActive();
+      lifecycle.abort();
+    };
+  });
 </script>

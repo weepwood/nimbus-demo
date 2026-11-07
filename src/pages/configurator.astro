@@ -138,8 +138,11 @@ const quickstart = withBase("/quickstart/", import.meta.env.BASE_URL);
   @media (prefers-reduced-motion: reduce) { .builder-actions button { transition: none; } .builder-actions button:hover { transform: none; } }
 </style>
 <script>
-  const main = document.querySelector<HTMLElement>("[data-config-builder]");
-  if (main) {
+  import { mount } from "@cloudflare/nimbus-docs/client";
+
+  mount("[data-config-builder]", main => {
+    const lifecycle = new AbortController();
+    const { signal } = lifecycle;
     const form = main.querySelector<HTMLFormElement>("[data-builder-form]")!;
     const output = main.querySelector<HTMLElement>("[data-output]")!;
     const error = main.querySelector<HTMLElement>("[data-error]")!;
@@ -223,9 +226,9 @@ const quickstart = withBase("/quickstart/", import.meta.env.BASE_URL);
       ].join("\n");
       output.textContent = generated;
     }
-    form.addEventListener("input", build);
-    form.addEventListener("change", build);
-    form.addEventListener("submit", (event) => event.preventDefault());
+    form.addEventListener("input", build, { signal });
+    form.addEventListener("change", build, { signal });
+    form.addEventListener("submit", (event) => event.preventDefault(), { signal });
     reset.addEventListener("click", () => {
       for (const element of Array.from(form.elements)) {
         if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement || element instanceof HTMLSelectElement) {
@@ -235,7 +238,7 @@ const quickstart = withBase("/quickstart/", import.meta.env.BASE_URL);
       }
       build();
       feedback.textContent = "已恢复默认设置。";
-    });
+    }, { signal });
     copy.addEventListener("click", async () => {
       if (!generated) return;
       try {
@@ -244,7 +247,7 @@ const quickstart = withBase("/quickstart/", import.meta.env.BASE_URL);
       } catch {
         feedback.textContent = "浏览器未授予剪贴板权限，请手动选择代码复制。";
       }
-    });
+    }, { signal });
     download.addEventListener("click", () => {
       if (!generated) return;
       const blob = new Blob([generated], { type: "text/typescript;charset=utf-8" });
@@ -257,7 +260,8 @@ const quickstart = withBase("/quickstart/", import.meta.env.BASE_URL);
       link.remove();
       URL.revokeObjectURL(url);
       feedback.textContent = "已生成配置文件。";
-    });
+    }, { signal });
     build();
-  }
+    return () => lifecycle.abort();
+  });
 </script>

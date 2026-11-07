@@ -102,6 +102,8 @@ const resolvedMarkdownUrl =
           document.querySelectorAll("[data-nb-theme-toggle]").forEach((b) => {
             b.setAttribute("data-nb-state", mode);
             b.setAttribute("aria-pressed", String(mode === "dark"));
+            b.setAttribute("aria-label", mode === "dark" ? "切换到浅色主题" : "切换到深色主题");
+            b.setAttribute("title", mode === "dark" ? "切换到浅色主题" : "切换到深色主题");
           });
         };
 

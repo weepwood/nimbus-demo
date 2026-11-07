@@ -3,7 +3,7 @@
   position: fixed; top: calc(var(--nb-header-height) - 2px); inset-inline:0;
   height:2px; pointer-events:none; z-index:40; opacity:.95;
 }
-.nd-reading-progress span { display:block; height:100%; width:0; background:var(--nd-orange-strong); }
+.nd-reading-progress span { display:block; height:100%; width:100%; background:var(--nd-orange-strong); transform:scaleX(0); transform-origin:left center; will-change:transform; }
 .nd-reading-actions {
   margin:clamp(2rem,5vw,3.25rem) 0 1.25rem; padding:1.3rem 1.4rem;
   border:1px solid var(--nb-border); border-radius:10px;
