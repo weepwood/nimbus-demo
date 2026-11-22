@@ -158,5 +158,9 @@ const resolvedMarkdownUrl =
       codeCopy();
       headingAnchors();
     </script>
+    <script>
+      import { installEmbeddedLinkBridge } from "@/lib/embedded-links.js";
+      installEmbeddedLinkBridge();
+    </script>
   </body>
 </html>
